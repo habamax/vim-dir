@@ -3,7 +3,7 @@ vim9script
 # XXX: handle b:undo
 
 import autoload 'dir.vim'
-import autoload 'action.vim'
+import autoload 'dir/action.vim'
 
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>

@@ -1,30 +1,13 @@
 vim9script
 
-import autoload './fmt.vim'
+import autoload 'dir/fmt.vim'
 
 
 def PrintDir(dir: list<dict<any>>)
     setl ma nomod noro
     sil! :%d _
     setline(1, b:dir_cwd)
-    var strdir = []
-    if has("win32")
-        strdir = dir->mapnew(
-                      (_, v) => printf("%s %6s %s %s",
-                          fmt.Perm(v),
-                          fmt.Size(v.size),
-                          fmt.Time(v.time),
-                          v.name))
-    else
-        strdir = dir->mapnew(
-                      (_, v) => printf("%s %-8s %-8s %6s %s %s",
-                          fmt.Perm(v),
-                          v.user,
-                          v.group,
-                          fmt.Size(v.size),
-                          fmt.Time(v.time),
-                          fmt.Name(v)))
-    endif
+    var strdir = dir->mapnew((_, v) => fmt.Dir(v))
     if len(strdir) > 0
         setline(2, [""] + strdir)
     endif
@@ -37,11 +20,6 @@ def ReadDir(name: string): list<dict<any>>
     var dirs = readdirex(path, (v) => v.type =~ 'dir\|junction\|linkd')
     var files = readdirex(path, (v) => v.type =~ 'file\|link$')
     return dirs + files
-enddef
-
-
-def FileForSearch(v: string): string
-    return '\s\zs' .. escape(v, '~$.') .. '\($\| ->\)'
 enddef
 
 
@@ -96,13 +74,15 @@ export def Open(name: string = '', mod: string = '')
         PrintDir(b:dir)
         norm! j
         norm! $2F/l
+        var focus = ''
         if empty(maybe_focus)
             if len(b:dir) > 0
-                search(FileForSearch(b:dir[0].name))
+                focus = b:dir[0].name
             endif
         else
-            search(FileForSearch(maybe_focus))
+            focus = maybe_focus
         endif
+        search('\s\zs' .. escape(focus, '~$.') .. '\($\| ->\)')
     else
         exe $"e {oname}"
     endif

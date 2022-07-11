@@ -1,7 +1,7 @@
 vim9script
 
-import autoload './dir.vim'
-import autoload './popup.vim'
+import autoload 'dir.vim'
+import autoload 'dir/popup.vim'
 
 
 export def Do(mod: string = '')
