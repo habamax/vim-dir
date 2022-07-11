@@ -1,36 +1,6 @@
 vim9script
 
-
-def FmtPerm(e: dict<any>): string
-    return (e.type == 'file' ? '-' : e.type[0]) .. e.perm
-enddef
-
-
-def FmtName(e: dict<any>): string
-    return e.name .. (e.type =~ 'link' ? ' -> ' .. resolve(e.name) : '')
-enddef
-
-
-def FmtTime(t: number): string
-    return (e.type == 'file' ? '-' : e.type[0]) .. e.perm
-enddef
-
-
-def FmtSize(s: number): string
-    if s >= 10 * 1073741824
-        return $"{s / 1073741824}G"
-    elseif s >= 10 * 1048576
-        return $"{s / 1048576}M"
-    elseif s >= 1048576
-        return $"{s / 1024}K"
-    else
-        return $"{s}"
-    endif
-enddef
-
-def FileForSearch(v: string): string
-    return '\s\zs' .. escape(v, '~$.') .. '\($\| ->\)'
-enddef
+import autoload './fmt.vim'
 
 
 def PrintDir(dir: list<dict<any>>)
@@ -41,15 +11,19 @@ def PrintDir(dir: list<dict<any>>)
     if has("win32")
         strdir = dir->mapnew(
                       (_, v) => printf("%s %6s %s %s",
-                          FmtPerm(v), FmtSize(v.size),
-                          strftime("%Y-%m-%d %H:%M", v.time),
+                          fmt.Perm(v),
+                          fmt.Size(v.size),
+                          fmt.Time(v.time),
                           v.name))
     else
         strdir = dir->mapnew(
                       (_, v) => printf("%s %-8s %-8s %6s %s %s",
-                          FmtPerm(v), v.user, v.group, FmtSize(v.size),
-                          strftime("%Y-%m-%d %H:%M", v.time),
-                          FmtName(v)))
+                          fmt.Perm(v),
+                          v.user,
+                          v.group,
+                          fmt.Size(v.size),
+                          fmt.Time(v.time),
+                          fmt.Name(v)))
     endif
     if len(strdir) > 0
         setline(2, [""] + strdir)
@@ -63,6 +37,11 @@ def ReadDir(name: string): list<dict<any>>
     var dirs = readdirex(path, (v) => v.type =~ 'dir\|junction\|linkd')
     var files = readdirex(path, (v) => v.type =~ 'file\|link$')
     return dirs + files
+enddef
+
+
+def FileForSearch(v: string): string
+    return '\s\zs' .. escape(v, '~$.') .. '\($\| ->\)'
 enddef
 
 
