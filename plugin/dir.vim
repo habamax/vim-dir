@@ -6,7 +6,7 @@ endif
 g:loaded_dir = 1
 
 g:dir_open_ext = ['\.pdf$', '\.ods$', '\.odt$', '\.odp$',
-                  '\.xls$', '\.xlsx$', '\.doc$', '\.docx$',
+                  '\.xls$', '\.xlsx$', '\.doc$', '\.docx$', '\.ppt$', '\.pptx$',
                   '\.png$', '\.jpg$', '\.gif$',
                   '\.mkv$', '\.mov$', '\.mpeg$', '\.avi$', '\.mp4$',
                   '\.mp3$', '\.ogg$', '\.flac$'
