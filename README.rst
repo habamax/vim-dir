@@ -16,6 +16,7 @@ Commands and Maps
 
 - :kbd:`Backspace` -- one directory up.
 - :kbd:`Enter` -- open a file or a directory under cursor.
+- :kbd:`O` -- open a file or a directory under cursor with OS.
 - :kbd:`s` -- open a file or a directory under cursor in a split.
 - :kbd:`v` -- open a file or a directory under cursor in a vertical split.
 - :kbd:`t` -- open a file or a directory under cursor in a tab.
