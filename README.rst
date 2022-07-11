@@ -2,9 +2,9 @@
                                     VIM-DIR
 ################################################################################
 
-.. role:: kbd
+File manager for Vim.
 
-WIP. File manager for Vim.
+**WIP**
 
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
