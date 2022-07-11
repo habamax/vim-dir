@@ -43,14 +43,14 @@ Features (To Do)
 
   - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer)
   - Create a directory
-  - Delete a file or a directory (with selection support)
-  - Copy a file or a directory (with selection support)
-  - Move a file or a directory (with selection support)
+  - Delete a files/directories
+  - Copy a files/directories
+  - Move a files/directories
   - chmod? chown?
 
-- Explore mass rename ala ``qmv``/``vidir``
+- Explore feasibility of mass rename ala ``qmv``/``vidir``
 
-- Explore networking (mc like shell or sftp links to machines).
+- Explore feasibility of networking (mc like shell or sftp links to machines).
 
 
 Non Features
