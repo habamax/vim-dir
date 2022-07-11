@@ -5,7 +5,7 @@ if exists('g:loaded_dir')
 endif
 g:loaded_dir = 1
 
-g:dir_open_ext = ['\.pdf$',
+g:dir_open_ext = ['\.pdf$', '\.ods$', '\.odt$', '\.odp$',
                   '\.xls$', '\.xlsx$', '\.doc$', '\.docx$',
                   '\.png$', '\.jpg$', '\.gif$',
                   '\.mkv$', '\.mov$', '\.mpeg$', '\.avi$', '\.mp4$',
