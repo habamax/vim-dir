@@ -8,6 +8,7 @@ export def ShowAtCursor(text: any, title: string = ''): number
             border: [],
             borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
             pos: "botleft",
+            maxheight: &lines - 5,
             filter: "PopupFilter",
             filtermode: 'n',
             mapping: 0
