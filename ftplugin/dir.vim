@@ -8,6 +8,7 @@ import autoload 'dir/action.vim'
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
+nnoremap <buffer> o <scriptcmd>action.Do()<cr>
 nnoremap <buffer> O <scriptcmd>action.DoOS()<cr>
 nnoremap <buffer> s <scriptcmd>action.Do("split")<cr>
 nnoremap <buffer> v <scriptcmd>action.Do("vert split")<cr>
