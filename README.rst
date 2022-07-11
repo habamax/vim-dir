@@ -20,6 +20,7 @@ Commands and Maps
 - :kbd:`s` -- open a file or a directory under cursor in a split.
 - :kbd:`v` -- open a file or a directory under cursor in a vertical split.
 - :kbd:`t` -- open a file or a directory under cursor in a tab.
+- :kbd:`i` -- preview a file (first 100 lines)
 
 
 Features (To Do)
