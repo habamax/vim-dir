@@ -9,6 +9,18 @@ WIP. File manager for Vim.
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
 
+Commands and Maps
+=================
+
+``:Dir [path]`` to open a path as a directory listing.
+
+- :kbd:`Backspace` -- one directory up.
+- :kbd:`Enter` -- open a file or a directory under cursor.
+- :kbd:`s` -- open a file or a directory under cursor in a split.
+- :kbd:`v` -- open a file or a directory under cursor in a vertical split.
+- :kbd:`t` -- open a file or a directory under cursor in a tab.
+
+
 Features
 ========
 
@@ -16,15 +28,15 @@ Features
 
 - ✓ (2022-07-10) Open files/directories in splits/tabs.
 
+- Cache to reuse dir contents.
+
 - Sorting.
 
 - Filtering.
 
 - Open files with external applications (``xdg-open``, ``open``, ``start``).
 
-- History of directories.
-
-- Bookmarks.
+- Bookmarks (hotlist).
 
 - Basic file operations support:
 
