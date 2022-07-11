@@ -1,6 +1,7 @@
 vim9script
 
 import autoload 'dir/fmt.vim'
+import autoload 'dir/os.vim'
 
 
 def PrintDir(dir: list<dict<any>>)
@@ -27,12 +28,6 @@ export def Open(name: string = '', mod: string = '')
     var oname = (expand(name)
                 ?? get(b:, "dir_cwd", '')
                 ?? expand("%:p:h"))->substitute('\', '/', 'g')
-    var maybe_focus = ""
-    if (&ft != 'dir' && filereadable(expand("%"))) ||
-        (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
-        maybe_focus = expand("%:t")
-    endif
-
     if oname =~ './$' && oname !~ '^\u:/$'
         oname = oname->trim('/', 2)
     endif
@@ -40,11 +35,23 @@ export def Open(name: string = '', mod: string = '')
         oname = simplify($"{getcwd()}/{oname}")
     endif
 
+    # open using OS
+    if oname =~ '\c' .. g:dir_open_ext->mapnew((_, v) => $'\%({v}\)')->join('\|')
+        os.Open(oname)
+        return
+    endif
+
     if !empty(mod)
         exe $"{mod}"
     endif
 
     if isdirectory(oname)
+        var maybe_focus = ""
+        if (&ft != 'dir' && filereadable(expand("%"))) ||
+            (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
+            maybe_focus = expand("%:t")
+        endif
+
         var new_bufname = $"dir://{oname}"
         if &hidden
             if new_bufname->bufexists()

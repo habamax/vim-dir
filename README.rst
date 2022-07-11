@@ -34,7 +34,7 @@ Features (To Do)
 
 - Filtering.
 
-- Open files with external applications (``xdg-open``, ``open``, ``start``).
+- ✓ (2022-07-11) Open files with external applications (``xdg-open``, ``open``, ``start``).
 
 - Bookmarks (hotlist).
 

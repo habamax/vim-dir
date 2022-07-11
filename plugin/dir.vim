@@ -5,6 +5,13 @@ if exists('g:loaded_dir')
 endif
 g:loaded_dir = 1
 
+g:dir_open_ext = ['\.pdf$',
+                  '\.xls$', '\.xlsx$', '\.doc$', '\.docx$',
+                  '\.png$', '\.jpg$', '\.gif$',
+                  '\.mkv$', '\.mov$', '\.mpeg$', '\.avi$', '\.mp4$',
+                  '\.mp3$', '\.ogg$', '\.flac$'
+                  ]
+
 import autoload 'dir.vim'
 
 command! -nargs=? -complete=dir Dir dir.Open(<f-args>)
