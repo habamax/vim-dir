@@ -7,6 +7,7 @@ import autoload 'dir/action.vim'
 
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
+nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
 nnoremap <buffer> o <scriptcmd>action.Do()<cr>
 nnoremap <buffer> O <scriptcmd>action.DoOS()<cr>

@@ -14,7 +14,7 @@ Commands and Maps
 
 ``:Dir [path]`` to open a path as a directory listing.
 
-- :kbd:`Backspace` -- one directory up.
+- :kbd:`Backspace` or :kbd:`u` -- one directory up.
 - :kbd:`Enter` or :kbd:`o` -- open a file or a directory under cursor.
 - :kbd:`O` -- open a file or a directory under cursor with OS.
 - :kbd:`s` -- open a file or a directory under cursor in a split.
