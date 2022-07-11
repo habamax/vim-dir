@@ -21,8 +21,8 @@ Commands and Maps
 - :kbd:`t` -- open a file or a directory under cursor in a tab.
 
 
-Features
-========
+Features (To Do)
+================
 
 - ✓ (2022-07-10) Navigate file system, show contents like ``ls``.
 
@@ -55,4 +55,4 @@ Features
 Non Features
 ============
 
-- No treeview, no sidepanel.
+- ✗ No treeview, no sidepanel.
