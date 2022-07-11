@@ -25,7 +25,7 @@ enddef
 
 
 export def Open(name: string = '', mod: string = '')
-    var oname = (expand(name)
+    var oname = (expand(name, 1)
                 ?? get(b:, "dir_cwd", '')
                 ?? expand("%:p:h"))->substitute('\', '/', 'g')
     if oname =~ './$' && oname !~ '^\u:/$'
