@@ -8,6 +8,7 @@ export def Dialog(text: string, DialogCallback: func)
         line: 'cursor-1',
         col: 'cursor',
         border: [],
+        highlight: 'ErrorMsg',
         borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
         callback: (id, result) => {
             if result == 1
