@@ -9,10 +9,32 @@ File manager for Vim.
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
 
-Commands and Maps
-=================
+Minimum requirements: Vim9
+
+
+Commands and Mappings
+=====================
+
+Global commands
+---------------
 
 ``:Dir [path]`` to open a path as a directory listing.
+
+
+Global mappings
+---------------
+
+There are no global mappings.
+
+You can set at least one yourself to quickly call ``Dir``:
+
+.. code::
+
+  nnoremap <bs> <cmd>Dir<cr>
+
+
+Local mappings
+--------------
 
 - :kbd:`Backspace` or :kbd:`u` -- one directory up.
 - :kbd:`Enter` or :kbd:`o` -- open a file or a directory under cursor.
