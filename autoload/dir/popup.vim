@@ -24,6 +24,8 @@ export def Show(text: any, title: string = ''): number
             border: [],
             borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
             pos: "center",
+            minwidth: &columns / 2,
+            minheight: &lines / 3,
             maxheight: &lines - 5,
             filter: "PopupFilter",
             filtermode: 'n',
