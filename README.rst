@@ -16,10 +16,10 @@ Commands and Maps
 
 - :kbd:`Backspace` or :kbd:`u` -- one directory up.
 - :kbd:`Enter` or :kbd:`o` -- open a file or a directory under cursor.
-- :kbd:`O` -- open a file or a directory under cursor with OS.
-- :kbd:`s` -- open a file or a directory under cursor in a split.
-- :kbd:`v` -- open a file or a directory under cursor in a vertical split.
-- :kbd:`t` -- open a file or a directory under cursor in a tab.
+- :kbd:`O` -- open a file or a directory with OS.
+- :kbd:`S` -- open a file or a directory in a split.
+- :kbd:`s` -- open a file or a directory in a vertical split.
+- :kbd:`t` -- open a file or a directory in a tab.
 - :kbd:`i` -- preview a file (first 100 lines)
 
 

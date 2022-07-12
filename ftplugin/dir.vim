@@ -11,8 +11,8 @@ nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
 nnoremap <buffer> o <scriptcmd>action.Do()<cr>
 nnoremap <buffer> O <scriptcmd>action.DoOS()<cr>
-nnoremap <buffer> s <scriptcmd>action.Do("split")<cr>
-nnoremap <buffer> v <scriptcmd>action.Do("vert split")<cr>
+nnoremap <buffer> S <scriptcmd>action.Do("split")<cr>
+nnoremap <buffer> s <scriptcmd>action.Do("vert split")<cr>
 nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoPreview()<cr>
 
