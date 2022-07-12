@@ -7,7 +7,9 @@ import autoload 'dir/os.vim'
 
 def CurrentItem(): string
     if line('.') == 1
+        var view = winsaveview()
         var new_dir = getline(1)[0 : searchpos('/\|$', 'c', 1)[1] - 1]
+        winrestview(view)
         if isdirectory(new_dir)
             return new_dir
         endif
