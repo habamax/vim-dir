@@ -16,10 +16,10 @@ Commands and Maps
 
 - :kbd:`Backspace` or :kbd:`u` -- one directory up.
 - :kbd:`Enter` or :kbd:`o` -- open a file or a directory under cursor.
-- :kbd:`O` -- open a file or a directory with OS.
-- :kbd:`S` -- open a file or a directory in a split.
-- :kbd:`s` -- open a file or a directory in a vertical split.
-- :kbd:`t` -- open a file or a directory in a tab.
+- :kbd:`O` -- open a file/directory with OS.
+- :kbd:`S` -- open a file/directory in a split.
+- :kbd:`s` -- open a file/directory in a vertical split.
+- :kbd:`t` -- open a file/directory in a tab.
 - :kbd:`i` -- preview a file (first 100 lines)
 
 
@@ -44,9 +44,9 @@ Features (To Do)
 
   - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer)
   - Create a directory
-  - Delete a files/directories
-  - Copy a files/directories
-  - Move a files/directories
+  - Delete files/directories
+  - Copy files/directories
+  - Move files/directories
   - chmod? chown?
 
 - Explore feasibility of mass rename ala ``qmv``/``vidir``
