@@ -1,6 +1,6 @@
 vim9script
 
-if exists('g:loaded_dir')
+if exists('g:loaded_dir') || v:version < 900
     finish
 endif
 g:loaded_dir = 1
