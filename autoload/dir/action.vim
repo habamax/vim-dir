@@ -5,7 +5,15 @@ import autoload 'dir/popup.vim'
 import autoload 'dir/os.vim'
 
 
-def CurrentItem(): string
+def CursorItemInList(): string
+    var idx = line('.') - 3
+    if idx < 0 | return "" | endif
+    var cwd = trim(b:dir_cwd, '/', 2)
+    return $"{cwd}/{b:dir[idx].name}"
+enddef
+
+
+def CursorItem(): string
     if line('.') == 1
         var view = winsaveview()
         var new_dir = getline(1)[0 : searchpos('/\|$', 'c', 1)[1] - 1]
@@ -14,17 +22,14 @@ def CurrentItem(): string
             return new_dir
         endif
     else
-        var idx = line('.') - 3
-        if idx < 0 | return "" | endif
-        var cwd = trim(b:dir_cwd, '/', 2)
-        return $"{cwd}/{b:dir[idx].name}"
+        return CursorItemInList()
     endif
     return ""
 enddef
 
 
 export def Do(mod: string = '')
-    var item = CurrentItem()
+    var item = CursorItem()
     if !empty(item)
         dir.Open(item, mod)
     endif
@@ -47,7 +52,7 @@ enddef
 
 
 export def DoOS()
-    var item = CurrentItem()
+    var item = CursorItem()
     if !empty(item)
         os.Open(item)
     endif
@@ -55,7 +60,15 @@ enddef
 
 
 export def DoDelete()
-    echo "Delete stub"
+    var item = CursorItemInList()
+    if !empty(item)
+        popup.Dialog('Delete?', () => {
+            os.Delete(item)
+            var view = winsaveview()
+            :edit
+            winrestview(view)
+        })
+    endif
 enddef
 
 

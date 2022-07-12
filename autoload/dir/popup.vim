@@ -1,5 +1,23 @@
 vim9script
 
+
+export def Dialog(text: string, DialogCallback: func)
+    popup_dialog($'{text} y/n', {
+        filter: 'popup_filter_yesno',
+        pos: 'botleft',
+        line: 'cursor-1',
+        col: 'cursor',
+        border: [],
+        borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
+        callback: (id, result) => {
+            if result == 1
+                DialogCallback()
+            endif
+        },
+        padding: [0, 1, 0, 1]})
+enddef
+
+
 # Returns winnr of created popup window
 export def ShowAtCursor(text: any, title: string = ''): number
     var winnr = popup_atcursor(text, {

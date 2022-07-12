@@ -41,3 +41,12 @@ export def Open(name: string)
     endif
     job_start(printf('%s "%s"', cmd, url), job_opts)
 enddef
+
+
+export def Delete(name: string)
+    if isdirectory(name)
+        delete(name, "rf")
+    else
+        delete(name)
+    endif
+enddef
