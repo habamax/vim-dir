@@ -39,10 +39,19 @@ Local mappings
 - :kbd:`Backspace` or :kbd:`u` -- one directory up.
 - :kbd:`Enter` or :kbd:`o` -- open a file or a directory under cursor.
 - :kbd:`O` -- open a file/directory with OS.
-- :kbd:`S` -- open a file/directory in a split.
-- :kbd:`s` -- open a file/directory in a vertical split.
+- :kbd:`s` -- open a file/directory in a split.
+- :kbd:`S` -- open a file/directory in a vertical split.
 - :kbd:`t` -- open a file/directory in a tab.
 - :kbd:`i` -- preview a file (first 100 lines)
+
+
+Settings
+========
+
+- ``g:dir_open_ext`` -- if a file/directory is matched against regexes in a
+  list, open it using OS.
+- ``g:dir_invert_split`` -- by default :kbd:`s` splits horizontally and :kbd:`S`
+  splits vertically. Set to ``1``/``true`` to make the opposite.
 
 
 Features (To Do)
