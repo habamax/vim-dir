@@ -72,3 +72,8 @@ enddef
 export def DoRename()
     echo "Rename stub"
 enddef
+
+
+export def DoMove()
+    echo "Move stub"
+enddef
