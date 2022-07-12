@@ -11,7 +11,9 @@ export def Dialog(text: string, DialogCallback: func)
         borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
         callback: (id, result) => {
             if result == 1
+                var view = winsaveview()
                 DialogCallback()
+                winrestview(view)
             endif
         },
         padding: [0, 1, 0, 1]})

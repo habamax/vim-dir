@@ -64,9 +64,7 @@ export def DoDelete()
     if !empty(item)
         popup.Dialog('Delete?', () => {
             os.Delete(item)
-            var view = winsaveview()
             :edit
-            winrestview(view)
         })
     endif
 enddef
