@@ -52,3 +52,23 @@ export def DoOS()
         os.Open(item)
     endif
 enddef
+
+
+export def DoDelete()
+    echo "Delete stub"
+enddef
+
+
+export def DoCopy()
+    echo "Copy stub"
+enddef
+
+
+export def DoPaste()
+    echo "Paste stub"
+enddef
+
+
+export def DoRename()
+    echo "Rename stub"
+enddef
