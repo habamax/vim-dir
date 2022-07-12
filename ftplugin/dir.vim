@@ -56,5 +56,4 @@ xnoremap <buffer> gi <nop>
 
 augroup dirautocommands | au!
     au BufReadCmd dir://* dir.Open()
-    # au TextYankPost dir://* action.DoYank(v:event)
 augroup END
