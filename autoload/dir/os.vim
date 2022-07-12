@@ -36,10 +36,8 @@ export def Open(name: string)
     endif
     var job_opts = {}
     if exists("$WSLENV")
-        job_opts.cwd = "/mnt/c"
-        if filereadable(name)
-            url = WslToWindowsPath(name)
-        endif
+        job_opts.cwd = "/mnt/c/"
+        url = WslToWindowsPath(name)
     endif
     job_start(printf('%s "%s"', cmd, url), job_opts)
 enddef
