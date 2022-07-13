@@ -25,18 +25,16 @@ enddef
 
 
 export def Open(name: string = '', mod: string = '')
-    var oname = (expand(name, 1)
-                ?? get(b:, "dir_cwd", '')
-                ?? expand("%:p:h"))->substitute('\', '/', 'g')
-    if oname =~ '^dir://' | oname = oname->trim("dir://", 1) | endif
+    var oname = expand(name->substitute("^dir://", "", ""), 1)
+    if empty(oname) | oname = get(b:, "dir_cwd", '') | endif
+    if empty(oname)
+        oname = isdirectory(name) ? fnamemodify(name, ":p") : fnamemodify(name, "%:p:h")
+    endif
+    oname = oname->substitute('\', '/', 'g')
+    if !isabsolutepath(oname) | oname = simplify($"{getcwd()}/{oname}") | endif
+    if !isdirectory(oname) && !filereadable(oname) | return | endif
     if oname =~ './$' && oname !~ '^\u:/$' | oname = oname->trim('/', 2) | endif
-    if !isabsolutepath(oname)
-        oname = simplify($"{getcwd()}/{oname}")
-    endif
-
-    if !isdirectory(oname) && !filereadable(oname)
-        return
-    endif
+    oname = oname->escape('%')
 
     # open using OS
     if oname =~ '\c' .. g:dir_open_ext->mapnew((_, v) => $'\%({v}\)')->join('\|')
@@ -44,9 +42,7 @@ export def Open(name: string = '', mod: string = '')
         return
     endif
 
-    if !empty(mod)
-        exe $"{mod}"
-    endif
+    if !empty(mod) | exe $"{mod}" | endif
 
     if isdirectory(oname)
         var maybe_focus = ""
