@@ -28,7 +28,7 @@ export def Open(name: string = '', mod: string = '')
     var oname = name->substitute("^dir://", "", "")->substitute('\', '/', 'g')
     if empty(oname) | oname = get(b:, "dir_cwd", '') | endif
     if empty(oname)
-        oname = isdirectory(name) ? fnamemodify(name, ":p") : fnamemodify(name, "%:p:h")
+        oname = isdirectory(oname) ? fnamemodify(oname, ":p") : fnamemodify(oname, "%:p:h")
     endif
     if !isabsolutepath(oname) | oname = simplify($"{getcwd()}/{oname}") | endif
     if !isdirectory(oname) && !filereadable(oname) | return | endif
