@@ -20,4 +20,4 @@ g:dir_invert_split = 0
 
 import autoload 'dir.vim'
 
-command! -nargs=? -complete=dir Dir dir.Open(<f-args>)
+command! -nargs=? -complete=dir Dir dir.Open(expand(<q-args>))
