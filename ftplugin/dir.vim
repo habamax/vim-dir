@@ -25,6 +25,7 @@ nnoremap <buffer> s <scriptcmd>action.Do($"{g:dir_invert_split ? 'vert' : ''} sp
 nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoPreview()<cr>
 
+
 noremap <buffer> C <scriptcmd>action.DoCopy()<cr>
 xnoremap <buffer> C <scriptcmd>action.DoCopy()<cr>
 noremap <buffer> cc <scriptcmd>action.DoCopy()<cr>

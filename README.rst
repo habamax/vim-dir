@@ -43,6 +43,7 @@ Local mappings
 - :kbd:`S` -- open a file/directory in a vertical split.
 - :kbd:`t` -- open a file/directory in a tab.
 - :kbd:`i` -- preview a file (first 100 lines)
+- :kbd:`D` or :kbd:`dd` -- delete files/directories
 
 
 Settings
@@ -75,7 +76,7 @@ Features (To Do)
 
   - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer)
   - Create a directory
-  - Delete files/directories
+  - ✓ (2022-07-13) Delete files/directories (be careful here)
   - Copy files/directories
   - Move files/directories
   - chmod? chown?

@@ -4,9 +4,20 @@ import autoload 'dir.vim'
 import autoload 'dir/popup.vim'
 import autoload 'dir/os.vim'
 
+const DIRLIST_SHIFT = 3
+
+
+def VisualItemsInList(line1: number, line2: number): list<string>
+    var l1 = (line1 > line2 ? line2 : line1) - DIRLIST_SHIFT
+    var l2 = (line2 > line1 ? line2 : line1) - DIRLIST_SHIFT
+
+    var cwd = trim(b:dir_cwd, '/', 2)
+    return b:dir[l1 : l2]->mapnew((_, v) => $"{cwd}/{v.name}")
+enddef
+
 
 def CursorItemInList(): string
-    var idx = line('.') - 3
+    var idx = line('.') - DIRLIST_SHIFT
     if idx < 0 | return "" | endif
     var cwd = trim(b:dir_cwd, '/', 2)
     return $"{cwd}/{b:dir[idx].name}"
@@ -60,18 +71,37 @@ enddef
 
 
 export def DoDelete()
-    var item = CursorItemInList()
-    if !empty(item)
-        popup.Dialog('Delete?', () => {
-            os.Delete(item)
-            :edit
-        })
+    if mode() =~ '[vV]'
+        var del_list = VisualItemsInList(line('v'), line('.'))
+        if !empty(del_list)
+            popup.Dialog($'Delete {len(del_list)} files/directories?', () => {
+                for item in del_list
+                    os.Delete(item)
+                endfor
+                :edit
+            })
+        endif
+    else
+        var item = CursorItemInList()
+        if !empty(item)
+            popup.Dialog($'Delete {item}?', () => {
+                os.Delete(item)
+                :edit
+            })
+        endif
     endif
 enddef
 
 
 export def DoCopy()
-    echo "Copy stub"
+    if mode() =~ '[vV]'
+        echo "Copy visual stub"
+        for l in VisualItemsInList(line('v'), line('.'))
+            echo l
+        endfor
+    else
+        echo "Copy stub" CursorItemInList()
+    endif
 enddef
 
 
