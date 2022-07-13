@@ -1,6 +1,16 @@
 vim9script
 
-# XXX: handle b:undo
+if exists("b:did_ftplugin")
+    finish
+endif
+b:did_ftplugin = 1
+
+var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'A', 'I', 'gI', 'gi']
+var undo_maps = ['<bs>', 'u', '\<cr>', 'o', 'O', 'S', 's', 't', 'i', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'P', 'gP']
+
+b:undo_ftplugin = (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
+b:undo_ftplugin ..= ' | unlet b:dir | unlet b:dir_cwd'
+
 
 import autoload 'dir.vim'
 import autoload 'dir/action.vim'
@@ -29,28 +39,15 @@ noremap <buffer> gP <scriptcmd>action.DoMove()<cr>
 xnoremap <buffer> gP <scriptcmd>action.DoMove()<cr>
 noremap <buffer> R <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> R <scriptcmd>action.DoRename()<cr>
-noremap <buffer> r <nop>
-xnoremap <buffer> r <nop>
-noremap <buffer> d <nop>
-xnoremap <buffer> d <nop>
-noremap <buffer> c <nop>
-xnoremap <buffer> c <nop>
-noremap <buffer> p <nop>
-xnoremap <buffer> p <nop>
-noremap <buffer> gp <nop>
-xnoremap <buffer> gp <nop>
-noremap <buffer> x <nop>
-xnoremap <buffer> x <nop>
-noremap <buffer> X <nop>
-xnoremap <buffer> X <nop>
-noremap <buffer> A <nop>
-xnoremap <buffer> A <nop>
-noremap <buffer> I <nop>
-xnoremap <buffer> I <nop>
-noremap <buffer> gI <nop>
-xnoremap <buffer> gI <nop>
-noremap <buffer> gi <nop>
-xnoremap <buffer> gi <nop>
+noremap <buffer> rr <scriptcmd>action.DoRename()<cr>
+xnoremap <buffer> rr <scriptcmd>action.DoRename()<cr>
+
+
+# remove buffer editing mappings
+for key in nop_maps
+    exe $'noremap <buffer> {key} <nop>'
+    exe $'xnoremap <buffer> {key} <nop>'
+endfor
 
 
 augroup dirautocommands | au!
