@@ -25,14 +25,15 @@ enddef
 
 
 export def Open(name: string = '', mod: string = '')
-    var oname = name->substitute("^dir://", "", "")->substitute('\', '/', 'g')
+    var oname = name->substitute("^dir://", "", "")
     if empty(oname) | oname = get(b:, "dir_cwd", '') | endif
     if empty(oname)
-        var curbuf = expand("%")
+        var curbuf = expand("%")->substitute("^dir://", "", "")
         oname = isdirectory(curbuf) ? fnamemodify(curbuf, ":p") : fnamemodify(curbuf, ":p:h")
     endif
     if !isabsolutepath(oname) | oname = simplify($"{getcwd()}/{oname}") | endif
     if !isdirectory(oname) && !filereadable(oname) | return | endif
+    oname = oname->substitute('\', '/', 'g')
     if oname =~ './$' && oname !~ '^\u:/$' | oname = oname->trim('/', 2) | endif
 
     # open using OS
