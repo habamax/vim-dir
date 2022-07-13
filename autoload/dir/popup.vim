@@ -2,7 +2,7 @@ vim9script
 
 
 export def Dialog(text: string, DialogCallback: func)
-    popup_dialog($'{text} y/n', {
+    var winid = popup_dialog([text, "", "", "(y)es    (n)o"], {
         filter: 'popup_filter_yesno',
         pos: 'botleft',
         line: 'cursor-1',
@@ -18,6 +18,7 @@ export def Dialog(text: string, DialogCallback: func)
             endif
         },
         padding: [0, 1, 0, 1]})
+        win_execute(winid, $":$cen {winwidth(winid)}")
 enddef
 
 
