@@ -28,11 +28,14 @@ export def Open(name: string = '', mod: string = '')
     var oname = (expand(name, 1)
                 ?? get(b:, "dir_cwd", '')
                 ?? expand("%:p:h"))->substitute('\', '/', 'g')
-    if oname =~ './$' && oname !~ '^\u:/$'
-        oname = oname->trim('/', 2)
-    endif
+    if oname =~ '^dir://' | oname = oname->trim("dir://", 1) | endif
+    if oname =~ './$' && oname !~ '^\u:/$' | oname = oname->trim('/', 2) | endif
     if !isabsolutepath(oname)
         oname = simplify($"{getcwd()}/{oname}")
+    endif
+
+    if !isdirectory(oname) && !filereadable(oname)
+        return
     endif
 
     # open using OS
