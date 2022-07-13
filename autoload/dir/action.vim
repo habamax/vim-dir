@@ -77,11 +77,11 @@ export def DoDelete()
         var msg = []
         if cnt == 1
             msg = [
-                $'Delete {del_list[0].type =~ "file\\|link$" ? "file" : "directory"}',
+                $'Delete {del_list[0].type =~ "file\\|link" ? "file" : "directory"}',
                 $'"{del_list[0].name}"?'
             ]
         else
-            var file_or_dir = del_list->reduce((acc, el) => el.type =~ 'file\|link$' ? or(acc, 1) : or(acc, 2), 0)
+            var file_or_dir = del_list->reduce((acc, el) => el.type =~ 'file\|link' ? or(acc, 1) : or(acc, 2), 0)
             var items = {1: "files", 2: "directories", 3: "files/directories"}
             msg = [$'Delete {len(del_list)} {items[file_or_dir]}?']
         endif
