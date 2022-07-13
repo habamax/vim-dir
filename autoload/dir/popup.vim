@@ -1,8 +1,14 @@
 vim9script
 
 
-export def Dialog(text: string, DialogCallback: func)
-    var winid = popup_dialog([text, "", "", "(y)es    (n)o"], {
+export def Dialog(text: any, DialogCallback: func)
+    var msg = []
+    if type(text) == v:t_string
+        msg->add(text)
+    else
+        msg += text
+    endif
+    var winid = popup_dialog(msg + ["", "(y)es    (n)o"], {
         filter: 'popup_filter_yesno',
         pos: 'botleft',
         line: 'cursor-1',
@@ -18,7 +24,8 @@ export def Dialog(text: string, DialogCallback: func)
             endif
         },
         padding: [0, 1, 0, 1]})
-        win_execute(winid, $":$cen {winwidth(winid)}")
+        win_execute(winid, $":call setline(line('$') - 1, repeat('─', {winwidth(winid)}))")
+        win_execute(winid, $":%cen {winwidth(winid)}")
 enddef
 
 

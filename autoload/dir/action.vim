@@ -7,12 +7,12 @@ import autoload 'dir/os.vim'
 const DIRLIST_SHIFT = 3
 
 
-def VisualItemsInList(line1: number, line2: number): list<string>
+def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     var l1 = (line1 > line2 ? line2 : line1) - DIRLIST_SHIFT
     var l2 = (line2 > line1 ? line2 : line1) - DIRLIST_SHIFT
 
     var cwd = trim(b:dir_cwd, '/', 2)
-    return b:dir[l1 : l2]->mapnew((_, v) => $"{cwd}/{v.name}")
+    return b:dir[l1 : l2]->mapnew((_, v) => ({ type: v.type, name: $"{cwd}/{v.name}"}))
 enddef
 
 
@@ -71,24 +71,26 @@ enddef
 
 
 export def DoDelete()
-    if mode() =~ '[vV]'
-        var del_list = VisualItemsInList(line('v'), line('.'))
-        if !empty(del_list)
-            popup.Dialog($'Delete {len(del_list)} files/directories?', () => {
-                for item in del_list
-                    os.Delete(item)
-                endfor
-                :edit
-            })
+    var del_list = VisualItemsInList(line('v'), line('.'))
+    if !empty(del_list)
+        var cnt = len(del_list)
+        var msg = []
+        if cnt == 1
+            msg = [
+                $'Delete {del_list[0].type =~ "file\\|link$" ? "file" : "directory"}',
+                $'"{del_list[0].name}"?'
+            ]
+        else
+            var file_or_dir = del_list->reduce((acc, el) => el.type =~ 'file\|link$' ? or(acc, 1) : or(acc, 2), 0)
+            var items = {1: "files", 2: "directories", 3: "files/directories"}
+            msg = [$'Delete {len(del_list)} {items[file_or_dir]}?']
         endif
-    else
-        var item = CursorItemInList()
-        if !empty(item)
-            popup.Dialog($'Delete {item}?', () => {
-                os.Delete(item)
-                :edit
-            })
-        endif
+        popup.Dialog(msg, () => {
+            for item in del_list
+                os.Delete(item.name)
+            endfor
+            :edit
+        })
     endif
 enddef
 
