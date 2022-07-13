@@ -15,7 +15,6 @@ export def Dialog(text: any, DialogCallback: func)
         col: 'cursor',
         border: [],
         highlight: 'ErrorMsg',
-        borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
         callback: (id, result) => {
             if result == 1
                 var view = winsaveview()
@@ -35,7 +34,6 @@ export def ShowAtCursor(text: any, title: string = ''): number
             title: empty(title) ? "" : $" {title} ",
             padding: [0, 1, 0, 1],
             border: [],
-            borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
             pos: "botleft",
             maxheight: &lines - 5,
             filter: "PopupFilter",
@@ -51,7 +49,6 @@ export def Show(text: any, title: string = ''): number
             title: empty(title) ? "" : $" {title} ",
             padding: [0, 1, 0, 1],
             border: [],
-            borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
             pos: "center",
             minwidth: &columns / 2,
             minheight: &lines / 3,
