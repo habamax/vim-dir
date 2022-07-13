@@ -75,6 +75,7 @@ Features (To Do)
 - Basic file operations support:
 
   - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer)
+  - Rename file/direcory
   - Create a directory
   - ✓ (2022-07-13) Delete files/directories (be careful here)
   - Copy files/directories
