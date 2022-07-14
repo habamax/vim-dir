@@ -5,10 +5,16 @@ if exists("b:did_ftplugin")
 endif
 b:did_ftplugin = 1
 
+var undo_opts = "setl spell<"
+
+setlocal nospell
+
+
 var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'A', 'I', 'gI', 'gi', 'U', '<C-r>']
 var undo_maps = ['<bs>', 'u', '\<cr>', 'o', 'O', 'S', 's', 't', 'i', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'P', 'gP']
 
-b:undo_ftplugin = (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
+b:undo_ftplugin = undo_opts .. ' | '
+b:undo_ftplugin ..= (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
 b:undo_ftplugin ..= ' | unlet b:dir | unlet b:dir_cwd'
 
 
