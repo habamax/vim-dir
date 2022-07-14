@@ -5,7 +5,7 @@ if exists("b:did_ftplugin")
 endif
 b:did_ftplugin = 1
 
-var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'A', 'I', 'gI', 'gi']
+var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'A', 'I', 'gI', 'gi', 'U', '<C-r>']
 var undo_maps = ['<bs>', 'u', '\<cr>', 'o', 'O', 'S', 's', 't', 'i', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'P', 'gP']
 
 b:undo_ftplugin = (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
@@ -17,6 +17,7 @@ import autoload 'dir/action.vim'
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
+xnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
 nnoremap <buffer> o <scriptcmd>action.Do()<cr>
 nnoremap <buffer> O <scriptcmd>action.DoOS()<cr>
