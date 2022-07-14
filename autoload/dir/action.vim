@@ -10,6 +10,8 @@ const DIRLIST_SHIFT = 3
 def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     var l1 = (line1 > line2 ? line2 : line1) - DIRLIST_SHIFT
     var l2 = (line2 > line1 ? line2 : line1) - DIRLIST_SHIFT
+    if l2 < 0 | return [] | endif
+    if l1 < 0 && l2 >= 0 | l1 = 0 | endif
 
     var cwd = trim(b:dir_cwd, '/', 2)
     return b:dir[l1 : l2]->mapnew((_, v) => ({ type: v.type, name: $"{cwd}/{v.name}"}))
