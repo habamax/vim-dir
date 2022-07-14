@@ -50,3 +50,23 @@ export def Delete(name: string)
         delete(name)
     endif
 enddef
+
+
+export def Rename(name: string)
+    var old_name = fnamemodify(name, ":t")
+    var new_name = input($'Rename "{old_name}" to: ', old_name, "file")
+    if empty(new_name) | return | endif
+    if new_name == old_name | return | endif
+    if !isabsolutepath(new_name)
+        new_name = simplify($'{getcwd()}/{new_name}')
+    endif
+    if isdirectory(new_name) || filereadable(new_name)
+        echo "    "
+        echohl ErrorMsg
+        echo "Can't rename to existing file or directory!"
+        echohl None
+        return
+    endif
+
+    rename(name, new_name)
+enddef

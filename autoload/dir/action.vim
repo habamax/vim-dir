@@ -115,7 +115,16 @@ enddef
 
 
 export def DoRename()
-    echo "Rename stub"
+    var del_list = VisualItemsInList(line('v'), line('.'))
+    if mode() =~ '[vV]' && len(del_list) > 1
+        echom "Only a single file/directory could be renamed! "
+        return
+    else
+        var view = winsaveview()
+        os.Rename(del_list[0].name)
+        :edit
+        winrestview(view)
+    endif
 enddef
 
 
