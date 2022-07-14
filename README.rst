@@ -9,7 +9,7 @@ File manager for Vim.
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
 
-Minimum requirements: Vim9
+Minimum requirements: ``Vim9``
 
 
 Commands and Mappings
@@ -75,7 +75,7 @@ Features (To Do)
 - Basic file operations support:
 
   - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer)
-  - ✓ (2022-07-14) Rename file/direcory
+  - ✓ (2022-07-14) Rename file/directory
   - Create a directory
   - ✓ (2022-07-13) Delete files/directories (be careful here)
   - Copy files/directories
