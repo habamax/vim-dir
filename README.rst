@@ -86,6 +86,8 @@ Features (To Do)
 Maybe Features
 ==============
 
+- View archive contents (using ``7z`` maybe?)
+
 - Mass rename ala ``qmv``/``vidir`` (explore feasibility).
 
 - Networking ala netrw or mc with shell/sftp links to machines (explore
