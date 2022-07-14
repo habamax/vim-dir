@@ -36,6 +36,7 @@ export def ShowAtCursor(text: any, title: string = ''): number
             border: [],
             pos: "botleft",
             maxheight: &lines - 5,
+            maxwidth: &columns - 5,
             filter: "PopupFilter",
             filtermode: 'n',
             mapping: 0
@@ -53,6 +54,7 @@ export def Show(text: any, title: string = ''): number
             minwidth: &columns / 2,
             minheight: &lines / 3,
             maxheight: &lines - 5,
+            maxwidth: &columns - 5,
             filter: "PopupFilter",
             filtermode: 'n',
             mapping: 0
