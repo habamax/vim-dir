@@ -83,7 +83,7 @@ export def DoDelete()
         if cnt == 1
             msg = [
                 $'Delete {del_list[0].type =~ "file\\|link" ? "file" : "directory"}',
-                $'"{del_list[0].name}"?'
+                $'"{fnamemodify(del_list[0].name, ":t")}"?'
             ]
         else
             var file_or_dir = del_list->reduce((acc, el) => el.type =~ 'file\|link' ? or(acc, 1) : or(acc, 2), 0)
