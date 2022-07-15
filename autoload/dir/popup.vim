@@ -72,6 +72,14 @@ def PopupFilter(winid: number, key: string): bool
         win_execute(winid, "normal! \<C-d>")
         return true
     endif
+    if key == "g"
+        win_execute(winid, "normal! gg")
+        return true
+    endif
+    if key == "G"
+        win_execute(winid, "normal! G")
+        return true
+    endif
     if key == "k"
         win_execute(winid, "normal! \<C-u>")
         return true
