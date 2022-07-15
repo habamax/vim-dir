@@ -54,12 +54,17 @@ export def DoUp()
 enddef
 
 
-export def DoPreview()
+export def DoInfo()
     var idx = line('.') - 3
     if idx < 0 | return | endif
     var cwd = trim(b:dir_cwd, '/', 2)
-    if filereadable($"{cwd}/{b:dir[idx].name}")
+    var path = $"{cwd}/{b:dir[idx].name}"
+    if filereadable(path)
         popup.Show(readfile($"{cwd}/{b:dir[idx].name}", "", 100), $"{b:dir[idx].name}")
+    elseif isdirectory(path)
+        # XXX: for huge dirs it might block vim for quite some time...
+        # make async ...
+        popup.Show(os.DirInfo(path), path)
     endif
 enddef
 

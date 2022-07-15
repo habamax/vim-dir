@@ -70,3 +70,15 @@ export def Rename(name: string)
 
     rename(name, new_name)
 enddef
+
+
+export def DirInfo(name: string): list<string>
+    # XXX: should be async...
+    # TODO: show only dir size?
+    var output = []
+    if has("win32")
+        output = systemlist($'dir /s "{name}"')
+    else
+    endif
+    return output
+enddef
