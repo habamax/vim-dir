@@ -72,6 +72,23 @@ export def Rename(name: string)
 enddef
 
 
+export def RenameWithPattern(name: string, pattern: string)
+    var new_name = pattern->substitute('%', fnamemodify(name, ':t'), 'g')
+    if empty(new_name) | return | endif
+    if !isabsolutepath(new_name)
+        new_name = simplify($'{getcwd()}/{new_name}')
+    endif
+    if isdirectory(new_name) || filereadable(new_name)
+        echo "    "
+        echohl ErrorMsg
+        echom $'Can not rename "{name}" to "{new_name}"!'
+        echohl None
+        return
+    endif
+
+    rename(name, new_name)
+enddef
+
 export def CreateDir()
     var new_name = input($'Create directory: ')
     if empty(new_name) | return | endif

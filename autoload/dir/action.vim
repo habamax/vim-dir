@@ -120,8 +120,15 @@ enddef
 export def DoRename()
     var del_list = VisualItemsInList(line('v'), line('.'))
     if mode() =~ '[vV]' && len(del_list) > 1
-        echom "Only a single file/directory could be renamed! "
-        return
+        var pattern = input("Rename with pattern: ", "%")
+        if pattern->trim() == "%" | return | endif
+        if pattern->trim() !~ "%" | return | endif
+        var view = winsaveview()
+        for item in del_list
+            os.RenameWithPattern(item.name, pattern)
+        endfor
+        :edit
+        winrestview(view)
     else
         var view = winsaveview()
         os.Rename(del_list[0].name)
@@ -147,17 +154,13 @@ enddef
 export def DoAction()
     var actions = []
     var del_list = VisualItemsInList(line('v'), line('.'))
-    if len(del_list) == 1
-        if mode() !~ '[vV]'
-            actions += [
-                {name: "Create directory", Action: DoCreateDir},
-            ]
-        endif
+    if len(del_list) == 1 && mode() !~ '[vV]'
         actions += [
-            {name: "Rename", Action: DoRename}
+            {name: "Create directory", Action: DoCreateDir},
         ]
     endif
     actions += [
+        {name: "Rename", Action: DoRename}
         {name: "Delete", Action: DoDelete}
     ]
     popup.Menu(actions)
