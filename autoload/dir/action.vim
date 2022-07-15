@@ -145,9 +145,20 @@ enddef
 
 
 export def DoAction()
-    var actions = [
-        {name: "Create directory", Action: DoCreateDir},
-        {name: "Rename", Action: DoRename}
+    var actions = []
+    var del_list = VisualItemsInList(line('v'), line('.'))
+    if len(del_list) == 1
+        if mode() !~ '[vV]'
+            actions += [
+                {name: "Create directory", Action: DoCreateDir},
+            ]
+        endif
+        actions += [
+            {name: "Rename", Action: DoRename}
+        ]
+    endif
+    actions += [
+        {name: "Delete", Action: DoDelete}
     ]
     popup.Menu(actions)
 enddef
