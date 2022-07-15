@@ -73,7 +73,7 @@ enddef
 
 
 export def RenameWithPattern(name: string, pattern: string)
-    var new_name = pattern->substitute('%', fnamemodify(name, ':t'), 'g')
+    var new_name = pattern->substitute('{%}', fnamemodify(name, ':t'), 'g')
     if empty(new_name) | return | endif
     if !isabsolutepath(new_name)
         new_name = simplify($'{getcwd()}/{new_name}')
