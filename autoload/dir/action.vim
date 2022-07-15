@@ -62,8 +62,6 @@ export def DoInfo()
     if filereadable(path)
         popup.Show(readfile($"{cwd}/{b:dir[idx].name}", "", 100), $"{b:dir[idx].name}")
     elseif isdirectory(path)
-        # XXX: for huge dirs it might block vim for quite some time...
-        # make async ...
         popup.Show(os.DirInfo(path), path)
     endif
 enddef

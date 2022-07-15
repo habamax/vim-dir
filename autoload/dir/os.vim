@@ -73,12 +73,13 @@ enddef
 
 
 export def DirInfo(name: string): list<string>
-    # XXX: should be async...
-    # TODO: show only dir size?
     var output = []
     if has("win32")
-        output = systemlist($'dir /s "{name}"')
+        output = systemlist($'tree /A "{resolve(name)}"')->map((_, v) => trim(v, "\r",  2))
+    elseif executable("tree")
+        output = systemlist($'stat -L "{resolve(name)}"') + systemlist($'tree -a "{resolve(name)}"')
     else
+        output = systemlist($'stat -L "{resolve(name)}"')
     endif
     return output
 enddef

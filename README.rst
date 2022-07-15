@@ -40,7 +40,8 @@ Local mappings
 - :kbd:`s` -- open a file/directory in a split.
 - :kbd:`S` -- open a file/directory in a vertical split.
 - :kbd:`t` -- open a file/directory in a tab.
-- :kbd:`i` -- preview a file (first 100 lines)
+- :kbd:`i` -- preview a file (first 100 lines) or show dir tree (if `tree` is
+  available)
 - :kbd:`D` or :kbd:`dd` -- delete files/directories
 
 
