@@ -43,7 +43,7 @@ Local mappings
 - :kbd:`i` -- preview a file (first 100 lines) or show dir tree (if `tree` is
   available)
 - :kbd:`D` or :kbd:`dd` -- delete files/directories
-- :kbd:`a` -- open actions menu
+- :kbd:`A` -- open actions menu
 
 
 Settings

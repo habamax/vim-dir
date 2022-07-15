@@ -10,8 +10,8 @@ var undo_opts = "setl spell<"
 setlocal nospell
 
 
-var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'A', 'I', 'gI', 'gi', 'U', '<C-r>']
-var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'a',
+var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
+var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
                  't', 'i', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'P', 'gP']
 
 b:undo_ftplugin = undo_opts .. ' | '
@@ -50,7 +50,8 @@ noremap <buffer> R <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> R <scriptcmd>action.DoRename()<cr>
 noremap <buffer> rr <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> rr <scriptcmd>action.DoRename()<cr>
-nnoremap <buffer> a <scriptcmd>action.DoAction()<cr>
+nnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
+xnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
 
 
 # remove buffer editing mappings
