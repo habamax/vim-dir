@@ -90,6 +90,6 @@ export def Open(name: string = '', mod: string = '')
         endif
         search('\s\zs' .. escape(focus, '~$.') .. '\($\| ->\)')
     else
-        exe $"e {oname->escape('%')}"
+        exe $"e {oname->escape('%#')}"
     endif
 enddef
