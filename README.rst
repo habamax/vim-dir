@@ -30,6 +30,10 @@ You can set at least one yourself to quickly call ``Dir``:
 
   nnoremap <bs> <cmd>Dir<cr>
 
+With that mapping you would be able to trigger a ``Dir`` with :kbd:`Backspace`
+showing current buffer file name in a directory list. Consequent
+:kbd:`Backspace` presses would open parent directories.
+
 
 Local mappings
 --------------
