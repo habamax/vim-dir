@@ -29,7 +29,9 @@ nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
 nnoremap <buffer> o <scriptcmd>action.Do()<cr>
 nnoremap <buffer> O <scriptcmd>action.DoOS()<cr>
 nnoremap <buffer> S <scriptcmd>action.Do($"{g:dir_invert_split ? '' : 'vert'} split")<cr>
+xnoremap <buffer> S <nop>
 nnoremap <buffer> s <scriptcmd>action.Do($"{g:dir_invert_split ? 'vert' : ''} split")<cr>
+xnoremap <buffer> s <nop>
 nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoInfo()<cr>
 
