@@ -43,6 +43,7 @@ Local mappings
 - :kbd:`i` -- preview a file (first 100 lines) or show dir tree (if `tree` is
   available)
 - :kbd:`D` or :kbd:`dd` -- delete files/directories
+- :kbd:`a` -- open actions menu
 
 
 Settings
@@ -75,7 +76,7 @@ Features (To Do)
 
   - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer)
   - ✓ (2022-07-14) Rename file/directory
-  - Create a directory
+  - ✓ (2022-07-15) Create a directory
   - ✓ (2022-07-13) Delete files/directories (be careful here)
   - Copy files/directories
   - Move files/directories

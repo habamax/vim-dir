@@ -11,7 +11,8 @@ setlocal nospell
 
 
 var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'A', 'I', 'gI', 'gi', 'U', '<C-r>']
-var undo_maps = ['<bs>', 'u', '\<cr>', 'o', 'O', 'S', 's', 't', 'i', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'P', 'gP']
+var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'a',
+                 't', 'i', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'P', 'gP']
 
 b:undo_ftplugin = undo_opts .. ' | '
 b:undo_ftplugin ..= (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
@@ -49,6 +50,7 @@ noremap <buffer> R <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> R <scriptcmd>action.DoRename()<cr>
 noremap <buffer> rr <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> rr <scriptcmd>action.DoRename()<cr>
+nnoremap <buffer> a <scriptcmd>action.DoAction()<cr>
 
 
 # remove buffer editing mappings

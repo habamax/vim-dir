@@ -72,6 +72,24 @@ export def Rename(name: string)
 enddef
 
 
+export def CreateDir()
+    var new_name = input($'Create directory: ')
+    if empty(new_name) | return | endif
+    if !isabsolutepath(new_name)
+        new_name = simplify($'{getcwd()}/{new_name}')
+    endif
+    if isdirectory(new_name) || filereadable(new_name)
+        echo "    "
+        echohl ErrorMsg
+        echo "File or Directory exists!"
+        echohl None
+        return
+    endif
+
+    mkdir(new_name, "p")
+enddef
+
+
 export def DirInfo(name: string): list<string>
     var output = []
     if has("win32")

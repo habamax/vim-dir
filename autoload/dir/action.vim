@@ -134,3 +134,31 @@ enddef
 export def DoMove()
     echo "Move stub"
 enddef
+
+
+export def DoCreateDir()
+    var view = winsaveview()
+    os.CreateDir()
+    :edit
+    winrestview(view)
+enddef
+
+
+export def DoAction()
+    var actions = [
+        {name: "Create directory", Action: DoCreateDir},
+        {name: "Rename", Action: DoRename}
+    ]
+
+    popup_menu(actions->mapnew((_, v) => v.name), {
+        pos: 'botleft',
+        line: 'cursor-1',
+        col: 'cursor',
+        moved: 'WORD',
+        callback: (id, result) => {
+                if result > 0
+                    actions[result - 1].Action()
+                endif
+            }
+        })
+enddef
