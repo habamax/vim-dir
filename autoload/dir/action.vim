@@ -149,16 +149,5 @@ export def DoAction()
         {name: "Create directory", Action: DoCreateDir},
         {name: "Rename", Action: DoRename}
     ]
-
-    popup_menu(actions->mapnew((_, v) => v.name), {
-        pos: 'botleft',
-        line: 'cursor-1',
-        col: 'cursor',
-        moved: 'WORD',
-        callback: (id, result) => {
-                if result > 0
-                    actions[result - 1].Action()
-                endif
-            }
-        })
+    popup.Menu(actions)
 enddef
