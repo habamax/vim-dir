@@ -120,9 +120,10 @@ enddef
 export def DoRename()
     var del_list = VisualItemsInList(line('v'), line('.'))
     if mode() =~ '[vV]' && len(del_list) > 1
-        var pattern = input("Rename with pattern: ", "{%}")
-        if pattern->trim() == "{%}" | return | endif
-        if pattern->trim() !~ "{%}" | return | endif
+        var input_pat = "{name}{ext}"
+        var pattern = input("Rename with pattern: ", input_pat)
+        if pattern->trim() == input_pat->trim() | return | endif
+        if pattern->trim() !~ "{name}" | return | endif
         var view = winsaveview()
         for item in del_list
             os.RenameWithPattern(item.name, pattern)
