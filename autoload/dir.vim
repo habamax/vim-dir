@@ -45,6 +45,15 @@ export def Open(name: string = '', mod: string = '')
     if !empty(mod) | exe $"{mod}" | endif
 
     if isdirectory(oname)
+        var dir_ls: list<dict<any>>
+        try
+             dir_ls = ReadDir(oname)
+        catch
+            echohl ErrorMsg
+            echom v:exception
+            echohl none
+            return
+        endtry
         var maybe_focus = ""
         if (&ft != 'dir' && filereadable(expand("%"))) ||
             (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
@@ -75,7 +84,7 @@ export def Open(name: string = '', mod: string = '')
 
         exe $"sil! keepj keepalt file {new_bufname}"
         exe $"lcd {oname}"
-        b:dir = ReadDir(oname)
+        b:dir = dir_ls
         b:dir_cwd = oname
         PrintDir(b:dir)
         norm! j
