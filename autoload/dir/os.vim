@@ -72,12 +72,15 @@ export def Rename(name: string)
 enddef
 
 
-export def RenameWithPattern(name: string, pattern: string)
+export def RenameWithPattern(name: string, pattern: string, counter: number = -1)
     var fname = fnamemodify(name, ':t:r')
     var fext = fnamemodify(name, ':e')
     if !empty(fext) | fext = $".{fext}" | endif
     var new_name = pattern->substitute('{name}', fname, 'g')
     new_name = new_name->substitute('{ext}', fext, 'g')
+    if counter >= 0
+        new_name = new_name->substitute('{\(\d\+\)}', '\=(submatch(1)->str2nr() + counter)', 'g')
+    endif
     if empty(new_name) | return | endif
     if !isabsolutepath(new_name)
         new_name = simplify($'{getcwd()}/{new_name}')

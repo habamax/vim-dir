@@ -125,8 +125,10 @@ export def DoRename()
         if pattern->trim() == input_pat->trim() | return | endif
         if pattern->trim() !~ "{name}" | return | endif
         var view = winsaveview()
+        var counter = 0
         for item in del_list
-            os.RenameWithPattern(item.name, pattern)
+            os.RenameWithPattern(item.name, pattern, counter)
+            counter += 1
         endfor
         :edit
         winrestview(view)
