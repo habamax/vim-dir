@@ -31,13 +31,13 @@ enddef
 
 export def Dir(e: dict<any>): string
     if has("win32")
-        return printf("%s %6s %s %s",
+        return printf("%s %7s %s %s",
                   Perm(e),
                   Size(e.size),
                   Time(e.time),
                   e.name)
     else
-        return printf("%s %-8s %-8s %6s %s %s",
+        return printf("%s %-8s %-8s %7s %s %s",
                   Perm(e),
                   e.user,
                   e.group,
