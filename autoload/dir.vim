@@ -18,9 +18,10 @@ enddef
 
 def ReadDir(name: string): list<dict<any>>
     var path = resolve(name)
-    var dirs = readdirex(path, (v) => v.type =~ 'dir\|junction\|linkd')
-    var files = readdirex(path, (v) => v.type =~ 'file\|link$')
-    return dirs + files
+    # NOTE: this is still at least 3 times faster than a single readdirex call with a sort
+    # to put directories first
+    return readdirex(path, (v) => v.type =~ 'dir\|junction\|linkd') +
+           readdirex(path, (v) => v.type =~ 'file\|link$')
 enddef
 
 
