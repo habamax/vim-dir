@@ -54,6 +54,7 @@ export def Open(name: string = '', mod: string = '')
             echohl none
             return
         endtry
+
         var maybe_focus = ""
         if (&ft != 'dir' && filereadable(expand("%"))) ||
             (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
@@ -83,7 +84,7 @@ export def Open(name: string = '', mod: string = '')
         set noswapfile
 
         exe $"sil! keepj keepalt file {new_bufname}"
-        exe $"lcd {oname}"
+        exe $"lcd {oname->escape('%#')}"
         b:dir = dir_ls
         b:dir_cwd = oname
         PrintDir(b:dir)
