@@ -10,9 +10,9 @@ var undo_opts = "setl spell<"
 setlocal nospell
 
 
-var nop_maps = ['r', 'd', 'c', 'p', 'gp', 'x', 'X', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
+var nop_maps = ['r', 'd', 'c', 'C', 'p', 'gp', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
-                 't', 'i', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'P', 'gP']
+                 't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'P', 'gP']
 
 b:undo_ftplugin = undo_opts .. ' | '
 b:undo_ftplugin ..= (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
@@ -36,16 +36,16 @@ nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoInfo()<cr>
 
 
-noremap <buffer> C <scriptcmd>action.DoCopy()<cr>
-xnoremap <buffer> C <scriptcmd>action.DoCopy()<cr>
-noremap <buffer> cc <scriptcmd>action.DoCopy()<cr>
-xnoremap <buffer> cc <scriptcmd>action.DoCopy()<cr>
+noremap <buffer> x <scriptcmd>action.DoMark()<cr>
+xnoremap <buffer> x <scriptcmd>action.DoMark()<cr><ESC>
+noremap <buffer> X <scriptcmd>action.DoClearMarks()<cr>
+xnoremap <buffer> X <scriptcmd>action.DoClearMarks()<cr>
 noremap <buffer> D <scriptcmd>action.DoDelete()<cr>
 xnoremap <buffer> D <scriptcmd>action.DoDelete()<cr>
 noremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
 xnoremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
-noremap <buffer> P <scriptcmd>action.DoPaste()<cr>
-xnoremap <buffer> P <scriptcmd>action.DoPaste()<cr>
+noremap <buffer> P <scriptcmd>action.DoCopy()<cr>
+xnoremap <buffer> P <scriptcmd>action.DoCopy()<cr>
 noremap <buffer> gP <scriptcmd>action.DoMove()<cr>
 xnoremap <buffer> gP <scriptcmd>action.DoMove()<cr>
 noremap <buffer> R <scriptcmd>action.DoRename()<cr>

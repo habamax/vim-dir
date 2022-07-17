@@ -1,5 +1,7 @@
 vim9script
 
+import autoload 'dir/mark.vim'
+
 
 def WslToWindowsPath(path: string): string
     if !exists("$WSLENV")
@@ -95,6 +97,18 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
 
     rename(name, new_name)
 enddef
+
+
+export def Copy()
+    if mark.Empty() | return | endif
+    if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
+    var copy_cmd = has("win32") ? "cmd.exe /c copy" : "cp -r"
+    for item in mark.List()
+        system($"{copy_cmd} {item.name} {b:dir_cwd}/")
+    endfor
+    mark.Clear()
+enddef
+
 
 export def CreateDir()
     var new_name = input($'Create directory: ')

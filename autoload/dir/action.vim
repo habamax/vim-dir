@@ -3,6 +3,7 @@ vim9script
 import autoload 'dir.vim'
 import autoload 'dir/popup.vim'
 import autoload 'dir/os.vim'
+import autoload 'dir/mark.vim'
 
 const DIRLIST_SHIFT = 3
 
@@ -100,20 +101,27 @@ export def DoDelete()
 enddef
 
 
-export def DoCopy()
-    if mode() =~ '[vV]'
-        echo "Copy visual stub"
-        for l in VisualItemsInList(line('v'), line('.'))
-            echo l
-        endfor
-    else
-        echo "Copy stub" CursorItemInList()
+export def DoMark()
+    var file_list = VisualItemsInList(line('v'), line('.'))
+    if len(file_list) > 0
+        mark.Add(file_list)
     endif
 enddef
 
 
-export def DoPaste()
-    echo "Paste stub"
+export def DoClearMarks()
+    mark.Clear()
+enddef
+
+
+export def DoCopy()
+    var view = winsaveview()
+    try
+        os.Copy()
+    finally
+        :edit
+        winrestview(view)
+    endtry
 enddef
 
 
