@@ -102,9 +102,20 @@ enddef
 export def Copy()
     if mark.Empty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
-    var copy_cmd = has("win32") ? "cmd.exe /c copy" : "cp -r"
+    var dest = $"{b:dir_cwd}"
     for item in mark.List()
-        system($"{copy_cmd} {item.name} {b:dir_cwd}/")
+        if has("win32")
+            var name = fnamemodify(item.name, ":t")
+            if isdirectory(item.name)
+                system($'robocopy "{item.name}" "{dest}/{name}" /E')
+            else
+                var src = fnamemodify(item.name, ":p:h")
+                system($'robocopy "{src}" "{dest}" "{name}"')
+            endif
+        else
+            name = item.name
+            system($'cp -r "{item.name}" "{dest}/"')
+        endif
     endfor
     mark.Clear()
 enddef
