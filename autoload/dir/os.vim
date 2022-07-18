@@ -105,9 +105,33 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
 enddef
 
 
+export def ListDirTree(name: string): list<dict<any>>
+    var result = []
+    var basename = fnamemodify(name, ":t")
+    var path = fnamemodify(name, ":h")
+    try
+        result = readdirex(name, '1', {sort: 'none'})
+        for elm in result
+            elm.name = $"{basename}{Sep()}{elm.name}"
+        endfor
+        var dirs = result->copy()->filter((_, v) => v.type == 'dir')
+        while !empty(dirs)
+            var item = dirs->remove(-1)
+            var lst = readdirex($"{path}{Sep()}{item.name}", '1', {sort: 'none'})
+            for elm in lst
+                elm.name = $"{item.name}{Sep()}{elm.name}"
+            endfor
+            var subdirs = lst->copy()->filter((_, v) => v.type == 'dir')
+            dirs += subdirs
+            result += lst
+        endwhile
+    finally
+        return result
+    endtry
+enddef
+
+
 export def Copy()
-    echoerr "Copy is not ready yet"
-    return
     if mark.Empty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
 
@@ -123,26 +147,36 @@ export def Copy()
     # -1 - do not override anything
     var override_all = 0
 
-    # TODO: transform all directories to files
     # WIP
-    var file_list = mark.List()->copy()->filter((_, v) => v.type == 'file')
+    var file_list = mark.List()->copy()
+    var dir_list = mark.List()->copy()->filter((_, v) => v.type == 'dir')
+    for item in dir_list
+        file_list += ListDirTree($"{mark.Dir()}{Sep()}{item.name}")
+    endfor
     for item in file_list
-        var name = fnamemodify(item.name, ":t")
-        var dest = $"{dest_dir}{Sep()}{name}"
-        var file_exists = filereadable(dest)
-        if file_exists && !override && override_all == 0
-            var ans = input($'Override existing "{dest}"? y/n/all/no: ')
-            if ans->toupper() == 'Y'
-                override = true
-            elseif ans->toupper() == 'ALL'
-                override_all = 1
-            elseif ans->toupper() == 'NO'
-                override_all = -1
-            endif
-        endif
+        var src = $"{mark.Dir()}{Sep()}{item.name}"
+        var dst = $"{b:dir_cwd}{Sep()}{item.name}"
         try
-            if file_exists && (override || override_all == 1) || !file_exists
-                system($'{copy_cmd} "{item.name}" "{dest_dir}"')
+            if item.type == 'dir' && !isdirectory(dst)
+                mkdir(dst, "p")
+            else
+                var file_exists = filereadable(dst)
+                if file_exists && !override && override_all == 0
+                    var res = input($'Override existing "{dst}"? y/n/all/no: ')
+                    if res->toupper() == 'Y'
+                        override = true
+                    elseif res->toupper() == 'ALL'
+                        override_all = 1
+                    elseif res->toupper() == 'NO'
+                        override_all = -1
+                    endif
+                endif
+                if file_exists && (override || override_all == 1) || !file_exists
+                    if !isdirectory(fnamemodify(dst, ":h"))
+                        mkdir(fnamemodify(dst, ":h"), "p")
+                    endif
+                    system($'{copy_cmd} "{src}" "{dst}"')
+                endif
             endif
         catch
             echo v:exception
