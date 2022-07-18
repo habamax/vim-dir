@@ -13,17 +13,14 @@ def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     var l2 = (line2 > line1 ? line2 : line1) - DIRLIST_SHIFT
     if l2 < 0 | return [] | endif
     if l1 < 0 && l2 >= 0 | l1 = 0 | endif
-
-    var cwd = trim(b:dir_cwd, '/\', 2)
-    return b:dir[l1 : l2]->mapnew((_, v) => ({ type: v.type, name: $"{cwd}{os.Sep()}{v.name}"}))
+    return b:dir[l1 : l2]
 enddef
 
 
 def CursorItemInList(): string
     var idx = line('.') - DIRLIST_SHIFT
     if idx < 0 | return "" | endif
-    var cwd = trim(b:dir_cwd, '/\', 2)
-    return $"{cwd}{os.Sep()}{b:dir[idx].name}"
+    return b:dir[idx].name
 enddef
 
 
@@ -84,7 +81,7 @@ export def DoDelete()
         if cnt == 1
             msg = [
                 $'Delete {del_list[0].type =~ "file\\|link" ? "file" : "directory"}',
-                $'"{fnamemodify(del_list[0].name, ":t")}"?'
+                $'"{del_list[0].name}"?'
             ]
         else
             var file_or_dir = del_list->reduce((acc, el) => el.type =~ 'file\|link' ? or(acc, 1) : or(acc, 2), 0)
