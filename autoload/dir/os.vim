@@ -208,9 +208,9 @@ enddef
 export def DirInfo(name: string): list<string>
     var output = []
     if has("win32")
-        output = systemlist($'tree /A "{resolve(name)}"')->map((_, v) => trim(v, "\r",  2))
+        output = systemlist($'tree /A "{resolve(name)}"')[3 : ]->map((_, v) => trim(v, "\r",  2))
     elseif executable("tree")
-        output = systemlist($'tree -d "{resolve(name)}"')
+        output = systemlist($'tree -d "{resolve(name)}"')[1 : ]
     else
         output = systemlist($'stat -L "{resolve(name)}"')
     endif
