@@ -162,7 +162,7 @@ enddef
 export def DoAction()
     var actions = []
     var del_list = VisualItemsInList(line('v'), line('.'))
-    if len(del_list) == 1 && mode() !~ '[vV]'
+    if len(del_list) <= 1 && mode() !~ '[vV]'
         actions += [
             {name: "Create directory", Action: DoCreateDir},
         ]
