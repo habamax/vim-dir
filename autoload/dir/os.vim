@@ -3,6 +3,11 @@ vim9script
 import autoload 'dir/mark.vim'
 
 
+export def Sep(): string
+    return has("win32") ? '\' : '/'
+enddef
+
+
 def WslToWindowsPath(path: string): string
     if !exists("$WSLENV")
         return path
@@ -60,7 +65,7 @@ export def Rename(name: string)
     if empty(new_name) | return | endif
     if new_name == old_name | return | endif
     if !isabsolutepath(new_name)
-        new_name = simplify($'{getcwd()}/{new_name}')
+        new_name = simplify($'{getcwd()}{os.Sep()}{new_name}')
     endif
     if isdirectory(new_name) || filereadable(new_name)
         echo "    "
@@ -85,7 +90,7 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
     endif
     if empty(new_name) | return | endif
     if !isabsolutepath(new_name)
-        new_name = simplify($'{getcwd()}/{new_name}')
+        new_name = simplify($'{getcwd()}{os.Sep()}{new_name}')
     endif
     if isdirectory(new_name) || filereadable(new_name)
         echo "    "
@@ -125,7 +130,7 @@ export def CreateDir()
     var new_name = input($'Create directory: ')
     if empty(new_name) | return | endif
     if !isabsolutepath(new_name)
-        new_name = simplify($'{getcwd()}/{new_name}')
+        new_name = simplify($'{getcwd()}{os.Sep()}{new_name}')
     endif
     if isdirectory(new_name) || filereadable(new_name)
         echo "    "

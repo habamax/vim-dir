@@ -14,23 +14,23 @@ def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     if l2 < 0 | return [] | endif
     if l1 < 0 && l2 >= 0 | l1 = 0 | endif
 
-    var cwd = trim(b:dir_cwd, '/', 2)
-    return b:dir[l1 : l2]->mapnew((_, v) => ({ type: v.type, name: $"{cwd}/{v.name}"}))
+    var cwd = trim(b:dir_cwd, '/\', 2)
+    return b:dir[l1 : l2]->mapnew((_, v) => ({ type: v.type, name: $"{cwd}{os.Sep()}{v.name}"}))
 enddef
 
 
 def CursorItemInList(): string
     var idx = line('.') - DIRLIST_SHIFT
     if idx < 0 | return "" | endif
-    var cwd = trim(b:dir_cwd, '/', 2)
-    return $"{cwd}/{b:dir[idx].name}"
+    var cwd = trim(b:dir_cwd, '/\', 2)
+    return $"{cwd}{os.Sep()}{b:dir[idx].name}"
 enddef
 
 
 def CursorItem(): string
     if line('.') == 1
         var view = winsaveview()
-        var new_dir = getline(1)[0 : searchpos('/\|$', 'c', 1)[1] - 1]
+        var new_dir = getline(1)[0 : searchpos($'{os.Sep()->escape("\\")}\|$', 'c', 1)[1] - 1]
         winrestview(view)
         if isdirectory(new_dir)
             return new_dir
@@ -59,9 +59,9 @@ export def DoInfo()
     var idx = line('.') - 3
     if idx < 0 | return | endif
     var cwd = trim(b:dir_cwd, '/', 2)
-    var path = $"{cwd}/{b:dir[idx].name}"
+    var path = $"{cwd}{os.Sep()}{b:dir[idx].name}"
     if filereadable(path)
-        popup.Show(readfile($"{cwd}/{b:dir[idx].name}", "", 100), $"{b:dir[idx].name}")
+        popup.Show(readfile($"{cwd}{os.Sep()}{b:dir[idx].name}", "", 100), $"{b:dir[idx].name}")
     elseif isdirectory(path)
         popup.Show(os.DirInfo(path), path)
     endif

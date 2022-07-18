@@ -32,10 +32,9 @@ export def Open(name: string = '', mod: string = '')
         var curbuf = expand("%")->substitute("^dir://", "", "")
         oname = isdirectory(curbuf) ? fnamemodify(curbuf, ":p") : fnamemodify(curbuf, ":p:h")
     endif
-    if !isabsolutepath(oname) | oname = simplify($"{getcwd()}/{oname}") | endif
+    if !isabsolutepath(oname) | oname = simplify($"{getcwd()}{os.Sep()}{oname}") | endif
     if !isdirectory(oname) && !filereadable(oname) | return | endif
-    oname = oname->substitute('\', '/', 'g')
-    if oname =~ './$' && oname !~ '^\u:/$' | oname = oname->trim('/', 2) | endif
+    if oname =~ './$' && oname !~ '^\u:\$' | oname = oname->trim('/\', 2) | endif
 
     # open using OS
     if oname =~ '\c' .. g:dir_open_ext->mapnew((_, v) => $'\%({v}\)')->join('\|')
@@ -90,7 +89,7 @@ export def Open(name: string = '', mod: string = '')
         b:dir_cwd = oname
         PrintDir(b:dir)
         norm! j
-        norm! $2F/l
+        exe $"norm! $2F{os.Sep()}l"
         var focus = ''
         if empty(maybe_focus)
             if len(b:dir) > 0
