@@ -210,7 +210,7 @@ export def DirInfo(name: string): list<string>
     if has("win32")
         output = systemlist($'tree /A "{resolve(name)}"')->map((_, v) => trim(v, "\r",  2))
     elseif executable("tree")
-        output = systemlist($'stat -L "{resolve(name)}"') + [""] + systemlist($'tree -d "{resolve(name)}"')
+        output = systemlist($'tree -d "{resolve(name)}"')
     else
         output = systemlist($'stat -L "{resolve(name)}"')
     endif
