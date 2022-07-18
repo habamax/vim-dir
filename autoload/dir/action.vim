@@ -91,7 +91,7 @@ export def DoDelete()
             var items = {1: "files", 2: "directories", 3: "files/directories"}
             msg = [$'Delete {len(del_list)} {items[file_or_dir]}?']
         endif
-        popup.Dialog(msg, () => {
+        popup.YesNo(msg, () => {
             for item in del_list
                 os.Delete(item.name)
             endfor
