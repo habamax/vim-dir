@@ -24,6 +24,7 @@ export def Menu(actions: list<dict<any>>)
 enddef
 
 
+# TODO: rename popup.Dialog to popup.YesNo
 export def Dialog(text: any, DialogCallback: func)
     var msg = []
     if type(text) == v:t_string

@@ -1,6 +1,7 @@
 vim9script
 
 import autoload 'dir/mark.vim'
+import autoload 'dir/popup.vim'
 
 
 export def Sep(): string
@@ -105,22 +106,48 @@ enddef
 
 
 export def Copy()
+    echoerr "Copy is not ready yet"
+    return
     if mark.Empty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
-    var dest = $"{b:dir_cwd}"
-    for item in mark.List()
-        if has("win32")
-            var name = fnamemodify(item.name, ":t")
-            if isdirectory(item.name)
-                system($'robocopy "{item.name}" "{dest}/{name}" /E')
-            else
-                var src = fnamemodify(item.name, ":p:h")
-                system($'robocopy "{src}" "{dest}" "{name}"')
+
+    var copy_cmd = "cp"
+    var dest_dir = $"{b:dir_cwd}"
+
+    if has("win32")
+        copy_cmd = "copy /Y"
+    endif
+
+    var override = false
+    # 1 - override all files
+    # -1 - do not override anything
+    var override_all = 0
+
+    # TODO: transform all directories to files
+    # WIP
+    var file_list = mark.List()->copy()->filter((_, v) => v.type == 'file')
+    for item in file_list
+        var name = fnamemodify(item.name, ":t")
+        var dest = $"{dest_dir}{Sep()}{name}"
+        var file_exists = filereadable(dest)
+        if file_exists && !override && override_all == 0
+            var ans = input($'Override existing "{dest}"? y/n/all/no: ')
+            if ans->toupper() == 'Y'
+                override = true
+            elseif ans->toupper() == 'ALL'
+                override_all = 1
+            elseif ans->toupper() == 'NO'
+                override_all = -1
             endif
-        else
-            name = item.name
-            system($'cp -r "{item.name}" "{dest}/"')
         endif
+        try
+            if file_exists && (override || override_all == 1) || !file_exists
+                system($'{copy_cmd} "{item.name}" "{dest_dir}"')
+            endif
+        catch
+            echo v:exception
+        endtry
+        override = false
     endfor
     mark.Clear()
 enddef
