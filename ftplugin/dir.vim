@@ -36,8 +36,8 @@ nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoInfo()<cr>
 
 
-noremap <buffer> x <scriptcmd>action.DoMark()<cr>
-xnoremap <buffer> x <scriptcmd>action.DoMark()<cr><ESC>
+noremap <buffer> x <scriptcmd>action.DoMark()<cr>j
+xnoremap <buffer> x <scriptcmd>action.DoMark()<cr><ESC>j
 noremap <buffer> X <scriptcmd>action.DoClearMarks()<cr>
 xnoremap <buffer> X <scriptcmd>action.DoClearMarks()<cr>
 noremap <buffer> D <scriptcmd>action.DoDelete()<cr>
