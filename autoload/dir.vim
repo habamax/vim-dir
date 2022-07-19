@@ -28,6 +28,7 @@ enddef
 def OpenBuffer(name: string): bool
     try
         exe $"lcd {name->escape('%#')}"
+        readdir(name, '0')
     catch
         echohl ErrorMsg
         echom v:exception
@@ -122,7 +123,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         var focus = ''
         if !empty(maybe_focus)
             focus = maybe_focus
-        elseif len(b:dir) > 0
+        elseif len(b:dir) > 0 && b:dir_cwd == oname
             focus = b:dir[0].name
         endif
         if !empty(focus)
