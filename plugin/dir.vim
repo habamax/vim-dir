@@ -21,3 +21,7 @@ g:dir_invert_split = 0
 import autoload 'dir.vim'
 
 command! -nargs=? -complete=dir Dir dir.Open(expand(<q-args>))
+
+augroup dirautocommands | au!
+    au BufReadCmd dir://* set ft=dir | dir.Open()
+augroup END

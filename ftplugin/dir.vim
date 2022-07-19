@@ -5,9 +5,13 @@ if exists("b:did_ftplugin")
 endif
 b:did_ftplugin = 1
 
-var undo_opts = "setl spell<"
+var undo_opts = "setl spell< buftype< bufhidden< buflisted< swapfile<"
 
 setlocal nospell
+setlocal buftype=acwrite
+setlocal bufhidden=hide
+setlocal nobuflisted
+setlocal noswapfile
 
 
 var nop_maps = ['r', 'd', 'c', 'C', 'p', 'gp', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
@@ -61,8 +65,3 @@ for key in nop_maps
     exe $'noremap <buffer> {key} <nop>'
     exe $'xnoremap <buffer> {key} <nop>'
 endfor
-
-
-augroup dirautocommands | au!
-    au BufReadCmd dir://* dir.Open()
-augroup END

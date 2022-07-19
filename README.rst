@@ -67,7 +67,7 @@ Features (To Do)
 
 - ✓ (2022-07-10) Open files/directories in splits/tabs.
 
-- Cache to reuse dir contents.
+- ✓ (2022-07-19) Cache to reuse dir contents.
 
 - Sorting.
 

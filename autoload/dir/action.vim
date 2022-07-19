@@ -42,13 +42,13 @@ enddef
 export def Do(mod: string = '')
     var item = CursorItem()
     if !empty(item)
-        dir.Open(item, mod)
+        dir.Open(item, mod, false)
     endif
 enddef
 
 
 export def DoUp()
-    dir.Open(fnamemodify(b:dir_cwd, ":h"))
+    dir.Open(fnamemodify(b:dir_cwd, ":h"), '', false)
 enddef
 
 

@@ -25,16 +25,55 @@ def ReadDir(name: string): list<dict<any>>
 enddef
 
 
-export def Open(name: string = '', mod: string = '')
+def OpenBuffer(name: string): bool
+    try
+        exe $"lcd {name->escape('%#')}"
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl none
+        return false
+    endtry
+
+    var bufname = $"dir://{name}"
+    if &hidden
+        if bufname->bufexists()
+            exe $"sil! keepj keepalt b {bufname}"
+            return false
+        else
+            enew
+        endif
+    elseif &modified && bufname->bufexists()
+        exe $"sil! keepj keepalt sb {bufname}"
+        return false
+    elseif bufname->bufexists()
+        exe $"sil! keepj keepalt b {bufname}"
+        return false
+    elseif &modified
+        new
+    else
+        enew
+    endif
+    set ft=dir
+    exe $"sil! keepj keepalt file {bufname}"
+
+    return true
+enddef
+
+
+export def Open(name: string = '', mod: string = '', invalidate: bool = true)
     var oname = name->substitute("^dir://", "", "")
     if empty(oname) | oname = get(b:, "dir_cwd", '') | endif
     if empty(oname)
         var curbuf = expand("%")->substitute("^dir://", "", "")
         oname = isdirectory(curbuf) ? fnamemodify(curbuf, ":p") : fnamemodify(curbuf, ":p:h")
     endif
-    if !isabsolutepath(oname) | oname = simplify($"{getcwd()}{os.Sep()}{oname}") | endif
+    if !isabsolutepath(oname) | oname = simplify($"{get(b:, 'dir_cwd', getcwd())}{os.Sep()}{oname}") | endif
     if !isdirectory(oname) && !filereadable(oname) | return | endif
-    if oname =~ './$' && oname !~ '^\u:\$' | oname = oname->trim('/\', 2) | endif
+
+    if oname =~ '[/\\]$' && oname !~ '^\u:\$'
+        oname = oname->trim('/\', 2) 
+    endif
 
     # open using OS
     if oname =~ '\c' .. g:dir_open_ext->mapnew((_, v) => $'\%({v}\)')->join('\|')
@@ -45,51 +84,30 @@ export def Open(name: string = '', mod: string = '')
     if !empty(mod) | exe $"{mod}" | endif
 
     if isdirectory(oname)
-        var dir_ls: list<dict<any>>
-        try
-             dir_ls = ReadDir(oname)
-        catch
-            echohl ErrorMsg
-            echom v:exception
-            echohl none
-            return
-        endtry
-
         var maybe_focus = ""
         if (&ft != 'dir' && filereadable(expand("%"))) ||
             (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
             maybe_focus = expand("%:t")
         endif
 
-        var new_bufname = $"dir://{oname}"
-        if &hidden
-            if new_bufname->bufexists()
-                exe $"sil! keepj keepalt b {new_bufname}"
-            else
-                enew
-            endif
-        elseif &modified && new_bufname->bufexists()
-            exe $"sil! keepj keepalt sb {new_bufname}"
-        elseif new_bufname->bufexists()
-            exe $"sil! keepj keepalt b {new_bufname}"
-        elseif &modified
-            new
-        else
-            enew
+        if OpenBuffer(oname) || invalidate
+            var dir_ls: list<dict<any>>
+            try
+                 dir_ls = ReadDir(oname)
+                 exe $"lcd {oname->escape('%#')}"
+            catch
+                echohl ErrorMsg
+                echom v:exception
+                echohl none
+                return
+            endtry
+            b:dir_cwd = oname
+            b:dir = dir_ls
+            PrintDir(b:dir)
+            norm! j
+            exe $"norm! $2F{os.Sep()}l"
         endif
-        set ft=dir
-        set buftype=acwrite
-        set bufhidden=unload
-        set nobuflisted
-        set noswapfile
 
-        exe $"sil! keepj keepalt file {new_bufname}"
-        exe $"lcd {oname->escape('%#')}"
-        b:dir = dir_ls
-        b:dir_cwd = oname
-        PrintDir(b:dir)
-        norm! j
-        exe $"norm! $2F{os.Sep()}l"
         var focus = ''
         if empty(maybe_focus)
             if len(b:dir) > 0
