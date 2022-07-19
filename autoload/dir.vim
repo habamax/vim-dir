@@ -97,6 +97,8 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         if (&ft != 'dir' && filereadable(expand("%"))) ||
             (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
             maybe_focus = expand("%:t")
+        elseif len(oname) == len(get(b:, "dir_cwd", ""))
+            maybe_focus = oname
         endif
 
         if OpenBuffer(oname) || invalidate
@@ -118,14 +120,14 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         endif
 
         var focus = ''
-        if empty(maybe_focus)
-            if len(b:dir) > 0
-                focus = b:dir[0].name
-            endif
-        else
+        if !empty(maybe_focus)
             focus = maybe_focus
+        elseif len(b:dir) > 0
+            focus = b:dir[0].name
         endif
-        search('\s\zs' .. escape(focus, '~$.') .. '\($\| ->\)')
+        if !empty(focus)
+            search('\s\zs' .. escape(focus, '\\~$.') .. '\($\| ->\)')
+        endif
     else
         exe $"e {oname->escape('%#')}"
     endif
