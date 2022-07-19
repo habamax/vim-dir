@@ -36,18 +36,24 @@ def OpenBuffer(name: string): bool
     endtry
 
     var bufname = $"dir://{name}"
+    # buffer names are unreliable in :b command...
+    var bufnrs = getbufinfo()->filter((_, v) => v.name == bufname)
+    var bufnr = 0
+    if len(bufnrs) > 0
+        bufnr = bufnrs[0].bufnr
+    endif
     if &hidden
-        if bufname->bufexists()
-            exe $"sil! keepj keepalt b {bufname}"
+        if bufnr > 0
+            exe $"sil! keepj keepalt b {bufnr}"
             return false
         else
             enew
         endif
-    elseif &modified && bufname->bufexists()
-        exe $"sil! keepj keepalt sb {bufname}"
+    elseif &modified && bufnr > 0
+        exe $"sil! keepj keepalt sb {bufnr}"
         return false
-    elseif bufname->bufexists()
-        exe $"sil! keepj keepalt b {bufname}"
+    elseif bufnr > 0
+        exe $"sil! keepj keepalt b {bufnr}"
         return false
     elseif &modified
         new
