@@ -28,7 +28,7 @@ enddef
 def OpenBuffer(name: string): bool
     try
         exe $"lcd {name->escape('%#')}"
-        readdir(name, '0')
+        readdir(resolve(name), '0')
     catch
         echohl ErrorMsg
         echom v:exception
