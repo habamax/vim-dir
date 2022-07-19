@@ -69,13 +69,12 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         oname = isdirectory(curbuf) ? fnamemodify(curbuf, ":p") : fnamemodify(curbuf, ":p:h")
     endif
     if !isabsolutepath(oname)
-        var base = get(b:, 'dir_cwd', getcwd())
-        if base == '/' | base = "" | endif
+        var base = get(b:, 'dir_cwd', getcwd())->trim('/\\', 2)
         oname = simplify($"{base}{os.Sep()}{oname}")
     endif
     if !isdirectory(oname) && !filereadable(oname) | return | endif
 
-    if oname =~ '.[/\\]$' && oname !~ '^\u:\$'
+    if oname =~ '.[/\\]$' && oname !~ '^\u:\\$'
         oname = oname->trim('/\', 2)
     endif
 
