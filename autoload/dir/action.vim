@@ -101,7 +101,7 @@ enddef
 export def DoMark()
     var file_list = VisualItemsInList(line('v'), line('.'))
     if len(file_list) > 0
-        mark.Add(file_list)
+        mark.Toggle(file_list, line('v'), line('.'))
     endif
 enddef
 

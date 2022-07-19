@@ -3,6 +3,20 @@ vim9script
 var mark_list: list<dict<any>>
 var mark_dir: string
 
+prop_type_add('DirMark', {highlight: 'Todo', priority: 1000})
+
+
+def OtherDirBuffers(): list<dict<any>>
+    return getbufinfo()->filter((_, v) => v.name =~ '^dir://' && bufnr() != v.bufnr)
+enddef
+
+
+def ClearOtherBufferMarks()
+    for buf_info in OtherDirBuffers()
+        prop_clear(1, buf_info.linecount, {type: 'DirMark', bufnr: buf_info.bufnr})
+    endfor
+enddef
+
 
 export def List(): list<dict<any>>
     return mark_list
@@ -14,21 +28,49 @@ export def Dir(): string
 enddef
 
 
-export def Add(items: list<dict<any>>)
-    mark_list += items
-    mark_list->sort()->uniq()
+export def Show()
+    prop_clear(1, line('$'), {type: 'DirMark'})
+    for item in mark_list
+        var idx = mark_list->index(item)
+        if idx >= 0
+            prop_add(idx + 3, 1, {type: 'DirMark', length: getline(idx + 3)->len()})
+        endif
+    endfor
+enddef
+
+
+export def Toggle(items: list<dict<any>>, line1: number, line2: number)
+    ClearOtherBufferMarks()
+    for el in items
+        var idx = mark_list->index(el)
+        if idx != -1
+            mark_list->remove(idx)
+        else
+            mark_list->add(el)
+        endif
+    endfor
     mark_dir = b:dir_cwd
+    for line in range(min([line1, line2]), max([line1, line2]))
+        if empty(prop_list(line, {types: ['DirMark']}))
+            prop_add(line, 1, {type: 'DirMark', length: getline(line)->len()})
+        else
+            prop_clear(line, line, {type: 'DirMark'})
+        endif
+    endfor
 enddef
 
 
 export def Clear()
     mark_list = []
     mark_dir = ""
+    prop_clear(1, line('$'), {type: 'DirMark'})
+    ClearOtherBufferMarks()
 enddef
 
 
 export def DebugPrint()
-    echo mark_list
+    echo mark_list->mapnew((_, v) => $"[{v.type}]\t{v.name}")->join("\n")
+    echo $"count: {mark_list->len()}"
     echo $"Mark Dir: {mark_dir}"
 enddef
 
