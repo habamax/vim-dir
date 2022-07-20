@@ -81,7 +81,12 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         var base = get(b:, 'dir_cwd', getcwd())->trim('/\\', 2)
         oname = simplify($"{base}{os.Sep()}{oname}")
     endif
-    if !isdirectory(oname) && !filereadable(oname) | return | endif
+    if !isdirectory(oname) && !filereadable(oname)
+        echohl Error
+        echomsg $'Can not read "{oname}"!'
+        echohl None
+        return
+    endif
 
     if oname =~ '.[/\\]$' && oname !~ '^\u:\\$'
         oname = oname->trim('/\', 2)
