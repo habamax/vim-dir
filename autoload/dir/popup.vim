@@ -31,7 +31,7 @@ export def YesNo(text: any, DialogCallback: func)
     else
         msg += text
     endif
-    var winid = popup_dialog(msg + ["", "(y)es    (n)o"], {
+    var winid = popup_dialog(msg + ["", "yes  |  no"], {
         filter: 'popup_filter_yesno',
         pos: 'botleft',
         line: 'cursor-1',
@@ -48,6 +48,9 @@ export def YesNo(text: any, DialogCallback: func)
         padding: [0, 1, 0, 1]})
         win_execute(winid, $":call setline(line('$') - 1, repeat('─', {winwidth(winid)}))")
         win_execute(winid, $":%cen {winwidth(winid)}")
+        win_execute(winid, $"syn match YesNo 'yes  \\|  no' transparent contains=Yes,No")
+        win_execute(winid, $"syn match Yes '\\zsy\\zees' contained | hi Yes cterm=bold,underline gui=bold,underline")
+        win_execute(winid, $"syn match No '\\zsn\\zeo' contained | hi No cterm=bold,underline gui=bold,underline")
 enddef
 
 
