@@ -3,6 +3,8 @@ vim9script
 import autoload 'dir/fmt.vim'
 import autoload 'dir/os.vim'
 
+export const DIRLIST_SHIFT = 3
+
 
 def PrintDir(dir: list<dict<any>>)
     setl ma nomod noro
@@ -98,8 +100,6 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         if (&ft != 'dir' && filereadable(expand("%"))) ||
             (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
             maybe_focus = expand("%:t")
-        elseif len(oname) == len(get(b:, "dir_cwd", ""))
-            maybe_focus = oname
         endif
 
         if OpenBuffer(oname) || invalidate
@@ -123,7 +123,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         var focus = ''
         if !empty(maybe_focus)
             focus = maybe_focus
-        elseif len(b:dir) > 0 && b:dir_cwd == oname
+        elseif len(b:dir) > 0 && line('.') < DIRLIST_SHIFT
             focus = b:dir[0].name
         endif
         if !empty(focus)

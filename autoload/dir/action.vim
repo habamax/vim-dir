@@ -5,12 +5,10 @@ import autoload 'dir/popup.vim'
 import autoload 'dir/os.vim'
 import autoload 'dir/mark.vim'
 
-const DIRLIST_SHIFT = 3
-
 
 def VisualItemsInList(line1: number, line2: number): list<dict<any>>
-    var l1 = (line1 > line2 ? line2 : line1) - DIRLIST_SHIFT
-    var l2 = (line2 > line1 ? line2 : line1) - DIRLIST_SHIFT
+    var l1 = (line1 > line2 ? line2 : line1) - dir.DIRLIST_SHIFT
+    var l2 = (line2 > line1 ? line2 : line1) - dir.DIRLIST_SHIFT
     if l2 < 0 | return [] | endif
     if l1 < 0 && l2 >= 0 | l1 = 0 | endif
     return b:dir[l1 : l2]
@@ -18,7 +16,7 @@ enddef
 
 
 def CursorItemInList(): string
-    var idx = line('.') - DIRLIST_SHIFT
+    var idx = line('.') - dir.DIRLIST_SHIFT
     if idx < 0 | return "" | endif
     return b:dir[idx].name
 enddef

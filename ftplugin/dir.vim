@@ -38,7 +38,6 @@ nnoremap <buffer> s <scriptcmd>action.Do($"{g:dir_invert_split ? 'vert' : ''} sp
 xnoremap <buffer> s <nop>
 nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoInfo()<cr>
-nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>
 
 
 noremap <buffer> x <scriptcmd>action.DoMark()<cr>j
@@ -60,6 +59,8 @@ xnoremap <buffer> rr <scriptcmd>action.DoRename()<cr>
 nnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
 xnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
 
+
+nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>
 
 # remove buffer editing mappings
 for key in nop_maps
