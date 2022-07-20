@@ -101,12 +101,6 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
     if !empty(mod) | exe $"{mod}" | endif
 
     if isdirectory(oname)
-        var maybe_focus = ""
-        if (&ft != 'dir' && filereadable(expand("%"))) ||
-            (&ft == 'dir' && len(oname) < len(get(b:, "dir_cwd", "")) && isdirectory($"{oname}/{expand('%:t')}"))
-            maybe_focus = expand("%:t")
-        endif
-
         if OpenBuffer(oname) || invalidate
             var dir_ls: list<dict<any>>
             try
@@ -121,18 +115,16 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             b:dir_cwd = oname
             b:dir = dir_ls
             PrintDir(b:dir)
-            norm! j
-            exe $"norm! $2F{os.Sep()}l"
         endif
 
-        var focus = ''
-        if !empty(maybe_focus)
-            focus = maybe_focus
-        elseif len(b:dir) > 0 && line('.') < DIRLIST_SHIFT
-            focus = b:dir[0].name
+        if len(b:dir) > 0 && line('.') < DIRLIST_SHIFT
+            exe $":{DIRLIST_SHIFT}"
         endif
-        if !empty(focus)
-            search('\s\zs' .. escape(focus, '\\~$.') .. '\($\| ->\)')
+        if len(b:dir) == 0
+            exe $"norm! $2F{os.Sep()}l"
+        else
+            norm! $
+            search('\d\d:\d\d\s\+\zs', 'b', line('.'))
         endif
     else
         exe $"e {oname->escape('%#')}"
