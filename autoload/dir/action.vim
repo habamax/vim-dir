@@ -88,7 +88,13 @@ export def DoDelete()
         endif
         popup.YesNo(msg, () => {
             for item in del_list
-                os.Delete(item.name)
+                try
+                    os.Delete(item.name)
+                catch
+                    echohl Error
+                    echomsg $'Can not delete "{fnamemodify(item.name, ":t")}"!'
+                    echohl None
+                endtry
             endfor
             :edit
         })
