@@ -101,6 +101,10 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
     if !empty(mod) | exe $"{mod}" | endif
 
     if isdirectory(oname)
+        var focus = ""
+        if exists("b:dir_cwd") && len(oname) < len(b:dir_cwd) || filereadable(expand("%"))
+            focus = expand("%:t")
+        endif
         if OpenBuffer(oname) || invalidate
             var dir_ls: list<dict<any>>
             try
@@ -122,6 +126,8 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         endif
         if len(b:dir) == 0
             exe $"norm! $2F{os.Sep()}l"
+        elseif !empty(focus)
+                search($'\d\d:\d\d\s\+\zs{focus}', '')
         else
             norm! $
             search('\d\d:\d\d\s\+\zs', 'b', line('.'))
