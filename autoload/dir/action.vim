@@ -15,10 +15,10 @@ def VisualItemsInList(line1: number, line2: number): list<dict<any>>
 enddef
 
 
-def CursorItemInList(): string
+def CursorItemInList(): dict<any>
     var idx = line('.') - dir.DIRLIST_SHIFT
-    if idx < 0 | return "" | endif
-    return b:dir[idx].name
+    if idx < 0 | return {name: ""} | endif
+    return b:dir[idx]
 enddef
 
 
@@ -31,7 +31,7 @@ def CursorItem(): string
             return new_dir
         endif
     else
-        return CursorItemInList()
+        return CursorItemInList().name
     endif
     return ""
 enddef
@@ -51,12 +51,11 @@ enddef
 
 
 export def DoInfo()
-    var idx = line('.') - 3
-    if idx < 0 | return | endif
-    var cwd = trim(b:dir_cwd, '/', 2)
-    var path = $"{cwd}{os.Sep()}{b:dir[idx].name}"
+    var item = CursorItem()
+    if empty(item) | return | endif
+    var path = $"{b:dir_cwd}{os.Sep()}{item}"
     if filereadable(path)
-        popup.Show(readfile($"{cwd}{os.Sep()}{b:dir[idx].name}", "", 100), $"{b:dir[idx].name}")
+        popup.Show(readfile($"{path}", "", 100), $"{path}")
     elseif isdirectory(path)
         popup.Show(os.DirInfo(path), path)
     endif
