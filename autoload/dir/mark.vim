@@ -41,11 +41,11 @@ enddef
 
 export def UpdateInfo()
     var cnt = mark_list->len()
-    var dir = bufnr() == mark_bufnr ? '' : $' in {mark_dir}'
     for buf_info in DirBuffers()
         setbufvar(buf_info.bufnr, '&modifiable', 1)
         setbufvar(buf_info.bufnr, '&readonly', 0)
         if cnt > 0
+            var dir = buf_info.bufnr == mark_bufnr ? '' : $' in {bufname(mark_bufnr)}'
             setbufline(buf_info.bufnr, 2, $"Selected: {cnt}{dir}")
         else
             setbufline(buf_info.bufnr, 2, "")
