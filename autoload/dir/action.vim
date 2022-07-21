@@ -133,8 +133,15 @@ enddef
 
 
 export def DoRename()
-    var del_list = VisualItemsInList(line('v'), line('.'))
-    if mode() =~ '[vV]' && len(del_list) > 1
+    var del_list = []
+    if mark.Empty() || mark.Bufnr() != bufnr()
+        mark.Clear()
+        del_list = VisualItemsInList(line('v'), line('.'))
+    else
+        del_list = mark.List()
+    endif
+
+    if len(del_list) > 1
         var input_pat = "{name}{ext}"
         var pattern = input("Rename with pattern: ", input_pat)
         if pattern->trim() == input_pat->trim() | return | endif
