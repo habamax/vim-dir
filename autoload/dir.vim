@@ -7,6 +7,16 @@ import autoload 'dir/os.vim'
 export const DIRLIST_SHIFT = 4
 
 
+def GetBufnr(name: string): number
+    var bufnrs = getbufinfo()->filter((_, v) => v.name == name)
+    var result = -1
+    if len(bufnrs) > 0
+        result = bufnrs[0].bufnr
+    endif
+    return result
+enddef
+
+
 def PrintDir(dir: list<dict<any>>)
     setl ma nomod noro
     sil! :%d _
@@ -42,10 +52,7 @@ def OpenBuffer(name: string): bool
     var bufname = $"dir://{name}"
     # buffer names are unreliable in :b command...
     var bufnrs = getbufinfo()->filter((_, v) => v.name == bufname)
-    var bufnr = 0
-    if len(bufnrs) > 0
-        bufnr = bufnrs[0].bufnr
-    endif
+    var bufnr = GetBufnr(bufname)
     if &hidden
         if bufnr > 0
             exe $"sil! keepj keepalt b {bufnr}"
@@ -103,7 +110,11 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
 
     if isdirectory(oname)
         var focus = ""
-        if exists("b:dir_cwd") && len(oname) < len(b:dir_cwd) || filereadable(expand("%"))
+        if filereadable(expand("%"))
+           || exists("b:dir_cwd") && len(oname) < len(b:dir_cwd) && GetBufnr($"dir://{oname}") == -1
+            # focus if Dir is opened from a buffer with
+            # 1. a regular file
+            # 2. another Dir and you go up the tree to a not yet opened Dir
             focus = expand("%:t")
         endif
         if OpenBuffer(oname) || invalidate
