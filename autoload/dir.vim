@@ -131,6 +131,9 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             b:dir_cwd = oname
             b:dir = dir_ls
             PrintDir(b:dir)
+            if invalidate && bufnr() == mark.Bufnr()
+                mark.Clear()
+            endif
         endif
 
         mark.UpdateInfo()
