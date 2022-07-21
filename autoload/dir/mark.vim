@@ -12,10 +12,14 @@ def OtherDirBuffers(): list<dict<any>>
 enddef
 
 
+def DirBuffers(): list<dict<any>>
+    return getbufinfo()->filter((_, v) => v.name =~ '^dir://')
+enddef
+
+
 def ClearOtherBufferMarks()
     for buf_info in OtherDirBuffers()
         prop_clear(1, buf_info.linecount, {type: 'DirMark', bufnr: buf_info.bufnr})
-        UpdateInfo(buf_info.bufnr)
     endfor
 enddef
 
@@ -35,20 +39,21 @@ export def Bufnr(): number
 enddef
 
 
-export def UpdateInfo(bufnr: number = -1)
-    var nr = (bufnr == -1 ? bufnr() : bufnr)
-    setbufvar(nr, '&modifiable', 1)
-    setbufvar(nr, '&readonly', 0)
+export def UpdateInfo()
     var cnt = mark_list->len()
-    if cnt > 0
-        setbufline(nr, 2, $"Selected: {cnt}")
-    else
-        setbufline(nr, 2, "")
-    endif
-    setbufvar(nr, '&modified', 0)
-    setbufvar(nr, '&modifiable', 0)
-    setbufvar(nr, '&readonly', 1)
-    # setl noma nomod ro
+    var dir = bufnr() == mark_bufnr ? '' : $' in {mark_dir}'
+    for buf_info in DirBuffers()
+        setbufvar(buf_info.bufnr, '&modifiable', 1)
+        setbufvar(buf_info.bufnr, '&readonly', 0)
+        if cnt > 0
+            setbufline(buf_info.bufnr, 2, $"Selected: {cnt}{dir}")
+        else
+            setbufline(buf_info.bufnr, 2, "")
+        endif
+        setbufvar(buf_info.bufnr, '&modified', 0)
+        setbufvar(buf_info.bufnr, '&modifiable', 0)
+        setbufvar(buf_info.bufnr, '&readonly', 1)
+    endfor
 enddef
 
 
