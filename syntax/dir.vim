@@ -38,5 +38,6 @@ hi def link dirSizeMod Type
 hi def link dirTime String
 hi def link dirDirectory Directory
 hi def link dirLink Type
+hi def link dirMark Todo
 
 b:current_syntax = "dir"

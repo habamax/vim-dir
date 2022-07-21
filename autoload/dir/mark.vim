@@ -4,7 +4,7 @@ var mark_list: list<dict<any>> = []
 var mark_dir: string = ""
 var mark_bufnr: number = -1
 
-prop_type_add('DirMark', {highlight: 'Todo', priority: 1000})
+prop_type_add('DirMark', {highlight: 'DirMark', priority: 1000})
 
 
 def OtherDirBuffers(): list<dict<any>>
