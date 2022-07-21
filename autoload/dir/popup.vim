@@ -116,3 +116,77 @@ def PopupFilter(winid: number, key: string): bool
     endif
     return true
 enddef
+
+
+# Synchronous confirmation dialog:
+#   `text` is either a string or a list of strings
+#   `answer` is a list of "buttons"
+# Example:
+#   var result = popup.Confirm("Override file?", [
+#           {text: "&yes",  act: 'y'},
+#           {text: "&no",   act: 'n'},
+#           {text: "&all",  act: 'a'},
+#           {text: "n&one", act: 'o'}
+#       ])
+#  if result == 1
+#      echo "yes"
+#  ...
+# Returns -1 if Escape is pressed
+# Returns  0 if Enter is pressed
+export def Confirm(text: any, answer: list<dict<any>>): number
+    if len(answer) < 2 | throw "Should be at least 2 answers!" | endif
+    var msg = []
+    if type(text) == v:t_string
+        msg->add({text: text})
+    else
+        msg += text->mapnew((_, v) => {
+                return {text: v}
+            })
+    endif
+    msg += [{text: ""}]
+
+    if empty(prop_type_get('ActionChar'))
+        hi def ActionChar cterm=bold,underline gui=bold,underline
+        prop_type_add('ActionChar', {highlight: 'ActionChar'})
+    endif
+
+    var answer_txt = answer->mapnew((_, v) => v.text)->join(' | ')
+    var props = []
+    var idx = answer_txt->stridx('&')
+    while idx != -1
+        props->add({col: idx + 1, length: 1, type: 'ActionChar'})
+        answer_txt = answer_txt->substitute('&', '', '')
+        idx = answer_txt->stridx('&')
+    endwhile
+    var winid = popup_create(msg + [{text: answer_txt, props: props}], {
+        pos: 'botleft',
+        line: 'cursor-1',
+        col: 'cursor',
+        border: [],
+        highlight: 'ErrorMsg',
+        padding: [0, 1, 0, 1]})
+
+    win_execute(winid, $":%cen {winwidth(winid)}")
+    win_execute(winid, $":call setline(line('$') - 1, repeat('─', {winwidth(winid)}))")
+
+    var chars = answer->mapnew((_, v) => v.act)
+    redraw
+    while 1
+        var ch = nr2char(getchar(0))
+        if ch == "\<ESC>"
+            popup_close(winid)
+            return -1
+        endif
+        if ch == "\<CR>"
+            popup_close(winid)
+            return 0
+        endif
+        var result = chars->index(ch)
+        if result >= 0
+            popup_close(winid)
+            return result
+        endif
+        sleep 50m
+    endwhile
+    return 0
+enddef

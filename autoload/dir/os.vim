@@ -157,17 +157,29 @@ export def Copy()
                 mkdir(dst, "p")
             else
                 var file_exists = filereadable(dst)
-                if file_exists && !override && override_all == 0
-                    var res = input($'Override existing "{dst}"? y/n/all/no: ')
-                    if res->toupper() == 'Y'
+                if file_exists && override_all == 0
+                    var res = popup.Confirm(['Override existing', $'"{dst}"?'], [
+                                {text: "&yes", act: 'y'},
+                                {text: "&no", act: 'n'},
+                                {text: "yes to &all", act: 'a'},
+                                {text: "n&o to all", act: 'o'}
+                            ])
+                        echo res
+                    if res == 0
                         override = true
-                    elseif res->toupper() == 'ALL'
+                        override_all = 0
+                    elseif res == 1
+                        override = false
+                        override_all = 0
+                    elseif res == 2
+                        override = true
                         override_all = 1
-                    elseif res->toupper() == 'NO'
-                        override_all = -1
+                    elseif res == 3
+                        override = false
+                        override_all = 1
                     endif
                 endif
-                if file_exists && (override || override_all == 1) || !file_exists
+                if file_exists && override || !file_exists
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
@@ -177,7 +189,6 @@ export def Copy()
         catch
             echo v:exception
         endtry
-        override = false
     endfor
     mark.Clear()
 enddef
