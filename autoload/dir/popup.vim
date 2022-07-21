@@ -128,7 +128,7 @@ enddef
 #           {text: "&all",  act: 'a'},
 #           {text: "n&one", act: 'o'}
 #       ])
-#  if result == 1
+#  if result == 0
 #      echo "yes"
 #  ...
 # Returns -1 if Escape is pressed
@@ -188,5 +188,5 @@ export def Confirm(text: any, answer: list<dict<any>>): number
         endif
         sleep 50m
     endwhile
-    return 0
+    return -1
 enddef
