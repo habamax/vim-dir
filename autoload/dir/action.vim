@@ -72,7 +72,13 @@ enddef
 
 
 export def DoDelete()
-    var del_list = VisualItemsInList(line('v'), line('.'))
+    var del_list = []
+    if mark.Empty() || mark.Bufnr() != bufnr()
+        mark.Clear()
+        del_list = VisualItemsInList(line('v'), line('.'))
+    else
+        del_list = mark.List()
+    endif
     if !empty(del_list)
         var cnt = len(del_list)
         var msg = []

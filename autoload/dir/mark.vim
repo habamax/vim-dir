@@ -1,7 +1,8 @@
 vim9script
 
-var mark_list: list<dict<any>>
-var mark_dir: string
+var mark_list: list<dict<any>> = []
+var mark_dir: string = ""
+var mark_bufnr: number = -1
 
 prop_type_add('DirMark', {highlight: 'Todo', priority: 1000})
 
@@ -28,15 +29,20 @@ export def Dir(): string
 enddef
 
 
-export def Show()
-    prop_clear(1, line('$'), {type: 'DirMark'})
-    for item in mark_list
-        var idx = mark_list->index(item)
-        if idx >= 0
-            prop_add(idx + 3, 1, {type: 'DirMark', length: getline(idx + 3)->len()})
-        endif
-    endfor
+export def Bufnr(): number
+    return mark_bufnr
 enddef
+
+
+# export def Show()
+#     prop_clear(1, line('$'), {type: 'DirMark'})
+#     for item in mark_list
+#         var idx = mark_list->index(item)
+#         if idx >= 0
+#             prop_add(idx + 3, 1, {type: 'DirMark', length: getline(idx + 3)->len()})
+#         endif
+#     endfor
+# enddef
 
 
 export def Toggle(items: list<dict<any>>, line1: number, line2: number)
@@ -50,6 +56,7 @@ export def Toggle(items: list<dict<any>>, line1: number, line2: number)
         endif
     endfor
     mark_dir = b:dir_cwd
+    mark_bufnr = bufnr()
     for line in range(min([line1, line2]), max([line1, line2]))
         if empty(prop_list(line, {types: ['DirMark']}))
             prop_add(line, 1, {type: 'DirMark', length: getline(line)->len()})
@@ -63,6 +70,7 @@ enddef
 export def Clear()
     mark_list = []
     mark_dir = ""
+    mark_bufnr = -1
     prop_clear(1, line('$'), {type: 'DirMark'})
     ClearOtherBufferMarks()
 enddef
@@ -72,6 +80,7 @@ export def DebugPrint()
     echo mark_list->mapnew((_, v) => $"[{v.type}]\t{v.name}")->join("\n")
     echo $"count: {mark_list->len()}"
     echo $"Mark Dir: {mark_dir}"
+    echo $"Mark Buffer: {mark_bufnr}"
 enddef
 
 
