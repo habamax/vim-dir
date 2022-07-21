@@ -127,7 +127,9 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         if len(b:dir) == 0
             exe $"norm! $2F{os.Sep()}l"
         elseif !empty(focus)
-                search($'\d\d:\d\d\s\+\zs{focus}', '')
+            if search($'\d\d:\d\d\s\+\zs{focus}', 'c') == 0
+                search($'\d\d:\d\d\s\+\zs{focus}', 'b')
+            endif
         else
             norm! $
             search('\d\d:\d\d\s\+\zs', 'b', line('.'))
