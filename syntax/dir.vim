@@ -6,9 +6,10 @@ endif
 
 syn match dirCwd "\%^.*$"
 
-syn match dirStatus "\%2l^.*$" transparent contains=dirStatusSel
-syn match dirStatusSel "Selected:" skipwhite contained nextgroup=dirStatusSelNum
-syn match dirStatusSelNum "\d\+" skipwhite contained
+syn match dirStatus '\%2l^.*$' transparent contains=dirStatusSel
+syn match dirStatusSel 'Selected:' skipwhite contained nextgroup=dirStatusSelNum
+syn match dirStatusSelNum '\d\+' skipwhite contained nextgroup=dirStatusSelPath
+syn match dirStatusSelPath 'in \f\+' contained
 
 syn match dirDirectory "^[dj].*$" contains=dirType
 syn match dirFile "^[-].*$" contains=dirType
@@ -44,6 +45,7 @@ hi def link dirDirectory Directory
 hi def link dirLink Type
 hi def link dirStatusSel Special
 hi def link dirStatusSelNum Constant
+hi def link dirStatusSelPath Identifier
 hi def link dirMark Todo
 
 b:current_syntax = "dir"
