@@ -56,9 +56,9 @@ export def DoInfo()
     if empty(item) | return | endif
     var path = $"{b:dir_cwd}{os.Sep()}{item}"
     if filereadable(path)
-        popup.Show(readfile($"{path}", "", 100), $"{path}")
+        popup.Show(readfile($"{path}", "", 100), item)
     elseif isdirectory(path)
-        popup.Show(os.DirInfo(path), path)
+        popup.Show(os.DirInfo(path), item)
     endif
 enddef
 
