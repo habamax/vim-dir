@@ -50,7 +50,7 @@ Local mappings
 - :kbd:`X` — toggle selection of all files/directories (select/unselect all)
 - :kbd:`D` or :kbd:`dd` — delete files/directories
 - :kbd:`R` or :kbd:`rr` — rename files/directories
-- :kbd:`P` — copy marked files/directories into current directory
+- :kbd:`P` — copy selected files/directories into current directory
 - :kbd:`A` — open actions menu
 
 
