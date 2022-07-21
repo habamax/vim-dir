@@ -3,8 +3,7 @@ vim9script
 import autoload 'dir/fmt.vim'
 import autoload 'dir/mark.vim'
 import autoload 'dir/os.vim'
-
-export const DIRLIST_SHIFT = 4
+import autoload 'dir/g.vim'
 
 
 def GetBufnr(name: string): number
@@ -138,8 +137,8 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
 
         mark.UpdateInfo()
 
-        if len(b:dir) > 0 && line('.') < DIRLIST_SHIFT
-            exe $":{DIRLIST_SHIFT}"
+        if len(b:dir) > 0 && line('.') < g.DIRLIST_SHIFT
+            exe $":{g.DIRLIST_SHIFT}"
         endif
         if len(b:dir) == 0
             exe $"norm! $2F{os.Sep()}l"

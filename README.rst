@@ -46,8 +46,8 @@ Local mappings
 - :kbd:`t` — open a file/directory in a tab.
 - :kbd:`i` — preview a file (first 100 lines) or show dir tree (if `tree` is
   available)
-- :kbd:`x` — mark file/directory
-- :kbd:`X` — remove all marks
+- :kbd:`x` — toggle selection of file/directory
+- :kbd:`X` — toggle selection of all files/directories (select/unselect all)
 - :kbd:`D` or :kbd:`dd` — delete files/directories
 - :kbd:`R` or :kbd:`rr` — rename files/directories
 - :kbd:`P` — copy marked files/directories into current directory

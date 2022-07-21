@@ -1,5 +1,7 @@
 vim9script
 
+import autoload 'dir/g.vim'
+
 var mark_list: list<dict<any>> = []
 var mark_dir: string = ""
 var mark_bufnr: number = -1
@@ -91,6 +93,28 @@ export def Clear()
     prop_clear(1, line('$'), {type: 'DirMark'})
     ClearOtherBufferMarks()
     UpdateInfo()
+enddef
+
+
+export def All()
+    mark_list = b:dir->copy()
+    mark_dir = b:dir_cwd
+    mark_bufnr = bufnr()
+    prop_clear(g.DIRLIST_SHIFT, line('$'), {type: 'DirMark'})
+    prop_add(g.DIRLIST_SHIFT, 1, {type: 'DirMark', end_lnum: line('$'), end_col: 500})
+    ClearOtherBufferMarks()
+    UpdateInfo()
+enddef
+
+export def ToggleAll()
+    if Empty()
+        All()
+    elseif mark_bufnr == bufnr()
+        Clear()
+    else
+        Clear()
+        All()
+    endif
 enddef
 
 
