@@ -45,8 +45,22 @@ enddef
 # enddef
 
 
+export def UpdateInfo()
+    setl ma nomod noro
+    var cnt = mark_list->len()
+    if cnt > 0
+        setline(2, $"Selected: {cnt}")
+    else
+        setline(2, "")
+    endif
+    setl noma nomod ro
+enddef
+
+
 export def Toggle(items: list<dict<any>>, line1: number, line2: number)
-    ClearOtherBufferMarks()
+    if bufnr() != mark_bufnr
+        Clear()
+    endif
     for el in items
         var idx = mark_list->index(el)
         if idx != -1
@@ -57,6 +71,9 @@ export def Toggle(items: list<dict<any>>, line1: number, line2: number)
     endfor
     mark_dir = b:dir_cwd
     mark_bufnr = bufnr()
+
+    UpdateInfo()
+
     for line in range(min([line1, line2]), max([line1, line2]))
         if empty(prop_list(line, {types: ['DirMark']}))
             prop_add(line, 1, {type: 'DirMark', length: getline(line)->len()})
@@ -73,6 +90,7 @@ export def Clear()
     mark_bufnr = -1
     prop_clear(1, line('$'), {type: 'DirMark'})
     ClearOtherBufferMarks()
+    UpdateInfo()
 enddef
 
 

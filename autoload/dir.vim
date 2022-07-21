@@ -1,9 +1,10 @@
 vim9script
 
 import autoload 'dir/fmt.vim'
+import autoload 'dir/mark.vim'
 import autoload 'dir/os.vim'
 
-export const DIRLIST_SHIFT = 3
+export const DIRLIST_SHIFT = 4
 
 
 def PrintDir(dir: list<dict<any>>)
@@ -12,7 +13,7 @@ def PrintDir(dir: list<dict<any>>)
     setline(1, b:dir_cwd)
     var strdir = dir->mapnew((_, v) => fmt.Dir(v))
     if len(strdir) > 0
-        setline(2, [""] + strdir)
+        setline(2, ["", ""] + strdir)
     endif
     setl noma nomod ro
 enddef
@@ -120,6 +121,8 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             b:dir = dir_ls
             PrintDir(b:dir)
         endif
+
+        mark.UpdateInfo()
 
         if len(b:dir) > 0 && line('.') < DIRLIST_SHIFT
             exe $":{DIRLIST_SHIFT}"
