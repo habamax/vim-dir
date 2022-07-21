@@ -48,9 +48,11 @@ export def YesNo(text: any, DialogCallback: func)
         padding: [0, 1, 0, 1]})
         win_execute(winid, $":call setline(line('$') - 1, repeat('─', {winwidth(winid)}))")
         win_execute(winid, $":%cen {winwidth(winid)}")
+
+        hi def dirActionChar cterm=reverse,bold,underline gui=reverse,bold,underline
         win_execute(winid, $"syn match YesNo 'yes  \\|  no' transparent contains=Yes,No")
-        win_execute(winid, $"syn match Yes '\\zsy\\zees' contained | hi Yes cterm=bold,underline gui=bold,underline")
-        win_execute(winid, $"syn match No '\\zsn\\zeo' contained | hi No cterm=bold,underline gui=bold,underline")
+        win_execute(winid, $"syn match Yes '\\zsy\\zees' contained | hi def link Yes DirActionChar")
+        win_execute(winid, $"syn match No '\\zsn\\zeo' contained | hi def link No DirActionChar")
 enddef
 
 
@@ -145,16 +147,16 @@ export def Confirm(text: any, answer: list<dict<any>>): number
     endif
     msg += [{text: ""}]
 
-    if empty(prop_type_get('ActionChar'))
-        hi def ActionChar cterm=bold,underline gui=bold,underline
-        prop_type_add('ActionChar', {highlight: 'ActionChar'})
+    hi def dirActionChar cterm=reverse,bold,underline gui=reverse,bold,underline
+    if empty(prop_type_get('DirActionChar'))
+        prop_type_add('DirActionChar', {highlight: 'dirActionChar'})
     endif
 
     var answer_txt = answer->mapnew((_, v) => v.text)->join(' | ')
     var props = []
     var idx = answer_txt->stridx('&')
     while idx != -1
-        props->add({col: idx + 1, length: 1, type: 'ActionChar'})
+        props->add({col: idx + 1, length: 1, type: 'DirActionChar'})
         answer_txt = answer_txt->substitute('&', '', '')
         idx = answer_txt->stridx('&')
     endwhile
