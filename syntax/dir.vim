@@ -40,7 +40,7 @@ hi def link dirOwner Identifier
 hi def link dirGroup Identifier
 hi def link dirSize Constant
 hi def link dirSizeMod Type
-hi def link dirTime Comment
+hi def link dirTime PreProc
 hi def link dirDirectory Directory
 hi def link dirLink Type
 hi def link dirStatusSel Special
