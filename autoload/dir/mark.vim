@@ -45,7 +45,7 @@ export def UpdateInfo()
         setbufvar(buf_info.bufnr, '&modifiable', 1)
         setbufvar(buf_info.bufnr, '&readonly', 0)
         if cnt > 0
-            var dir = buf_info.bufnr == mark_bufnr ? '' : $' in {bufname(mark_bufnr)}'
+            var dir = buf_info.bufnr == mark_bufnr ? '' : $' in {mark_dir}'
             setbufline(buf_info.bufnr, 2, $"Selected: {cnt}{dir}")
         else
             setbufline(buf_info.bufnr, 2, "")
