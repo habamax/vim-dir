@@ -34,17 +34,6 @@ export def Bufnr(): number
 enddef
 
 
-# export def Show()
-#     prop_clear(1, line('$'), {type: 'DirMark'})
-#     for item in mark_list
-#         var idx = mark_list->index(item)
-#         if idx >= 0
-#             prop_add(idx + 3, 1, {type: 'DirMark', length: getline(idx + 3)->len()})
-#         endif
-#     endfor
-# enddef
-
-
 export def UpdateInfo()
     setl ma nomod noro
     var cnt = mark_list->len()
