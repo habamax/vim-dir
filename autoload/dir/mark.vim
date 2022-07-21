@@ -15,6 +15,7 @@ enddef
 def ClearOtherBufferMarks()
     for buf_info in OtherDirBuffers()
         prop_clear(1, buf_info.linecount, {type: 'DirMark', bufnr: buf_info.bufnr})
+        UpdateInfo(buf_info.bufnr)
     endfor
 enddef
 
@@ -34,15 +35,20 @@ export def Bufnr(): number
 enddef
 
 
-export def UpdateInfo()
-    setl ma nomod noro
+export def UpdateInfo(bufnr: number = -1)
+    var nr = (bufnr == -1 ? bufnr() : bufnr)
+    setbufvar(nr, '&modifiable', 1)
+    setbufvar(nr, '&readonly', 0)
     var cnt = mark_list->len()
     if cnt > 0
-        setline(2, $"Selected: {cnt}")
+        setbufline(nr, 2, $"Selected: {cnt}")
     else
-        setline(2, "")
+        setbufline(nr, 2, "")
     endif
-    setl noma nomod ro
+    setbufvar(nr, '&modified', 0)
+    setbufvar(nr, '&modifiable', 0)
+    setbufvar(nr, '&readonly', 1)
+    # setl noma nomod ro
 enddef
 
 
