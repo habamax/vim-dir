@@ -83,7 +83,7 @@ Features (To Do)
   - ✓ (2022-07-14) Rename file/directory
   - ✓ (2022-07-15) Create a directory
   - ✓ (2022-07-13) Delete files/directories (be careful here)
-  - Copy files/directories
+  - ✓ (2022-07-21) Copy files/directories (be careful here)
   - Move files/directories
   - chmod? chown?
   - report errors if happened during file ops.
