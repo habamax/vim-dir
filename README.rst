@@ -16,7 +16,10 @@ Commands and Mappings
 Global commands
 ---------------
 
-``:Dir [path]`` to open a path as a directory listing.
+- ``:Dir [path]`` to open a path as a directory listing.
+
+- Use regular ``:edit``/``:e`` command to refresh directory listing.
+
 
 
 Global mappings
@@ -45,13 +48,14 @@ Local mappings
 - :kbd:`S` — open a file/directory in a vertical split.
 - :kbd:`t` — open a file/directory in a tab.
 - :kbd:`i` — preview a file (first 100 lines) or show dir tree (if `tree` is
-  available)
-- :kbd:`x` — toggle selection of file/directory
-- :kbd:`X` — toggle selection of all files/directories (select/unselect all)
-- :kbd:`D` or :kbd:`dd` — delete files/directories
-- :kbd:`R` or :kbd:`rr` — rename files/directories
-- :kbd:`P` — copy selected files/directories into current directory
-- :kbd:`A` — open actions menu
+  available).
+- :kbd:`x` — toggle selection of file/directory.
+- :kbd:`X` — toggle selection of all files/directories (select/unselect all).
+- :kbd:`D` or :kbd:`dd` — delete files/directories.
+- :kbd:`R` or :kbd:`rr` — rename files/directories.
+- :kbd:`P` — copy selected files/directories into current directory.
+- :kbd:`A` — open actions menu.
+- :kbd:`~` — open home directory.
 
 
 Settings
@@ -70,8 +74,6 @@ Features (To Do)
 
 - ✓ (2022-07-10) Open files/directories in splits/tabs.
 
-- ✓ (2022-07-19) Cache to reuse dir contents.
-
 - Sorting.
 
 - Filtering.
@@ -82,14 +84,13 @@ Features (To Do)
 
 - Basic file operations support:
 
-  - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer)
-  - ✓ (2022-07-14) Rename file/directory
-  - ✓ (2022-07-15) Create a directory
-  - ✓ (2022-07-13) Delete files/directories (be careful here)
-  - ✓ (2022-07-21) Copy files/directories (be careful here)
-  - Move files/directories
-  - chmod? chown?
-  - report errors if happened during file ops.
+  - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer).
+  - ✓ (2022-07-14) Rename file/directory.
+  - ✓ (2022-07-15) Create a directory.
+  - ✓ (2022-07-13) Delete files/directories (be careful here).
+  - ✓ (2022-07-21) Copy files/directories (be careful here).
+  - Move files/directories.
+  - ``chmod``, ``chown`` where it makes sense.
 
 
 Maybe Features
