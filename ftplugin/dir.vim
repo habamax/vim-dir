@@ -14,11 +14,15 @@ setlocal nobuflisted
 setlocal noswapfile
 
 
-var nop_maps = ['r', 'd', 'c', 'C', 'gp', 'gP', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
+var nop_maps = ['r', 'd', 'c', 'C', 'a', 'I',
+                'gp', 'gP', 'gi', 'gI', 'gu', 'gU',
+                'U', '<C-r>',
+               ]
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~',
                  't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'p', 'P',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
-                 '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5', '<C-a>6', '<C-a>7', '<C-a>8', '<C-a>9', '<C-a>0',
+                 '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
+                 '<C-a>6', '<C-a>7', '<C-a>8', '<C-a>9', '<C-a>0',
                 ]
 
 b:undo_ftplugin = undo_opts .. ' | '
