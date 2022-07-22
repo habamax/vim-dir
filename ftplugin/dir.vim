@@ -15,7 +15,7 @@ setlocal noswapfile
 
 
 var nop_maps = ['r', 'd', 'c', 'C', 'a', 'I',
-                'gp', 'gP', 'gi', 'gI', 'gu', 'gU',
+                'gp', 'gP', 'gi', 'gI', 'gu', 'gU', 'gh', 'gH',
                 'U', '<C-r>',
                ]
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~',
