@@ -137,6 +137,15 @@ export def DoCopy()
         echo "Can't copy to the same location!"
         return
     endif
+    # check if user wants to copy a directory into its own subdirectory... and prevent it.
+    for item in mark.List()
+        if item.type !~ 'dir\|linkd\|junction' | continue | endif
+        var path = $"{mark.Dir()}{os.Sep()}{item.name}"
+        if path == strpart(b:dir_cwd, 0, path->len())
+            echo "Can't copy to self sub directory!"
+            return
+        endif
+    endfor
 
     var cnt = mark.List()->len()
 
@@ -147,12 +156,13 @@ export def DoCopy()
         msg = [$'Copy {cnt} {FileOrDirMsg(mark.List())}?']
     endif
 
-    popup.YesNo(msg, () => {
+    var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
+    if res == 0
         var view = winsaveview()
         os.Copy()
         winrestview(view)
         :edit
-    })
+    endif
 enddef
 
 
@@ -193,6 +203,15 @@ export def DoMove()
         echo "Can't move to the same location!"
         return
     endif
+    # check if user wants to move a directory into its own subdirectory... and prevent it.
+    for item in mark.List()
+        if item.type !~ 'dir\|linkd\|junction' | continue | endif
+        var path = $"{mark.Dir()}{os.Sep()}{item.name}"
+        if path == strpart(b:dir_cwd, 0, path->len())
+            echo "Can't move to self sub directory!"
+            return
+        endif
+    endfor
 
     var cnt = mark.List()->len()
 
@@ -203,12 +222,13 @@ export def DoMove()
         msg = [$'Move {cnt} {FileOrDirMsg(mark.List())}?']
     endif
 
-    popup.YesNo(msg, () => {
+    var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
+    if res == 0
         var view = winsaveview()
         os.Move()
         winrestview(view)
         :edit
-    })
+    endif
 enddef
 
 
