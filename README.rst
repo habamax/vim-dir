@@ -57,7 +57,7 @@ Local mappings
 - :kbd:`A` — open actions menu.
 - :kbd:`~` or :kbd:`g~` — open home directory.
 - :kbd:`g1` up to  :kbd:`g0` — open numbered bookmark.
-- :kbd:`<C-a>1` up to  :kbd:`<C-a>0` — set numbered bookmark for a current
+- :kbd:`Ctrl-A` + :kbd:`1` up to  :kbd:`Ctrl-A` + :kbd:`0` — set numbered bookmark for a current
   directory.
 
 
