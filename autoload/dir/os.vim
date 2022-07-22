@@ -226,7 +226,13 @@ export def CreateDir()
         return
     endif
 
-    mkdir(new_name, "p")
+    try
+        mkdir(new_name, "p")
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl None
+    endtry
 enddef
 
 
