@@ -48,11 +48,17 @@ enddef
 
 
 export def Delete(name: string)
-    if isdirectory(name)
-        delete(name, "rf")
-    else
-        delete(name)
-    endif
+    try
+        if isdirectory(name)
+            delete(name, "rf")
+        else
+            delete(name)
+        endif
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl None
+    endtry
 enddef
 
 
@@ -65,14 +71,19 @@ export def Rename(name: string)
         new_name = simplify($'{getcwd()}{Sep()}{new_name}')
     endif
     if isdirectory(new_name) || filereadable(new_name)
-        echo "    "
         echohl ErrorMsg
         echo "Can't rename to existing file or directory!"
         echohl None
         return
     endif
 
-    rename(name, new_name)
+    try
+        rename(name, new_name)
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl None
+    endtry
 enddef
 
 
@@ -96,7 +107,13 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
         return
     endif
 
-    rename(name, new_name)
+    try
+        rename(name, new_name)
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl None
+    endtry
 enddef
 
 
