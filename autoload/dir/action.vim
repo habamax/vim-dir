@@ -133,6 +133,10 @@ enddef
 
 export def DoCopy()
     if mark.Empty() | return | endif
+    if mark.Bufnr() == bufnr()
+        echo "Can't copy to the same location!"
+        return
+    endif
 
     var cnt = mark.List()->len()
 
@@ -185,6 +189,10 @@ enddef
 
 export def DoMove()
     if mark.Empty() | return | endif
+    if mark.Bufnr() == bufnr()
+        echo "Can't move to the same location!"
+        return
+    endif
 
     var cnt = mark.List()->len()
 
