@@ -90,7 +90,6 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
         new_name = simplify($'{getcwd()}{Sep()}{new_name}')
     endif
     if isdirectory(new_name) || filereadable(new_name)
-        echo "    "
         echohl ErrorMsg
         echom $'Can not rename "{name}" to "{new_name}"!'
         echohl None
