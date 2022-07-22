@@ -15,7 +15,7 @@ setlocal noswapfile
 
 
 var nop_maps = ['r', 'd', 'c', 'C', 'p', 'gp', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
-var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~',
+var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~',
                  't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'P', 'gP']
 
 b:undo_ftplugin = undo_opts .. ' | '
@@ -61,6 +61,7 @@ xnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
 
 
 nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>
+nnoremap <buffer> g~ <scriptcmd>Dir ~<cr>
 
 # remove buffer editing mappings
 for key in nop_maps

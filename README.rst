@@ -55,7 +55,7 @@ Local mappings
 - :kbd:`R` or :kbd:`rr` — rename files/directories.
 - :kbd:`P` — copy selected files/directories into current directory.
 - :kbd:`A` — open actions menu.
-- :kbd:`~` — open home directory.
+- :kbd:`~` or :kbd:`g~` — open home directory.
 
 
 Settings
