@@ -127,6 +127,7 @@ export def ListDirTree(name: string): list<dict<any>>
 enddef
 
 
+# XXX: explore jobs here...
 export def Copy()
     if mark.Empty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
@@ -143,9 +144,8 @@ export def Copy()
     # -1 - do not override anything
     var override_all = 0
 
-    # WIP
     var file_list = mark.List()->copy()
-    var dir_list = mark.List()->copy()->filter((_, v) => v.type == 'dir')
+    var dir_list = mark.List()->copy()->filter((_, v) => v.type =~ 'dir\|linkd\|junction')
     for item in dir_list
         file_list += ListDirTree($"{mark.Dir()}{Sep()}{item.name}")
     endfor
@@ -153,7 +153,7 @@ export def Copy()
         var src = $"{mark.Dir()}{Sep()}{item.name}"
         var dst = $"{b:dir_cwd}{Sep()}{item.name}"
         try
-            if item.type == 'dir' && !isdirectory(dst)
+            if item.type =~ 'dir\|linkd\|junction' && !isdirectory(dst)
                 mkdir(dst, "p")
             else
                 var file_exists = filereadable(dst)
@@ -164,7 +164,6 @@ export def Copy()
                                 {text: "yes to &all", act: 'a'},
                                 {text: "n&o to all", act: 'o'}
                             ])
-                        echo res
                     if res == 0
                         override = true
                         override_all = 0
@@ -183,7 +182,7 @@ export def Copy()
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
-                    system($'{copy_cmd} "{src}" "{dst}"')
+                    system($'{copy_cmd} "{resolve(src)}" "{dst}"')
                 endif
             endif
         catch
