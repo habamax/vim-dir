@@ -20,11 +20,11 @@ var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~',
 
 b:undo_ftplugin = undo_opts .. ' | '
 b:undo_ftplugin ..= (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
-b:undo_ftplugin ..= ' | unlet b:dir | unlet b:dir_cwd'
 
 
 import autoload 'dir.vim'
 import autoload 'dir/action.vim'
+
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
