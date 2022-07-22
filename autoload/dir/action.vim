@@ -131,41 +131,6 @@ export def DoMarksAllToggle()
 enddef
 
 
-export def DoCopy()
-    if mark.Empty() | return | endif
-    if mark.Bufnr() == bufnr()
-        echo "Can't copy to the same location!"
-        return
-    endif
-    # check if user wants to copy a directory into its own subdirectory... and prevent it.
-    for item in mark.List()
-        if item.type !~ 'dir\|linkd\|junction' | continue | endif
-        var path = $"{mark.Dir()}{os.Sep()}{item.name}"
-        if path == strpart(b:dir_cwd, 0, path->len())
-            echo "Can't copy to self sub directory!"
-            return
-        endif
-    endfor
-
-    var cnt = mark.List()->len()
-
-    var msg = []
-    if cnt == 1
-        msg = [$'Copy {FileOrDirMsg(mark.List())}', $'"{mark.List()[0].name}"?']
-    else
-        msg = [$'Copy {cnt} {FileOrDirMsg(mark.List())}?']
-    endif
-
-    var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
-    if res == 0
-        var view = winsaveview()
-        os.Copy()
-        winrestview(view)
-        :edit
-    endif
-enddef
-
-
 export def DoRename()
     var del_list = []
     if mark.Empty() || mark.Bufnr() != bufnr()
@@ -197,6 +162,41 @@ export def DoRename()
 enddef
 
 
+export def DoCopy()
+    if mark.Empty() | return | endif
+    if mark.Bufnr() == bufnr()
+        echo "Can't copy to the same location!"
+        return
+    endif
+    # check if user wants to copy a directory into its own subdirectory... and prevent it.
+    for item in mark.List()
+        if item.type !~ 'dir\|linkd\|junction' | continue | endif
+        var path = $"{mark.Dir()}{os.Sep()}{item.name}"
+        if path == strpart(b:dir_cwd, 0, path->len())
+            echo "Can't copy to self sub directory!"
+            return
+        endif
+    endfor
+
+    var cnt = mark.List()->len()
+
+    var msg = []
+    if cnt == 1
+        msg = [$'Copy {FileOrDirMsg(mark.List())} here?', $'"{mark.List()[0].name}"']
+    else
+        msg = [$'Copy {cnt} {FileOrDirMsg(mark.List())} here?']
+    endif
+
+    var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
+    if res == 0
+        var view = winsaveview()
+        os.Copy()
+        winrestview(view)
+        :edit
+    endif
+enddef
+
+
 export def DoMove()
     if mark.Empty() | return | endif
     if mark.Bufnr() == bufnr()
@@ -217,9 +217,9 @@ export def DoMove()
 
     var msg = []
     if cnt == 1
-        msg = [$'Move {FileOrDirMsg(mark.List())}', $'"{mark.List()[0].name}"?']
+        msg = [$'Move {FileOrDirMsg(mark.List())} here?', $'"{mark.List()[0].name}"']
     else
-        msg = [$'Move {cnt} {FileOrDirMsg(mark.List())}?']
+        msg = [$'Move {cnt} {FileOrDirMsg(mark.List())} here?']
     endif
 
     var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
