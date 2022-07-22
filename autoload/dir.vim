@@ -17,6 +17,7 @@ enddef
 
 
 def PrintDir(dir: list<dict<any>>)
+    var view = winsaveview()
     setl ma nomod noro
     sil! :%d _
     setline(1, b:dir_cwd)
@@ -25,6 +26,7 @@ def PrintDir(dir: list<dict<any>>)
         setline(2, ["", ""] + strdir)
     endif
     setl noma nomod ro
+    winrestview(view)
 enddef
 
 
@@ -109,8 +111,9 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
 
     if isdirectory(oname)
         var focus = ""
+        var new_dirbuf = GetBufnr($"dir://{oname}") == -1
         if filereadable(expand("%"))
-           || exists("b:dir_cwd") && len(oname) < len(b:dir_cwd) && GetBufnr($"dir://{oname}") == -1
+           || exists("b:dir_cwd") && len(oname) < len(b:dir_cwd) && new_dirbuf
             # focus if Dir is opened from a buffer with
             # 1. a regular file
             # 2. another Dir and you go up the tree to a not yet opened Dir
@@ -137,18 +140,20 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
 
         mark.UpdateInfo()
 
-        if len(b:dir) > 0 && line('.') < g.DIRLIST_SHIFT
-            exe $":{g.DIRLIST_SHIFT}"
-        endif
-        if len(b:dir) == 0
-            exe $"norm! $2F{os.Sep()}l"
-        elseif !empty(focus)
-            if search($'\d\d:\d\d\s\+\zs{focus}', 'c') == 0
-                search($'\d\d:\d\d\s\+\zs{focus}', 'b')
+        if !invalidate || new_dirbuf
+            if len(b:dir) > 0 && line('.') < g.DIRLIST_SHIFT
+                exe $":{g.DIRLIST_SHIFT}"
             endif
-        else
-            norm! $
-            search('\d\d:\d\d\s\+\zs', 'b', line('.'))
+            if len(b:dir) == 0
+                exe $"norm! $2F{os.Sep()}l"
+            elseif !empty(focus)
+                if search($'\d\d:\d\d\s\+\zs{focus}', 'c') == 0
+                    search($'\d\d:\d\d\s\+\zs{focus}', 'b')
+                endif
+            else
+                norm! $
+                search('\d\d:\d\d\s\+\zs', 'b', line('.'))
+            endif
         endif
     else
         exe $"e {oname->escape('%#')}"
