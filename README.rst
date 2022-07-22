@@ -43,6 +43,14 @@ showing current buffer file name in a directory list. Consequent
 :kbd:`Backspace` presses would open parent directories.
 
 
+Other global mappings might be, for example:
+
+.. code::
+
+  nnoremap <space>gd <cmd>Dir ~/Documents<cr>
+  nnoremap <space>gD <cmd>Dir ~/Downloads<cr>
+
+
 Local mappings
 --------------
 
@@ -94,7 +102,7 @@ Features (To Do)
   - ✓ (2022-07-22) Numbered bookmarks
   - Named bookmarks
 
-- Basic file operations support:
+- File operations:
 
   - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer).
   - ✓ (2022-07-14) Rename file/directory.
@@ -108,12 +116,14 @@ Features (To Do)
 Maybe Features
 ==============
 
-- View archive contents (using ``7z`` maybe?)
+- Support archives: view contents/create/add/extract (using ``7z`` maybe?).
+
+- Background file operations (copy/move/delete).
 
 - Mass rename ala ``qmv``/``vidir`` (explore feasibility).
 
 - Networking ala netrw or mc with shell/sftp links to machines (explore
-  feasibility).
+  feasibility). Here probably I should rely on openssh.
 
 
 
