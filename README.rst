@@ -122,7 +122,7 @@ Maybe Features
 
 - Mass rename ala ``qmv``/``vidir`` (explore feasibility).
 
-- Networking ala netrw or mc with shell/sftp links to machines (explore
+- Networking ala ``netrw`` or ``mc`` with shell/sftp links to machines (explore
   feasibility). Here probably I should rely on openssh.
 
 
