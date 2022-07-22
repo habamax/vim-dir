@@ -2,7 +2,7 @@
                        VIM-DIR: Browse directories in Vim
 ################################################################################
 
-:Minimum requirements: ``Vim9``
+:Minimum requirements: ``Vim9``, ``Huge``
 
 **WIP**
 
