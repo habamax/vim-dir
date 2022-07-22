@@ -119,7 +119,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             # 2. another Dir and you go up the tree to a not yet opened Dir
             focus = expand("%:t")
         endif
-        if OpenBuffer(oname) || invalidate
+        if OpenBuffer(oname) || invalidate || get(b:, "dir_invalidate", false)
             var dir_ls: list<dict<any>>
             try
                  dir_ls = ReadDir(oname)
@@ -132,6 +132,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             endtry
             b:dir_cwd = oname
             b:dir = dir_ls
+            b:dir_invalidate = false
             PrintDir(b:dir)
             if invalidate && bufnr() == mark.Bufnr()
                 mark.Clear()

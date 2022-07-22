@@ -9,18 +9,8 @@ var mark_bufnr: number = -1
 prop_type_add('DirMark', {highlight: 'DirMark', priority: 1000})
 
 
-def OtherDirBuffers(): list<dict<any>>
-    return getbufinfo()->filter((_, v) => v.name =~ '^dir://' && bufnr() != v.bufnr)
-enddef
-
-
-def DirBuffers(): list<dict<any>>
-    return getbufinfo()->filter((_, v) => v.name =~ '^dir://')
-enddef
-
-
 def ClearOtherBufferMarks()
-    for buf_info in OtherDirBuffers()
+    for buf_info in g.OtherDirBuffers()
         prop_clear(1, buf_info.linecount, {type: 'DirMark', bufnr: buf_info.bufnr})
     endfor
 enddef
@@ -43,7 +33,7 @@ enddef
 
 export def UpdateInfo()
     var cnt = mark_list->len()
-    for buf_info in DirBuffers()
+    for buf_info in g.DirBuffers()
         setbufvar(buf_info.bufnr, '&modifiable', 1)
         setbufvar(buf_info.bufnr, '&readonly', 0)
         if cnt > 0

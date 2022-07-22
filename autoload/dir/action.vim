@@ -164,7 +164,13 @@ enddef
 
 
 export def DoMove()
-    echo "Move stub"
+    var view = winsaveview()
+    try
+        os.Move()
+    finally
+        :edit
+        winrestview(view)
+    endtry
 enddef
 
 

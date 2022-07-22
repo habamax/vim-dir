@@ -14,9 +14,9 @@ setlocal nobuflisted
 setlocal noswapfile
 
 
-var nop_maps = ['r', 'd', 'c', 'C', 'p', 'gp', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
+var nop_maps = ['r', 'd', 'c', 'C', 'gp', 'gP', 'a', 'I', 'gI', 'gi', 'U', '<C-r>']
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~',
-                 't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'P', 'gP',
+                 't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'p', 'P',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5', '<C-a>6', '<C-a>7', '<C-a>8', '<C-a>9', '<C-a>0',
                 ]
@@ -52,10 +52,10 @@ noremap <buffer> D <scriptcmd>action.DoDelete()<cr>
 xnoremap <buffer> D <scriptcmd>action.DoDelete()<cr>
 noremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
 xnoremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
-noremap <buffer> P <scriptcmd>action.DoCopy()<cr>
-xnoremap <buffer> P <scriptcmd>action.DoCopy()<cr>
-noremap <buffer> gP <scriptcmd>action.DoMove()<cr>
-xnoremap <buffer> gP <scriptcmd>action.DoMove()<cr>
+noremap <buffer> p <scriptcmd>action.DoCopy()<cr>
+xnoremap <buffer> p <scriptcmd>action.DoCopy()<cr>
+noremap <buffer> P <scriptcmd>action.DoMove()<cr>
+xnoremap <buffer> P <scriptcmd>action.DoMove()<cr>
 noremap <buffer> R <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> R <scriptcmd>action.DoRename()<cr>
 noremap <buffer> rr <scriptcmd>action.DoRename()<cr>

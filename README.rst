@@ -4,7 +4,12 @@
 
 :Minimum requirements: ``Vim9``, ``Huge``
 
-**WIP**
+**WIP**, use at your own risk.
+
+- there might be bugs;
+
+- beware of dangerous file operations like move/rename/delete, only me testing
+  it probably is not enough :).
 
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
@@ -53,7 +58,8 @@ Local mappings
 - :kbd:`X` — toggle selection of all files/directories (select/unselect all).
 - :kbd:`D` or :kbd:`dd` — delete files/directories.
 - :kbd:`R` or :kbd:`rr` — rename files/directories.
-- :kbd:`P` — copy selected files/directories into current directory.
+- :kbd:`p` — copy selected files/directories into current directory.
+- :kbd:`P` — move selected files/directories into current directory.
 - :kbd:`A` — open actions menu.
 - :kbd:`~` or :kbd:`g~` — open home directory.
 - :kbd:`g1` up to  :kbd:`g0` — open numbered bookmark.
@@ -95,7 +101,7 @@ Features (To Do)
   - ✓ (2022-07-15) Create a directory.
   - ✓ (2022-07-13) Delete files/directories (be careful here).
   - ✓ (2022-07-21) Copy files/directories (be careful here).
-  - Move files/directories.
+  - ✓ (2022-07-22) Move files/directories.
   - ``chmod``, ``chown`` where it makes sense.
 
 

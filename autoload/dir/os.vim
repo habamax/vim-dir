@@ -2,6 +2,7 @@ vim9script
 
 import autoload 'dir/mark.vim'
 import autoload 'dir/popup.vim'
+import autoload 'dir/g.vim'
 
 
 export def Sep(): string
@@ -207,6 +208,81 @@ export def Copy()
         catch
             echo v:exception
         endtry
+    endfor
+    mark.Clear()
+enddef
+
+
+# XXX: explore jobs here...
+export def Move()
+    if mark.Empty() | return | endif
+    if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
+
+    var move_cmd = "mv"
+    var dest_dir = $"{b:dir_cwd}"
+
+    if has("win32")
+        move_cmd = "move /Y"
+    endif
+
+    var override = false
+    # 1 - override all files
+    # -1 - do not override anything
+    var override_all = 0
+
+    var file_list = mark.List()->copy()
+    var dir_list = mark.List()->copy()->filter((_, v) => v.type =~ 'dir\|linkd\|junction')
+    for item in dir_list
+        file_list += ListDirTree($"{mark.Dir()}{Sep()}{item.name}")
+    endfor
+    for item in file_list
+        var src = $"{mark.Dir()}{Sep()}{item.name}"
+        var dst = $"{b:dir_cwd}{Sep()}{item.name}"
+        try
+            if item.type =~ 'dir\|linkd\|junction' && !isdirectory(dst)
+                mkdir(dst, "p")
+            else
+                var file_exists = filereadable(dst)
+                if file_exists && override_all == 0
+                    var res = popup.Confirm(['Override existing', $'"{dst}"?'], [
+                                {text: "&yes", act: 'y'},
+                                {text: "&no", act: 'n'},
+                                {text: "yes to &all", act: 'a'},
+                                {text: "n&o to all", act: 'o'}
+                            ])
+                    if res == 0
+                        override = true
+                        override_all = 0
+                    elseif res == 1
+                        override = false
+                        override_all = 0
+                    elseif res == 2
+                        override = true
+                        override_all = 1
+                    elseif res == 3
+                        override = false
+                        override_all = 1
+                    else
+                        override = false
+                        override_all = 0
+                    endif
+                endif
+                if file_exists && override || !file_exists
+                    if !isdirectory(fnamemodify(dst, ":h"))
+                        mkdir(fnamemodify(dst, ":h"), "p")
+                    endif
+                    system($'{move_cmd} "{resolve(src)}" "{dst}"')
+                endif
+            endif
+        catch
+            echo v:exception
+        endtry
+    endfor
+    for item_dir in dir_list
+        Delete($"{mark.Dir()}{Sep()}{item_dir.name}")
+    endfor
+    for buf_info in g.OtherDirBuffers()
+        setbufvar(buf_info.bufnr, "dir_invalidate", true)
     endfor
     mark.Clear()
 enddef
