@@ -175,6 +175,9 @@ export def Copy()
                     elseif res == 3
                         override = false
                         override_all = 1
+                    else
+                        override = false
+                        override_all = 0
                     endif
                 endif
                 if file_exists && override || !file_exists
