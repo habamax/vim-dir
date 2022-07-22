@@ -105,7 +105,7 @@ export def ListDirTree(name: string): list<dict<any>>
     var basename = fnamemodify(name, ":t")
     var path = fnamemodify(name, ":h")
     try
-        result = readdirex(name, '1', {sort: 'none'})
+        result = readdirex(resolve(name), '1', {sort: 'none'})
         for elm in result
             elm.name = $"{basename}{Sep()}{elm.name}"
         endfor
