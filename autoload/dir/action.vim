@@ -71,6 +71,21 @@ export def DoOS()
 enddef
 
 
+def FileOrDirMsg(items: list<dict<any>>): string
+    var cnt = len(items)
+    if cnt == 0 | return "" | endif
+    var res = ""
+    if cnt == 1
+        res = (items[0].type =~ "file\\|link" ? "file" : "directory")
+    else
+        var file_or_dir = items->reduce((acc, el) => el.type =~ 'file\|link' ? or(acc, 1) : or(acc, 2), 0)
+        var types = {1: "files", 2: "directories", 3: "files/directories"}
+        res = types[file_or_dir]
+    endif
+    return res
+enddef
+
+
 export def DoDelete()
     var del_list = []
     if mark.Empty() || mark.Bufnr() != bufnr()
@@ -83,14 +98,9 @@ export def DoDelete()
         var cnt = len(del_list)
         var msg = []
         if cnt == 1
-            msg = [
-                $'Delete {del_list[0].type =~ "file\\|link" ? "file" : "directory"}',
-                $'"{del_list[0].name}"?'
-            ]
+            msg = [$'Delete {FileOrDirMsg(del_list)}', $'"{del_list[0].name}"?']
         else
-            var file_or_dir = del_list->reduce((acc, el) => el.type =~ 'file\|link' ? or(acc, 1) : or(acc, 2), 0)
-            var items = {1: "files", 2: "directories", 3: "files/directories"}
-            msg = [$'Delete {len(del_list)} {items[file_or_dir]}?']
+            msg = [$'Delete {len(del_list)} {FileOrDirMsg(del_list)}?']
         endif
         popup.YesNo(msg, () => {
             for item in del_list
@@ -122,13 +132,23 @@ enddef
 
 
 export def DoCopy()
-    var view = winsaveview()
-    try
+    if mark.Empty() | return | endif
+
+    var cnt = mark.List()->len()
+
+    var msg = []
+    if cnt == 1
+        msg = [$'Copy {FileOrDirMsg(mark.List())}', $'"{mark.List()[0].name}"?']
+    else
+        msg = [$'Copy {cnt} {FileOrDirMsg(mark.List())}?']
+    endif
+
+    popup.YesNo(msg, () => {
+        var view = winsaveview()
         os.Copy()
-    finally
-        :edit
         winrestview(view)
-    endtry
+        :edit
+    })
 enddef
 
 
@@ -164,13 +184,23 @@ enddef
 
 
 export def DoMove()
-    var view = winsaveview()
-    try
+    if mark.Empty() | return | endif
+
+    var cnt = mark.List()->len()
+
+    var msg = []
+    if cnt == 1
+        msg = [$'Move {FileOrDirMsg(mark.List())}', $'"{mark.List()[0].name}"?']
+    else
+        msg = [$'Move {cnt} {FileOrDirMsg(mark.List())}?']
+    endif
+
+    popup.YesNo(msg, () => {
+        var view = winsaveview()
         os.Move()
-    finally
-        :edit
         winrestview(view)
-    endtry
+        :edit
+    })
 enddef
 
 
