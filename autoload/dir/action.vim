@@ -58,7 +58,10 @@ export def DoInfo()
     if filereadable(path)
         popup.Show(readfile($"{path}", "", 100), item)
     elseif isdirectory(path)
-        popup.Show(os.DirInfo(path), item)
+        var info = os.DirInfo(path)
+        if !empty(info)
+            popup.Show(info, item)
+        endif
     endif
 enddef
 
