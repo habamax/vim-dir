@@ -56,6 +56,9 @@ Local mappings
 - :kbd:`P` — copy selected files/directories into current directory.
 - :kbd:`A` — open actions menu.
 - :kbd:`~` or :kbd:`g~` — open home directory.
+- :kbd:`g1` up to  :kbd:`g0` — open numbered bookmark.
+- :kbd:`<C-a>1` up to  :kbd:`<C-a>0` — set numbered bookmark for a current
+  directory.
 
 
 Settings
@@ -80,7 +83,10 @@ Features (To Do)
 
 - ✓ (2022-07-11) Open files with external applications (``xdg-open``, ``open``, ``start``).
 
-- Bookmarks (hotlist).
+- Bookmarks:
+
+  - ✓ (2022-07-22) Numbered bookmarks
+  - Named bookmarks
 
 - Basic file operations support:
 
