@@ -1,10 +1,10 @@
 vim9script
 
+import autoload 'dir/g.vim'
 import autoload 'dir/fmt.vim'
 import autoload 'dir/mark.vim'
 import autoload 'dir/os.vim'
-import autoload 'dir/g.vim'
-import autoload 'dir/sort.vim'
+import autoload 'dir/sort.vim' as dsort
 
 
 def GetBufnr(name: string): number
@@ -21,11 +21,11 @@ export def SortDir(dir: list<dict<any>>)
     var sort_by: string = get(b:, "dir_sort_by") ?? get(g:, "dir_sort_by", "")
     var sort_desc: bool = get(b:, "dir_sort_desc") ?? get(g:, "dir_sort_desc", false)
     if sort_by == 'time'
-        sort.ByTime(dir, sort_desc)
+        dsort.ByTime(dir, sort_desc)
     elseif sort_by == 'size'
-        sort.BySize(dir, sort_desc)
+        dsort.BySize(dir, sort_desc)
     elseif sort_by == 'name'
-        sort.ByName(dir, sort_desc)
+        dsort.ByName(dir, sort_desc)
     endif
 enddef
 
