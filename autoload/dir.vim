@@ -4,6 +4,7 @@ import autoload 'dir/fmt.vim'
 import autoload 'dir/mark.vim'
 import autoload 'dir/os.vim'
 import autoload 'dir/g.vim'
+import autoload 'dir/sort.vim'
 
 
 def GetBufnr(name: string): number
@@ -16,14 +17,27 @@ def GetBufnr(name: string): number
 enddef
 
 
-def PrintDir(dir: list<dict<any>>)
+export def SortDir(dir: list<dict<any>>)
+    var sort_by: string = get(b:, "dir_sort_by") ?? get(g:, "dir_sort_by", "")
+    var sort_desc: bool = get(b:, "dir_sort_desc") ?? get(g:, "dir_sort_desc", false)
+    if sort_by == 'time'
+        sort.ByTime(dir, sort_desc)
+    elseif sort_by == 'size'
+        sort.BySize(dir, sort_desc)
+    elseif sort_by == 'name'
+        sort.ByName(dir, sort_desc)
+    endif
+enddef
+
+
+export def PrintDir(dir: list<dict<any>>)
     var view = winsaveview()
     setl ma nomod noro
     sil! :%d _
     setline(1, b:dir_cwd)
-    var strdir = dir->mapnew((_, v) => fmt.Dir(v))
-    if len(strdir) > 0
-        setline(2, ["", ""] + strdir)
+    var dir_text = dir->mapnew((_, v) => fmt.Dir(v))
+    if len(dir_text) > 0
+        setline(2, ["", ""] + dir_text)
     endif
     setl noma nomod ro
     winrestview(view)
@@ -133,6 +147,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             b:dir_cwd = oname
             b:dir = dir_ls
             b:dir_invalidate = false
+            SortDir(b:dir)
             PrintDir(b:dir)
             if invalidate && bufnr() == mark.Bufnr()
                 mark.Clear()
