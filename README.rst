@@ -54,6 +54,9 @@ Other global mappings might be, for example:
 Local mappings
 --------------
 
+Navigation
+~~~~~~~~~~
+
 - :kbd:`Backspace` or :kbd:`u` — one directory up.
 - :kbd:`Enter` or :kbd:`o` — open a file or a directory under cursor.
 - :kbd:`O` — open a file/directory with OS.
@@ -62,6 +65,11 @@ Local mappings
 - :kbd:`t` — open a file/directory in a tab.
 - :kbd:`i` — preview a file (first 100 lines) or show dir tree (if `tree` is
   available).
+
+
+File operations
+~~~~~~~~~~~~~~~
+
 - :kbd:`x` — toggle selection of file/directory.
 - :kbd:`X` — toggle selection of all files/directories (select/unselect all).
 - :kbd:`D` or :kbd:`dd` — delete files/directories.
@@ -69,10 +77,20 @@ Local mappings
 - :kbd:`p` — copy selected files/directories into current directory.
 - :kbd:`P` — move selected files/directories into current directory.
 - :kbd:`A` — open actions menu.
+
+
+Bookmarks
+~~~~~~~~~
+
 - :kbd:`~` or :kbd:`g~` — open home directory.
 - :kbd:`g1` up to  :kbd:`g0` — open numbered bookmark.
 - :kbd:`Ctrl-A` :kbd:`1` up to  :kbd:`Ctrl-A` :kbd:`0` — set numbered
   bookmark for a current directory.
+
+
+Sort
+~~~~
+
 - :kbd:`g` :kbd:`,` — sort current buffer dir by size.
 - :kbd:`g` :kbd:`.` — sort current buffer dir by time.
 - :kbd:`g` :kbd:`/` — sort current buffer dir by name.
