@@ -87,6 +87,7 @@ export def DoSort(by: string)
 
     dir.SortDir(b:dir)
     dir.PrintDir(b:dir)
+    mark.UpdateInfo()
 
     echohl Question
     echo $'Sort by {by} {b:dir_sort_desc ? "DESC" : "ASC"}'
