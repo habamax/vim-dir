@@ -7,15 +7,26 @@ import autoload 'dir/os.vim'
 import autoload 'dir/sort.vim' as dsort
 
 
+# default sort is by name asc
+# we shouldn't sort if no other sorting was done
+def NeedSorting(): bool
+    if get(b:, "dir_sort_by", "name") == "name" && !get(b:, "dir_sort_desc", false)
+        return false
+    else
+        return true
+    endif
+enddef
+
+
 export def SortDir(dir: list<dict<any>>)
-    var sort_by: string = get(b:, "dir_sort_by") ?? get(g:, "dir_sort_by", "")
-    var sort_desc: bool = get(b:, "dir_sort_desc") ?? get(g:, "dir_sort_desc", false)
-    if sort_by == 'time'
-        dsort.ByTime(dir, sort_desc)
-    elseif sort_by == 'size'
-        dsort.BySize(dir, sort_desc)
-    elseif sort_by == 'name'
-        dsort.ByName(dir, sort_desc)
+    b:dir_sort_by = get(b:, "dir_sort_by") ?? get(g:, "dir_sort_by", "name")
+    b:dir_sort_desc = get(b:, "dir_sort_desc") ?? get(g:, "dir_sort_desc", false)
+    if b:dir_sort_by == 'time'
+        dsort.ByTime(dir, b:dir_sort_desc)
+    elseif b:dir_sort_by == 'size'
+        dsort.BySize(dir, b:dir_sort_desc)
+    elseif b:dir_sort_by == 'name'
+        dsort.ByName(dir, b:dir_sort_desc)
     endif
 enddef
 
@@ -137,7 +148,9 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             b:dir_cwd = oname
             b:dir = dir_ls
             b:dir_invalidate = false
-            SortDir(b:dir)
+            if NeedSorting()
+                SortDir(b:dir)
+            endif
             PrintDir(b:dir)
             if invalidate && bufnr() == mark.Bufnr()
                 mark.Clear()

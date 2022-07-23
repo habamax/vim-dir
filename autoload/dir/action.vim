@@ -77,12 +77,13 @@ enddef
 export def DoSort(by: string)
     if ["time", "size", "name"]->index(by) == -1 | return | endif
 
-    if get(b:, "dir_sort_by", "") == by
-        b:dir_sort_desc = !get(b:, "dir_sort_desc", "false")
+    if (get(b:, "dir_sort_by") ?? get(g:, "dir_sort_by", "name")) == by
+        b:dir_sort_desc = !get(b:, "dir_sort_desc", false)
     else
-        b:dir_sort_by = by
         b:dir_sort_desc = false
     endif
+
+    b:dir_sort_by = by
 
     dir.SortDir(b:dir)
     dir.PrintDir(b:dir)
