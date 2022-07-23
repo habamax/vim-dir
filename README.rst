@@ -68,8 +68,8 @@ Navigation
 File operations
 ~~~~~~~~~~~~~~~
 
-- :kbd:`i` — preview a file (first 100 lines) or show dir tree (if `tree` is
-  available).
+- :kbd:`i` — preview a file (first 100 lines) or show dir info (nothing on
+  windows).
 - :kbd:`x` — toggle selection of file/directory.
 - :kbd:`X` — toggle selection of all files/directories (select/unselect all).
 - :kbd:`D` or :kbd:`dd` — delete files/directories.
