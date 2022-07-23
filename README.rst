@@ -73,6 +73,9 @@ Local mappings
 - :kbd:`g1` up to  :kbd:`g0` — open numbered bookmark.
 - :kbd:`Ctrl-A` :kbd:`1` up to  :kbd:`Ctrl-A` :kbd:`0` — set numbered
   bookmark for a current directory.
+- :kbd:`g` :kbd:`,` — sort current buffer dir by size.
+- :kbd:`g` :kbd:`.` — sort current buffer dir by time.
+- :kbd:`g` :kbd:`/` — sort current buffer dir by name.
 
 
 Settings
@@ -82,6 +85,10 @@ Settings
   list, open it using OS.
 - ``g:dir_invert_split`` — by default :kbd:`s` splits horizontally and :kbd:`S`
   splits vertically. Set to ``1``/``true`` to make the opposite.
+- ``g:dir_sort_by`` — sort by one of ``name``, ``size`` or ``time``. Default is
+  ``name``.
+- ``g:dir_sort_desc`` — if true, sort ``desc``, otherwise ``asc``. Default is
+  ``false``.
 
 
 Features (To Do)
@@ -91,7 +98,7 @@ Features (To Do)
 
 - ✓ (2022-07-10) Open files/directories in splits/tabs.
 
-- Sorting.
+- ✓ (2022-07-23) Sorting.
 
 - Filtering.
 
