@@ -7,16 +7,6 @@ import autoload 'dir/os.vim'
 import autoload 'dir/sort.vim' as dsort
 
 
-def GetBufnr(name: string): number
-    var bufnrs = getbufinfo()->filter((_, v) => v.name == name)
-    var result = -1
-    if len(bufnrs) > 0
-        result = bufnrs[0].bufnr
-    endif
-    return result
-enddef
-
-
 export def SortDir(dir: list<dict<any>>)
     var sort_by: string = get(b:, "dir_sort_by") ?? get(g:, "dir_sort_by", "")
     var sort_desc: bool = get(b:, "dir_sort_desc") ?? get(g:, "dir_sort_desc", false)
@@ -67,7 +57,7 @@ def OpenBuffer(name: string): bool
     var bufname = $"dir://{name}"
     # buffer names are unreliable in :b command...
     var bufnrs = getbufinfo()->filter((_, v) => v.name == bufname)
-    var bufnr = GetBufnr(bufname)
+    var bufnr = g.GetBufnr(bufname)
     if &hidden
         if bufnr > 0
             exe $"sil! keepj keepalt b {bufnr}"
@@ -125,7 +115,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
 
     if isdirectory(oname)
         var focus = ""
-        var new_dirbuf = GetBufnr($"dir://{oname}") == -1
+        var new_dirbuf = g.GetBufnr($"dir://{oname}") == -1
         if filereadable(expand("%"))
            || exists("b:dir_cwd") && len(oname) < len(b:dir_cwd) && new_dirbuf
             # focus if Dir is opened from a buffer with

@@ -13,3 +13,11 @@ export def DirBuffers(): list<dict<any>>
 enddef
 
 
+export def GetBufnr(name: string): number
+    var bufnrs = getbufinfo()->filter((_, v) => v.name == name)
+    var result = -1
+    if len(bufnrs) > 0
+        result = bufnrs[0].bufnr
+    endif
+    return result
+enddef
