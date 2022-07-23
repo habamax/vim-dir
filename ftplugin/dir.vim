@@ -66,9 +66,9 @@ noremap <buffer> rr <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> rr <scriptcmd>action.DoRename()<cr>
 nnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
 xnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
-nnoremap <buffer> gst <scriptcmd>action.DoSort("time")<cr>
-nnoremap <buffer> gsn <scriptcmd>action.DoSort("name")<cr>
-nnoremap <buffer> gss <scriptcmd>action.DoSort("size")<cr>
+nnoremap <buffer> g, <scriptcmd>action.DoSort("size")<cr>
+nnoremap <buffer> g. <scriptcmd>action.DoSort("time")<cr>
+nnoremap <buffer> g/ <scriptcmd>action.DoSort("name")<cr>
 
 
 nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>
