@@ -21,3 +21,17 @@ export def GetBufnr(name: string): number
     endif
     return result
 enddef
+
+
+export def Echo(...items: list<any>)
+    for item in items
+        if type(item) == v:t_dict && has_key(item, 't') && has_key(item, 'hl')
+            exe $'echohl {item.hl}'
+            echon item.t
+        else
+            echohl None
+            echon item
+        endif
+    endfor
+    echohl None
+enddef

@@ -4,6 +4,7 @@ var bookmarks_num: dict<any> = {}
 
 import autoload 'dir.vim'
 import autoload 'dir/os.vim'
+import autoload 'dir/g.vim'
 
 
 def SettingFile(): string
@@ -50,12 +51,15 @@ export def GoNum(n: number)
     if !exists("b:dir_cwd") | return | endif
     var path = get(bookmarks_num, n, '')
     if empty(path)
-        echo $"Bookmark {n} is not set!"
+        g.Echo({t: $'Bookmark {n} is not set!', hl: 'WarningMsg'})
         return
     endif
-    if !isdirectory(path) | return | endif
+    if !isdirectory(path)
+        g.Echo({t: $'Bookmark {n}:', hl: 'WarningMsg'}, ' there is no "', {t: path, hl: 'Directory'}, '"!')
+        return
+    endif
     dir.Open(path, '', false)
-    echo $"Bookmark {n}: {path}"
+    g.Echo({t: $'Bookmark {n}:', hl: 'WarningMsg'}, ' "', {t: path, hl: 'Directory'}, '"')
 enddef
 
 
@@ -64,5 +68,5 @@ export def GoNumSet(n: number)
     if !exists("b:dir_cwd") | return | endif
     bookmarks_num[n] = b:dir_cwd
     SaveNum()
-    echo $"Saving bookmark {n}: {b:dir_cwd}"
+    g.Echo({t: $'Saving bookmark {n}:', hl: 'WarningMsg'}, ' "', {t: b:dir_cwd, hl: 'Directory'}, '"')
 enddef
