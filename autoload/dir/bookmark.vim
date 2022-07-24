@@ -50,12 +50,12 @@ export def GoNum(n: number)
     if !exists("b:dir_cwd") | return | endif
     var path = get(bookmarks_num, n, '')
     if empty(path)
-        echo $"Numbered bookmark {n} is not set!"
+        echo $"Bookmark {n} is not set!"
         return
     endif
     if !isdirectory(path) | return | endif
     dir.Open(path, '', false)
-    echo $"Numbered bookmark {n}: {path}"
+    echo $"Bookmark {n}: {path}"
 enddef
 
 
@@ -64,5 +64,5 @@ export def GoNumSet(n: number)
     if !exists("b:dir_cwd") | return | endif
     bookmarks_num[n] = b:dir_cwd
     SaveNum()
-    echo $"Saving numbered bookmark {n}: {b:dir_cwd}"
+    echo $"Saving bookmark {n}: {b:dir_cwd}"
 enddef
