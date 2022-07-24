@@ -88,6 +88,7 @@ export def DoSort(by: string)
     dir.SortDir(b:dir)
     dir.PrintDir(b:dir)
     mark.UpdateInfo()
+    mark.RefreshVisual()
 
     echohl Question
     echo $'Sort by {by} {b:dir_sort_desc ? "DESC" : "ASC"}'
@@ -112,7 +113,7 @@ enddef
 
 export def DoDelete()
     var del_list = []
-    if mark.Empty() || mark.Bufnr() != bufnr()
+    if mark.IsEmpty() || mark.Bufnr() != bufnr()
         mark.Clear()
         del_list = VisualItemsInList(line('v'), line('.'))
     else
@@ -157,7 +158,7 @@ enddef
 
 export def DoRename()
     var del_list = []
-    if mark.Empty() || mark.Bufnr() != bufnr()
+    if mark.IsEmpty() || mark.Bufnr() != bufnr()
         mark.Clear()
         del_list = VisualItemsInList(line('v'), line('.'))
     else
@@ -187,7 +188,7 @@ enddef
 
 
 export def DoCopy()
-    if mark.Empty() | return | endif
+    if mark.IsEmpty() | return | endif
     if mark.Bufnr() == bufnr()
         echo "Can't copy to the same location!"
         return
@@ -222,7 +223,7 @@ enddef
 
 
 export def DoMove()
-    if mark.Empty() | return | endif
+    if mark.IsEmpty() | return | endif
     if mark.Bufnr() == bufnr()
         echo "Can't move to the same location!"
         return

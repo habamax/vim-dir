@@ -146,7 +146,7 @@ enddef
 
 # XXX: explore jobs here...
 export def Copy()
-    if mark.Empty() | return | endif
+    if mark.IsEmpty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
 
     var copy_cmd = "cp"
@@ -215,7 +215,7 @@ enddef
 
 # XXX: explore jobs here...
 export def Move()
-    if mark.Empty() | return | endif
+    if mark.IsEmpty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
 
     var move_cmd = "mv"

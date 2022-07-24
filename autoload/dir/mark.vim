@@ -16,6 +16,26 @@ def ClearOtherBufferMarks()
 enddef
 
 
+# Assuming all textprop marks were deleted after sort
+# This should re-create them
+export def RefreshVisual()
+    if IsEmpty() | return | endif
+    if mark_dir != b:dir_cwd | return | endif
+    if mark_list->len() == b:dir->len()
+        prop_clear(g.DIRLIST_SHIFT, line('$'), {type: 'DirMark'})
+        prop_add(g.DIRLIST_SHIFT, 1, {type: 'DirMark', end_lnum: line('$'), end_col: 500})
+        return
+    endif
+
+    for item in mark_list
+        var idx = b:dir->index(item)
+        if idx != -1
+            prop_add(idx + g.DIRLIST_SHIFT, 1, {type: 'DirMark', length: 500})
+        endif
+    endfor
+enddef
+
+
 export def List(): list<dict<any>>
     return mark_list
 enddef
@@ -68,7 +88,7 @@ export def Toggle(items: list<dict<any>>, line1: number, line2: number)
 
     for line in range(min([line1, line2]), max([line1, line2]))
         if empty(prop_list(line, {types: ['DirMark']}))
-            prop_add(line, 1, {type: 'DirMark', length: getline(line)->len()})
+            prop_add(line, 1, {type: 'DirMark', length: 500})
         else
             prop_clear(line, line, {type: 'DirMark'})
         endif
@@ -97,7 +117,7 @@ export def All()
 enddef
 
 export def ToggleAll()
-    if Empty()
+    if IsEmpty()
         All()
     elseif mark_bufnr == bufnr()
         Clear()
@@ -108,14 +128,14 @@ export def ToggleAll()
 enddef
 
 
-export def DebugPrint()
-    echo mark_list->mapnew((_, v) => $"[{v.type}]\t{v.name}")->join("\n")
-    echo $"count: {mark_list->len()}"
-    echo $"Mark Dir: {mark_dir}"
-    echo $"Mark Buffer: {mark_bufnr}"
-enddef
-
-
-export def Empty(): bool
+export def IsEmpty(): bool
     return len(mark_list) == 0
 enddef
+
+
+# export def DebugPrint()
+#     echo mark_list->mapnew((_, v) => $"[{v.type}]\t{v.name}")->join("\n")
+#     echo $"count: {mark_list->len()}"
+#     echo $"Mark Dir: {mark_dir}"
+#     echo $"Mark Buffer: {mark_bufnr}"
+# enddef
