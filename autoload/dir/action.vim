@@ -90,9 +90,7 @@ export def DoSort(by: string)
     mark.UpdateInfo()
     mark.RefreshVisual()
 
-    echohl Question
-    echo $'Sort by {by} {b:dir_sort_desc ? "DESC" : "ASC"}'
-    echohl None
+    g.Echo("Sort by ", {t: $'{by} {(b:dir_sort_desc ? "▼" : "▲")}', hl: 'WarningMsg'})
 enddef
 
 
