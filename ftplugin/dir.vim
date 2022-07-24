@@ -19,7 +19,7 @@ var nop_maps = ['r', 'd', 'c', 'C', 'a', 'I',
                 'U', '<C-r>', '<C-w>f', '<C-w>F', 'gf', 'gF'
                ]
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~',
-                 't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'p', 'P',
+                 't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'p', 'P', ']]', '[[',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
                  '<C-a>6', '<C-a>7', '<C-a>8', '<C-a>9', '<C-a>0',
@@ -69,6 +69,9 @@ xnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
 nnoremap <buffer> g, <scriptcmd>action.DoSort("size")<cr>
 nnoremap <buffer> g. <scriptcmd>action.DoSort("time")<cr>
 nnoremap <buffer> g/ <scriptcmd>action.DoSort("name")<cr>
+
+noremap <buffer> ]] <scriptcmd>action.JumpForward()<cr>
+noremap <buffer> [[ <scriptcmd>action.JumpBackward()<cr>
 
 
 nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>

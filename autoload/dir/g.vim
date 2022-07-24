@@ -3,6 +3,11 @@ vim9script
 export const DIRLIST_SHIFT = 4
 
 
+export def IsFile(item: dict<any>): bool
+    return item.type == 'file' || item.type == 'link'
+enddef
+
+
 export def OtherDirBuffers(): list<dict<any>>
     return getbufinfo()->filter((_, v) => v.name =~ '^dir://' && bufnr() != v.bufnr)
 enddef

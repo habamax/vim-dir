@@ -277,3 +277,34 @@ export def DoAction()
     ]
     popup.Menu(actions)
 enddef
+
+
+export def JumpForward()
+    var idx = line('.') - g.DIRLIST_SHIFT
+    if idx < 0
+        idx = 0
+    endif
+    if g.IsFile(b:dir[idx])
+        normal! G
+    else
+        while !g.IsFile(b:dir[idx]) && idx < len(b:dir) - 1
+            idx += 1
+        endwhile
+        exe $":{idx + g.DIRLIST_SHIFT}"
+    endif
+enddef
+
+
+export def JumpBackward()
+    var idx = line('.') - g.DIRLIST_SHIFT
+    if idx <= 0
+        return
+    elseif !g.IsFile(b:dir[idx])
+        exe $":{g.DIRLIST_SHIFT}"
+    else
+        while g.IsFile(b:dir[idx]) && idx > 0
+            idx -= 1
+        endwhile
+        exe $":{idx + g.DIRLIST_SHIFT}"
+    endif
+enddef
