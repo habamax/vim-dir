@@ -158,10 +158,10 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             b:dir_cwd = oname
             b:dir = dir_ls
             b:dir_invalidate = false
+            FilterDir(b:dir)
             if NeedSorting()
                 SortDir(b:dir)
             endif
-            FilterDir(b:dir)
             PrintDir(b:dir)
         endif
 
