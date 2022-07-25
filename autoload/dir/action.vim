@@ -97,7 +97,7 @@ enddef
 export def DoFilterHidden()
     g:dir_show_hidden = !get(g:, "dir_show_hidden", "true")
     b:dir_invalidate = true
-    :e
+    :edit
 
     var msg = g:dir_show_hidden ? "Show" : "Do not show"
     g.Echo({t: msg, hl: "WarningMsg"}, " .hidden files/directories.")
