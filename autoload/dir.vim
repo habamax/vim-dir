@@ -163,12 +163,10 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             endif
             FilterDir(b:dir)
             PrintDir(b:dir)
-            if invalidate && bufnr() == mark.Bufnr()
-                mark.Clear()
-            endif
         endif
 
         mark.UpdateInfo()
+        mark.RefreshVisual()
 
         if !invalidate || new_dirbuf
             if len(b:dir) > 0 && line('.') < g.DIRLIST_SHIFT
