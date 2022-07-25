@@ -31,6 +31,14 @@ export def SortDir(dir: list<dict<any>>)
 enddef
 
 
+export def FilterDir(dir: list<dict<any>>)
+    b:dir_show_hidden = get(g:, "dir_show_hidden", true)
+    if !b:dir_show_hidden
+        dir->filter((_, v) => v.name !~ '^\.')
+    endif
+enddef
+
+
 export def PrintDir(dir: list<dict<any>>)
     var view = winsaveview()
     setl ma nomod noro
@@ -134,7 +142,9 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             # 2. another Dir and you go up the tree to a not yet opened Dir
             focus = expand("%:t")
         endif
-        if OpenBuffer(oname) || invalidate || get(b:, "dir_invalidate", false)
+        if OpenBuffer(oname) || invalidate
+                             || get(b:, "dir_invalidate", false)
+                             || (get(b:, "dir_show_hidden", true) != get(g:, "dir_show_hidden", true))
             var dir_ls: list<dict<any>>
             try
                  dir_ls = ReadDir(oname)
@@ -151,6 +161,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             if NeedSorting()
                 SortDir(b:dir)
             endif
+            FilterDir(b:dir)
             PrintDir(b:dir)
             if invalidate && bufnr() == mark.Bufnr()
                 mark.Clear()

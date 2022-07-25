@@ -100,6 +100,12 @@ Sort
 - :kbd:`g` :kbd:`/` — sort current buffer dir by name.
 
 
+Filter
+~~~~~~
+
+- :kbd:`.` — toggle ``.hidden`` files/directories
+
+
 Settings
 ========
 
@@ -111,6 +117,8 @@ Settings
   ``name``.
 - ``g:dir_sort_desc`` — if true, sort ``desc``, otherwise ``asc``. Default is
   ``false``.
+- ``g:dir_show_hidden`` — show/hide ``.hidden`` files/directories. Default is
+  ``true``.
 
 
 Features (To Do)

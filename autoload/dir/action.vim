@@ -94,6 +94,16 @@ export def DoSort(by: string)
 enddef
 
 
+export def DoFilterHidden()
+    g:dir_show_hidden = !get(g:, "dir_show_hidden", "true")
+    b:dir_invalidate = true
+    :e
+
+    var msg = g:dir_show_hidden ? "Show" : "Do not show"
+    g.Echo({t: msg, hl: "WarningMsg"}, " .hidden files/directories.")
+enddef
+
+
 def FileOrDirMsg(items: list<dict<any>>): string
     var cnt = len(items)
     if cnt == 0 | return "" | endif

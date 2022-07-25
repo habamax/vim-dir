@@ -70,6 +70,8 @@ nnoremap <buffer> g, <scriptcmd>action.DoSort("size")<cr>
 nnoremap <buffer> g. <scriptcmd>action.DoSort("time")<cr>
 nnoremap <buffer> g/ <scriptcmd>action.DoSort("name")<cr>
 
+nnoremap <buffer> . <scriptcmd>action.DoFilterHidden()<cr>
+
 noremap <buffer> ]] <scriptcmd>action.JumpForward()<cr>
 noremap <buffer> [[ <scriptcmd>action.JumpBackward()<cr>
 
