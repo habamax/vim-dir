@@ -110,7 +110,7 @@ export def DoFilter(bang: string, fltr: string)
     :edit
 
     var msg = (empty(bang) ? "Hide" : "Show")
-    g.Echo($"{msg} all matched ", {t: $"{fltr}", hl: "WarningMsg"}, ".")
+    g.Echo($"{msg} all matched ", {t: $"{fltr}", hl: "WarningMsg"})
 enddef
 
 
