@@ -33,6 +33,8 @@ import autoload 'dir.vim'
 import autoload 'dir/action.vim'
 import autoload 'dir/bookmark.vim'
 
+command! -buffer -nargs=? -bang DirFilter action.DoFilter("<bang>", <f-args>)
+command! -buffer -nargs=? -bang DirFilterClear action.DoFilterClear()
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>

@@ -104,6 +104,25 @@ export def DoFilterHidden()
 enddef
 
 
+export def DoFilter(bang: string, fltr: string)
+    b:dir_filter = fltr
+    b:dir_filter_bang = bang
+    :edit
+
+    var msg = (empty(bang) ? "Hide" : "Show")
+    g.Echo($"{msg} all matched ", {t: $"{fltr}", hl: "WarningMsg"}, ".")
+enddef
+
+
+export def DoFilterClear()
+    b:dir_filter = ""
+    b:dir_filter_bang = ""
+    :edit
+
+    g.Echo("Show all!")
+enddef
+
+
 def FileOrDirMsg(items: list<dict<any>>): string
     var cnt = len(items)
     if cnt == 0 | return "" | endif

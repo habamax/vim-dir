@@ -21,10 +21,26 @@ Commands and Mappings
 Global commands
 ---------------
 
-- ``:Dir [path]`` to open a path as a directory listing.
+- ``:Dir [path]`` — open a path as a directory listing.
 
 - Use regular ``:edit``/``:e`` command to refresh directory listing.
 
+
+Local commands
+--------------
+
+- ``:DirFilter[!] {regex}`` — filter out files/directories matching ``{regex}``.
+  With ``!`` filter out files/directories not matching ``{regex}``::
+
+    # Hide files/dirs with   e   in the name
+    :DirFilter e
+    # Show files/dirs with   e   in the name
+    :DirFilter! e
+
+    # Show files/dirs with   e.*p   in the name
+    :DirFilter! e.*p
+
+- ``:DirFilterClear`` — clear filter.
 
 
 Global mappings
@@ -130,7 +146,7 @@ Features (To Do)
 
 - ✓ (2022-07-23) Sorting.
 
-- Filtering.
+- ✓ (2022-07-26) Filtering.
 
 - ✓ (2022-07-11) Open files with external applications (``xdg-open``, ``open``, ``start``).
 

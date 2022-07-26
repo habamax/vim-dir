@@ -36,6 +36,14 @@ export def FilterDir(dir: list<dict<any>>)
     if !b:dir_show_hidden
         dir->filter((_, v) => v.name !~ '^\.')
     endif
+
+    var fltr = get(b:, 'dir_filter', '')
+    if empty(fltr) | return | endif
+    if empty(get(b:, 'dir_filter_bang', ''))
+        dir->filter((_, v) => v.name !~ fltr)
+    else
+        dir->filter((_, v) => v.name =~ fltr)
+    endif
 enddef
 
 
