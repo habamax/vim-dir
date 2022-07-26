@@ -137,35 +137,6 @@ Settings
   ``true``.
 
 
-Features (To Do)
-================
-
-- ✓ (2022-07-10) Navigate file system, show contents like ``ls``.
-
-- ✓ (2022-07-10) Open files/directories in splits/tabs.
-
-- ✓ (2022-07-23) Sorting.
-
-- ✓ (2022-07-26) Filtering.
-
-- ✓ (2022-07-11) Open files with external applications (``xdg-open``, ``open``, ``start``).
-
-- Bookmarks:
-
-  - ✓ (2022-07-22) Numbered bookmarks
-  - Named bookmarks
-
-- File operations:
-
-  - ✓ (2022-07-10) Create a file (use ``:e filename`` from ``Dir`` buffer).
-  - ✓ (2022-07-14) Rename file/directory.
-  - ✓ (2022-07-15) Create a directory.
-  - ✓ (2022-07-13) Delete files/directories.
-  - ✓ (2022-07-21) Copy files/directories.
-  - ✓ (2022-07-22) Move files/directories.
-  - ``chmod``, ``chown`` where it makes sense.
-
-
 Maybe Features
 ==============
 
