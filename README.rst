@@ -51,6 +51,8 @@ Local commands
 
 - ``:DirBookmarkJump`` — jump to bookmarked directory.
 
+- ``:DirHistoryJump`` — jump to directory from history.
+
 
 Global mappings
 ---------------
@@ -108,14 +110,16 @@ File operations
 - :kbd:`A` — open actions menu.
 
 
-Bookmarks
-~~~~~~~~~
+Bookmarks & History
+~~~~~~~~~~~~~~~~~~~
 
 - :kbd:`~` or :kbd:`g~` — open home directory.
 - :kbd:`g1` up to  :kbd:`g0` — open numbered bookmark.
 - :kbd:`Ctrl-A` :kbd:`1` up to  :kbd:`Ctrl-A` :kbd:`0` — set numbered
   bookmark for a current directory.
 - :kbd:`gb` — open bookmarks jump menu.
+- :kbd:`gh` — open history jump menu. History is saved for each directory where
+  file was opened for editing.
 
 
 Sort
@@ -145,6 +149,8 @@ Settings
   ``false``.
 - ``g:dir_show_hidden`` — show/hide ``.hidden`` files/directories. Default is
   ``true``.
+- ``g:dir_history_size`` — Maximum numbers of directories in history. Default is
+  `30`.
 
 
 Maybe Features

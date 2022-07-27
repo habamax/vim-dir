@@ -5,6 +5,7 @@ import autoload 'dir/fmt.vim'
 import autoload 'dir/mark.vim'
 import autoload 'dir/os.vim'
 import autoload 'dir/sort.vim' as dsort
+import autoload 'dir/history.vim'
 
 
 
@@ -227,6 +228,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             endif
         endif
     else
+        history.Add(b:dir_cwd)
         exe $"e {oname->escape('%#')}"
     endif
 enddef

@@ -6,6 +6,7 @@ import autoload 'dir/popup.vim'
 import autoload 'dir/os.vim'
 import autoload 'dir/mark.vim'
 import autoload 'dir/bookmark.vim'
+import autoload 'dir/history.vim'
 
 
 def VisualItemsInList(line1: number, line2: number): list<dict<any>>
@@ -391,4 +392,18 @@ enddef
 
 export def BookmarkComplete(_, _, _): string
     return bookmark.Names()->join("\n")
+enddef
+
+
+export def HistoryJumpMenu()
+    var dir_hist = history.Paths()
+    if empty(dir_hist)
+        echohl Error
+        echomsg $'There is no history yet!'
+        echohl None
+        return
+    endif
+    popup.List(dir_hist, 'Jump history', (d) => {
+            dir.Open(d)
+        })
 enddef

@@ -50,7 +50,8 @@ COMMANDS                                             *vim-dir-commands*
 
                                                      *:DirBookmark*
 :DirBookmark           Save bookmark for a current directory.
-                       Bookmarks are saved in
+
+                       Bookmarks file is located in
 
                        non-Windows: >
                        ~/.config/vim-dir/bookmarks.json
@@ -64,6 +65,24 @@ COMMANDS                                             *vim-dir-commands*
 
                                                      *:DirBookmarkJump*
 :DirBookmarkJump       Jump to bookmarked directory.
+
+                                                     *:DirHistoryJump*
+:DirHistoryJump        Jump to directory from history.
+                       Directory is saved into history if a file was opened
+                       there.
+                       Up to |g:dir_history_size| is saved.
+
+                       History file is located in
+
+                       non-Windows: >
+                       ~/.config/vim-dir/history.json
+<
+                       Windows: >
+                       $APPDATA/vim-dir/history.json
+<
+                       where $APPDATA is usually >
+                       $HOME/AppData/Roaming/
+<
 
 
 
@@ -163,6 +182,12 @@ g{N}                Open bookmark number {N}.
 gb                  Open bookmarks jump menu.
 
 
+                                                     *vim-dir-history*
+
+                                                     *vim-dir-gh*
+gh                  Open history jump menu.
+
+
                                                      *vim-dir-sort*
                                                      *vim-dir-hidden*
 
@@ -213,7 +238,9 @@ g:dir_sort_desc     If true, sort `desc`, otherwise `asc`.
 g:dir_show_hidden   Show/hide `.hidden` files/directories.
                     Default is `true`.
 
-
+                                                     *g:dir_history_size*
+g:dir_history_size  Maximum number of directories to be saved in history.
+                    Default is `30`.
 
 
 vim:tw=78:ts=8:ft=help:norl:
