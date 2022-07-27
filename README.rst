@@ -1,6 +1,7 @@
 ################################################################################
                        VIM-DIR: Browse directories in Vim
 ################################################################################
+.. role:: kbd
 
 :Minimum requirements: ``Vim9``, ``Huge``
 
@@ -16,6 +17,19 @@ managers.
 
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
+More screencasts:
+
+- Navigation_
+- `Bookmarks and History`_
+- `Copy/move/delete/rename`_
+- Filtering_
+- `Compare with netrw`_
+
+.. _Navigation: https://user-images.githubusercontent.com/234774/181280095-de13afb2-2db0-439f-a388-bb9e853fc989.gif
+.. _`Bookmarks and History`: https://user-images.githubusercontent.com/234774/181280105-a95771e8-f5d9-4cb1-b871-b24663a9ba89.gif
+.. _`Copy/move/delete/rename`: https://user-images.githubusercontent.com/234774/181280108-c98aec2a-6a02-4f40-b1ff-62d7afc5301c.gif
+.. _Filtering: https://user-images.githubusercontent.com/234774/181280112-361093ee-6c22-4c25-9a49-529f8222da10.gif
+.. _`Compare with netrw`: https://user-images.githubusercontent.com/234774/181282440-259d6043-f065-4bc7-945a-48aaf269f5f0.gif
 
 
 Commands and Mappings
