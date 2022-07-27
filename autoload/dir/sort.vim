@@ -3,6 +3,14 @@ vim9script
 import autoload 'dir/g.vim'
 
 
+export def Info(bufnr: number): string
+    var sort_by = getbufvar(bufnr, "dir_sort_by", "name")
+    var sort_d = getbufvar(bufnr, "dir_sort_desc", false)
+
+    return $'Sort by {sort_by} {(sort_d ? "▼" : "▲")}'
+enddef
+
+
 export def BySize(dir: list<dict<any>>, desc: bool = false)
     if desc
         dir->sort((d1, d2) => {

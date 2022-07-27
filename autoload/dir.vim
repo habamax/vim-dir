@@ -7,6 +7,41 @@ import autoload 'dir/os.vim'
 import autoload 'dir/sort.vim' as dsort
 
 
+
+export def UpdateStatusInfo()
+    for buf_info in g.DirBuffers()
+        var status = []
+        setbufvar(buf_info.bufnr, '&modifiable', 1)
+        setbufvar(buf_info.bufnr, '&readonly', 0)
+
+        var fltr = getbufvar(buf_info.bufnr, 'dir_filter', '')
+        var fltr_bang = getbufvar(buf_info.bufnr, 'dir_filter_bang', '')
+        var fltr_msg = ""
+        if !empty(fltr)
+            if !empty(fltr_bang)
+                fltr_msg = "Show matched: "
+            else
+                fltr_msg = "Hide matched: "
+            endif
+            fltr_msg ..= fltr
+        endif
+
+        status->add(dsort.Info(buf_info.bufnr))
+        status->add(get(g:, "dir_show_hidden", true) ? "Show . entries" : "")
+        status->add(fltr_msg)
+        status->add(mark.Info(buf_info.bufnr))
+        status->filter((_, v) => !v->empty())
+
+
+        setbufline(buf_info.bufnr, 2, join(status, ' | '))
+
+        setbufvar(buf_info.bufnr, '&modified', 0)
+        setbufvar(buf_info.bufnr, '&modifiable', 0)
+        setbufvar(buf_info.bufnr, '&readonly', 1)
+    endfor
+enddef
+
+
 # default sort is by name asc
 # we shouldn't sort if no other sorting was done
 def NeedSorting(): bool
@@ -173,7 +208,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             PrintDir(b:dir)
         endif
 
-        mark.UpdateInfo()
+        UpdateStatusInfo()
         mark.RefreshVisual()
 
         if !invalidate || new_dirbuf

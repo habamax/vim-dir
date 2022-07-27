@@ -87,7 +87,7 @@ export def DoSort(by: string)
 
     dir.SortDir(b:dir)
     dir.PrintDir(b:dir)
-    mark.UpdateInfo()
+    dir.UpdateStatusInfo()
     mark.RefreshVisual()
 
     g.Echo("Sort by ", {t: $'{by} {(b:dir_sort_desc ? "▼" : "▲")}', hl: 'WarningMsg'})
@@ -100,7 +100,7 @@ export def DoFilterHidden()
     :edit
 
     var msg = g:dir_show_hidden ? "Show" : "Do not show"
-    g.Echo({t: msg, hl: "WarningMsg"}, " .hidden files/directories.")
+    g.Echo({t: msg, hl: "WarningMsg"}, " . files/directories.")
 enddef
 
 
@@ -174,12 +174,14 @@ export def DoMarkToggle()
     var file_list = VisualItemsInList(line('v'), line('.'))
     if len(file_list) > 0
         mark.Toggle(file_list, line('v'), line('.'))
+        dir.UpdateStatusInfo()
     endif
 enddef
 
 
 export def DoMarksAllToggle()
     mark.ToggleAll()
+    dir.UpdateStatusInfo()
 enddef
 
 

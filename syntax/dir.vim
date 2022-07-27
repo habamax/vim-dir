@@ -6,7 +6,11 @@ endif
 
 syn match dirCwd "\%^.*$"
 
-syn match dirStatus '\%2l^.*$' transparent contains=dirStatusSel
+syn match dirStatus '\%2l^.*$' transparent contains=dirStatusSort,dirStatusHidden,dirStatusFilter,dirStatusSel
+syn match dirStatusSort 'Sort by' skipwhite contained nextgroup=dirStatusSortBy
+syn match dirStatusSortBy '\(name\|size\|time\) [▲▼]' skipwhite contained
+syn match dirStatusHidden 'Show \zs\.\ze entries' skipwhite contained
+syn match dirStatusFilter '\(Hide\|Show\) matched: \zs.\{-}\ze\(|\|$\)' skipwhite contained
 syn match dirStatusSel 'Selected:' skipwhite contained nextgroup=dirStatusSelNum
 syn match dirStatusSelNum '\d\+' skipwhite contained nextgroup=dirStatusSelPath
 syn match dirStatusSelPath 'in \f\+' contained
@@ -43,9 +47,11 @@ hi def link dirSizeMod Type
 hi def link dirTime PreProc
 hi def link dirDirectory Directory
 hi def link dirLink Type
-hi def link dirStatusSel Special
 hi def link dirStatusSelNum Constant
-hi def link dirStatusSelPath Identifier
+hi def link dirStatusSelPath Directory
+hi def link dirStatusSortBy Constant
+hi def link dirStatusHidden Constant
+hi def link dirStatusFilter Constant
 hi def link dirMark Todo
 
 b:current_syntax = "dir"

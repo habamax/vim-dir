@@ -51,22 +51,16 @@ export def Bufnr(): number
 enddef
 
 
-export def UpdateInfo()
+export def Info(bufnr: number): string
     var cnt = mark_list->len()
-    for buf_info in g.DirBuffers()
-        setbufvar(buf_info.bufnr, '&modifiable', 1)
-        setbufvar(buf_info.bufnr, '&readonly', 0)
-        if cnt > 0
-            var dir = buf_info.bufnr == mark_bufnr ? '' : $' in {mark_dir}'
-            setbufline(buf_info.bufnr, 2, $"Selected: {cnt}{dir}")
-        else
-            setbufline(buf_info.bufnr, 2, "")
-        endif
-        setbufvar(buf_info.bufnr, '&modified', 0)
-        setbufvar(buf_info.bufnr, '&modifiable', 0)
-        setbufvar(buf_info.bufnr, '&readonly', 1)
-    endfor
+    if cnt > 0
+        var dir = bufnr == mark_bufnr ? '' : $' in {mark_dir}'
+        return $"Selected: {cnt}{dir}"
+    else
+        return ""
+    endif
 enddef
+
 
 
 export def Toggle(items: list<dict<any>>, line1: number, line2: number)
@@ -84,8 +78,6 @@ export def Toggle(items: list<dict<any>>, line1: number, line2: number)
     mark_dir = b:dir_cwd
     mark_bufnr = bufnr()
 
-    UpdateInfo()
-
     for line in range(min([line1, line2]), max([line1, line2]))
         if empty(prop_list(line, {types: ['DirMark']}))
             prop_add(line, 1, {type: 'DirMark', length: 500})
@@ -102,7 +94,6 @@ export def Clear()
     mark_bufnr = -1
     prop_clear(1, line('$'), {type: 'DirMark'})
     ClearOtherBufferMarks()
-    UpdateInfo()
 enddef
 
 
@@ -113,7 +104,6 @@ export def All()
     prop_clear(g.DIRLIST_SHIFT, line('$'), {type: 'DirMark'})
     prop_add(g.DIRLIST_SHIFT, 1, {type: 'DirMark', end_lnum: line('$'), end_col: 500})
     ClearOtherBufferMarks()
-    UpdateInfo()
 enddef
 
 export def ToggleAll()
