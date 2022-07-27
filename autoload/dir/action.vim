@@ -417,5 +417,3 @@ enddef
 export def HistoryComplete(_, _, _): string
     return history.Paths()->join("\n")
 enddef
-
-
