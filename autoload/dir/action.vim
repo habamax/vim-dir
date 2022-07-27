@@ -351,7 +351,7 @@ export def BookmarkJumpMenu()
     var bookmarks = bookmark.NamesAndPaths()->sort()
     if empty(bookmarks)
         echohl Error
-        echomsg $'There are no bookmarks'
+        echomsg $'There are no bookmarks!'
         echohl None
         return
     endif
