@@ -1,6 +1,19 @@
 vim9script
 
 
+# Show popup list, execute callback with a single parameter.
+export def List(items: list<string>, title: string, MenuCallback: func(any))
+    popup_menu(items, {
+        title: $' {title} ',
+        callback: (id, result) => {
+                if result > 0
+                    MenuCallback(items[result - 1])
+                endif
+            }
+        })
+enddef
+
+
 # Show popup menu with actions.
 # Actions is a list of dict [{name: string, Action: func}]
 # for example:

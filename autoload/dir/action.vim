@@ -347,6 +347,13 @@ export def BookmarkJump(name: string)
 enddef
 
 
+export def BookmarkJumpMenu()
+    popup.List(bookmark.NamesAndPaths()->sort(), 'Jump bookmark', (bk) => {
+            BookmarkJump(bk->substitute('\s(.\{-})$', '', ''))
+        })
+enddef
+
+
 export def BookmarkSet()
     var name = input("Bookmark name: ", fnamemodify(b:dir_cwd, ':t'))
     if empty(name)

@@ -115,6 +115,7 @@ Bookmarks
 - :kbd:`g1` up to  :kbd:`g0` — open numbered bookmark.
 - :kbd:`Ctrl-A` :kbd:`1` up to  :kbd:`Ctrl-A` :kbd:`0` — set numbered
   bookmark for a current directory.
+- :kbd:`gb` — open bookmarks jump menu.
 
 
 Sort

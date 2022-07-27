@@ -159,6 +159,9 @@ g{N}                Open bookmark number {N}.
 <C-A>{N}            Set bookmark number {N} for a current directory.
 
 
+                                                     *vim-dir-gb*
+gb                  Open bookmarks jump menu.
+
 
                                                      *vim-dir-sort*
                                                      *vim-dir-hidden*

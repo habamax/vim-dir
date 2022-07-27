@@ -18,7 +18,7 @@ var nop_maps = ['r', 'd', 'c', 'C', 'a', 'I',
                 'gp', 'gP', 'gi', 'gI', 'gu', 'gU', 'gh', 'gH',
                 'U', '<C-r>', '<C-w>f', '<C-w>F', 'gf', 'gF'
                ]
-var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~',
+var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A', '~', 'g~', 'gb',
                  't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'p', 'P', ']]', '[[',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
@@ -86,6 +86,8 @@ for idx in range(10)
     exe $'nnoremap <buffer> g{idx} <scriptcmd>action.BookmarkJumpNum({idx})<cr>'
     exe $'nnoremap <buffer> <C-a>{idx} <scriptcmd>action.BookmarkSetNum({idx})<cr>'
 endfor
+
+nnoremap <buffer> gb <scriptcmd>action.BookmarkJumpMenu()<cr>
 
 
 # remove buffer editing mappings

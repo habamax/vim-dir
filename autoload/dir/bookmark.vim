@@ -110,6 +110,12 @@ export def Names(): list<string>
 enddef
 
 
+export def NamesAndPaths(): list<string>
+    return bookmarks.named->items()->mapnew((_, v) => $'{v[0]} ({v[1]})')
+enddef
+
+
+
 export def Exists(name: string): bool
     return bookmarks.named->keys()->index(name) > -1
 enddef
