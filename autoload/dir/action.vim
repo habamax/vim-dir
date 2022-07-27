@@ -348,7 +348,14 @@ enddef
 
 
 export def BookmarkJumpMenu()
-    popup.List(bookmark.NamesAndPaths()->sort(), 'Jump bookmark', (bk) => {
+    var bookmarks = bookmark.NamesAndPaths()->sort()
+    if empty(bookmarks)
+        echohl Error
+        echomsg $'There are no bookmarks'
+        echohl None
+        return
+    endif
+    popup.List(bookmarks, 'Jump bookmark', (bk) => {
             BookmarkJump(bk->substitute('\s(.\{-})$', '', ''))
         })
 enddef
