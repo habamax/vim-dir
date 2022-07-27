@@ -4,12 +4,15 @@
 
 :Minimum requirements: ``Vim9``, ``Huge``
 
-**WIP**, use at your own risk.
+**WIP**, use at your own risk:
 
 - there might be bugs;
 
 - beware of dangerous file operations like move/rename/delete, only me testing
   it probably is not enough :).
+
+Note that, copy/move file operations are way slower compared to "real" file
+managers.
 
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
