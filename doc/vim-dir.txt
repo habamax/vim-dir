@@ -1,0 +1,198 @@
+*vim-dir.txt*  Directory browser.
+
+VIM-DIR                                              *vim-dir*
+
+For Vim version 9.0 or later.
+
+
+DESCRIPTION                                          *vim-dir-description*
+
+Directory browser you can use to:
+
+    - explore file system;
+    - copy/delete/move/rename files and directories;
+    - open files both in vim and OS;
+    - bookmark directories;
+    - sort/filter directory contents.
+
+
+
+COMMANDS                                             *vim-dir-commands*
+
+                                                     *:Dir*
+:Dir {path}            Open {path} as directory. Default {path} is a current
+                       file directory.
+                       Use |:edit| to refresh contents.
+
+                                                     *:DirFilter*
+:DirFilter[!] {regex}  Show files/directories matching {regex}.
+                       With ! hide files/directories matching {regex}.
+
+                       Hide files/dirs with   e   in the name: >
+
+                           :DirFilter e
+<
+                       Hide files/dirs with   e   in the name: >
+
+                           :DirFilter! e
+<
+                       Hide files/dirs with   e.*p   in the name: >
+
+                           :DirFilter! e.*p
+<
+                       Command is local to buffer, i.e. available only in
+                       vim-dir buffers.
+
+                                                     *:DirFilterClear*
+:DirFilterClear        Clear current filter.
+                       Command is local to buffer, i.e. available only in
+                       vim-dir buffers.
+
+
+
+MAPPINGS                                             *vim-dir-mappings*
+
+There are no global mappings. You can set them to quickly call vim-dir: >
+
+    nnoremap <BS> <Cmd>Dir<CR>
+<
+
+                                                     *vim-dir-navigation*
+
+                                                     *vim-dir-<BS>*
+                                                     *vim-dir-u*
+<BS>    or
+u                   One directory up.
+
+                                                     *vim-dir-<CR>*
+                                                     *vim-dir-o*
+<CR>    or
+o                   Open a file or a directory under cursor.
+
+                                                     *vim-dir-O*
+O                   Open a file/directory with OS.
+
+                                                     *vim-dir-s*
+s                   Open a file/directory in a split.
+
+                                                     *vim-dir-S*
+S                   Open a file/directory in a vertical split.
+
+                                                     *vim-dir-t*
+t                   Open a file/directory in a tab.
+
+                                                     *vim-dir-]]*
+]]                  Jump over directories forward, place cursor on a first
+                    file/last directory.
+
+                                                     *vim-dir-[[*
+[[                  Jump over directories backward, place cursor on the
+                    last/first directory.
+
+
+                                                     *vim-dir-file-operations*
+
+                                                     *vim-dir-i*
+i                   Preview a file (first 100 lines) or show dir info (nothing on windows).
+
+                                                     *vim-dir-x*
+x                   Toggle selection of file/directory.
+
+                                                     *vim-dir-X*
+X                   Toggle selection of all files/directories (select/unselect all).
+
+                                                     *vim-dir-D*
+                                                     *vim-dir-dd*
+D       or
+dd                  Delete files/directories.
+
+                                                     *vim-dir-R*
+                                                     *vim-dir-rr*
+R       or
+rr                  Rename files/directories.
+
+                                                     *vim-dir-p*
+p                   Copy selected files/directories into current directory.
+
+                                                     *vim-dir-P*
+P                   Move selected files/directories into current directory.
+
+                                                     *vim-dir-A*
+A                   Open actions menu.
+
+
+                                                     *vim-dir-bookmarks*
+
+                                                     *vim-dir-~*
+                                                     *vim-dir-g~*
+~       or
+g~                  Open home directory.
+
+                    *vim-dir-g0*
+                    *vim-dir-g1* *vim-dir-g2* *vim-dir-g3*
+                    *vim-dir-g4* *vim-dir-g5* *vim-dir-g6*
+                    *vim-dir-g7* *vim-dir-g8* *vim-dir-g9*
+g{N}                Open bookmark number {N}.
+
+                    *vim-dir-CTRL-A_0*
+                    *vim-dir-CTRL-A_1* *vim-dir-CTRL-A_2* *vim-dir-CTRL-A_3*
+                    *vim-dir-CTRL-A_4* *vim-dir-CTRL-A_5* *vim-dir-CTRL-A_6*
+                    *vim-dir-CTRL-A_7* *vim-dir-CTRL-A_8* *vim-dir-CTRL-A_9*
+<C-A>{N}            Set bookmark number {N} for a current directory.
+
+
+
+                                                     *vim-dir-sort*
+                                                     *vim-dir-hidden*
+
+                                                     *vim-dir-g,*
+g,                  Sort current buffer dir by size.
+
+                                                     *vim-dir-g.*
+g.                  Sort current buffer dir by time.
+
+                                                     *vim-dir-g/*
+g/                  Sort current buffer dir by name.
+
+                                                     *vim-dir-.*
+.                   Toggle .hidden files/directories.
+
+
+
+SETTINGS                                             *vim-dir-settings*
+
+
+                                                     *g:dir_open_ext*
+g:dir_open_ext      If a file/directory is matched against regexes in this
+                    list, open it using OS.
+
+                    Default: >
+
+                    g:dir_open_ext = ['\.pdf$', '\.ods$', '\.odt$', '\.odp$',
+                    '\.xls$', '\.xlsx$', '\.doc$', '\.docx$', '\.ppt$',
+                    '\.pptx$', '\.png$', '\.jpg$', '\.gif$',
+                    '\.mkv$', '\.mov$', '\.mpeg$', '\.avi$', '\.mp4$',
+                    '\.mp3$', '\.ogg$', '\.flac$']
+<
+
+                                                     *g:dir_invert_split*
+g:dir_invert_split  By default |vim-dir-s| splits horizontally and
+                    and |vim-dir-S| splits vertically.
+                    Set to 1 or |true| to make the opposite.
+
+                                                     *g:dir_sort_by*
+g:dir_sort_by       Sort by one of `name`, `size` or `time`.
+                    Default is `name`.
+
+                                                     *g:dir_sort_desc*
+g:dir_sort_desc     If true, sort `desc`, otherwise `asc`.
+                    Default is `false`.
+
+                                                     *g:dir_show_hidden*
+g:dir_show_hidden   Show/hide `.hidden` files/directories.
+                    Default is `true`.
+
+
+
+
+vim:tw=78:ts=8:ft=help:norl:
