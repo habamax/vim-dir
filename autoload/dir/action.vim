@@ -109,8 +109,8 @@ export def DoFilter(bang: string, fltr: string)
     b:dir_filter_bang = bang
     :edit
 
-    var msg = (empty(bang) ? "Hide" : "Show")
-    g.Echo($"{msg} all matched ", {t: $"{fltr}", hl: "WarningMsg"})
+    var msg = (empty(bang) ? "Show" : "Hide")
+    g.Echo($"{msg} matched ", {t: $"{fltr}", hl: "WarningMsg"})
 enddef
 
 

@@ -18,7 +18,7 @@ export def UpdateStatusInfo()
         var fltr_bang = getbufvar(buf_info.bufnr, 'dir_filter_bang', '')
         var fltr_msg = ""
         if !empty(fltr)
-            if !empty(fltr_bang)
+            if empty(fltr_bang)
                 fltr_msg = "Show matched: "
             else
                 fltr_msg = "Hide matched: "
@@ -75,9 +75,9 @@ export def FilterDir(dir: list<dict<any>>)
     var fltr = get(b:, 'dir_filter', '')
     if empty(fltr) | return | endif
     if empty(get(b:, 'dir_filter_bang', ''))
-        dir->filter((_, v) => v.name !~ fltr)
-    else
         dir->filter((_, v) => v.name =~ fltr)
+    else
+        dir->filter((_, v) => v.name !~ fltr)
     endif
 enddef
 

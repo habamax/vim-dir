@@ -29,15 +29,15 @@ Global commands
 Local commands
 --------------
 
-- ``:DirFilter[!] {regex}`` — filter out files/directories matching ``{regex}``.
-  With ``!`` filter out files/directories not matching ``{regex}``::
+- ``:DirFilter[!] {regex}`` — Show files/directories matching ``{regex}``.
+  With ``!`` hide files/directories matching ``{regex}``::
 
-    # Hide files/dirs with   e   in the name
-    :DirFilter e
     # Show files/dirs with   e   in the name
+    :DirFilter e
+    # Hide files/dirs with   e   in the name
     :DirFilter! e
 
-    # Show files/dirs with   e.*p   in the name
+    # Hide files/dirs with   e.*p   in the name
     :DirFilter! e.*p
 
 - ``:DirFilterClear`` — clear filter.
