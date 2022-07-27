@@ -404,6 +404,18 @@ export def HistoryJumpMenu()
         return
     endif
     popup.List(dir_hist, 'Jump history', (d) => {
-            dir.Open(d)
+            HistoryJump(d)
         })
 enddef
+
+
+export def HistoryJump(name: string)
+    dir.Open(name)
+enddef
+
+
+export def HistoryComplete(_, _, _): string
+    return history.Paths()->join("\n")
+enddef
+
+
