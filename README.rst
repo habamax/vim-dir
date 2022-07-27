@@ -45,6 +45,12 @@ Local commands
 
 - ``:DirFilterClear`` — clear filter.
 
+- ``:DirBookmark`` — save bookmark for a current directory.
+  Bookmarks are saved in ``~/.config/vim-dir/bookmarks.json`` or
+  ``$APPDATA/vim-dir/bookmarks.json`` depending on OS.
+
+- ``:DirBookmarkJump`` — jump to bookmarked directory.
+
 
 Global mappings
 ---------------

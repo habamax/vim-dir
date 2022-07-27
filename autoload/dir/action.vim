@@ -1,10 +1,11 @@
 vim9script
 
 import autoload 'dir.vim'
+import autoload 'dir/g.vim'
 import autoload 'dir/popup.vim'
 import autoload 'dir/os.vim'
 import autoload 'dir/mark.vim'
-import autoload 'dir/g.vim'
+import autoload 'dir/bookmark.vim'
 
 
 def VisualItemsInList(line1: number, line2: number): list<dict<any>>
@@ -338,4 +339,42 @@ export def JumpBackward()
         endwhile
         exe $":{idx + g.DIRLIST_SHIFT}"
     endif
+enddef
+
+
+export def BookmarkJump(name: string)
+    bookmark.Jump(name)
+enddef
+
+
+export def BookmarkSet()
+    var name = input("Bookmark name: ", fnamemodify(b:dir_cwd, ':t'))
+    if empty(name)
+        return
+    endif
+    redraw
+    if bookmark.Exists(name)
+
+        var msg = [$'Bookmark "{name}" exists!', $'{bookmark.Get(name)}', 'Override?']
+        var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
+        if res != 0
+            return
+        endif
+    endif
+    bookmark.Set(name, b:dir_cwd)
+enddef
+
+
+export def BookmarkJumpNum(n: number)
+    bookmark.JumpNum(n)
+enddef
+
+
+export def BookmarkSetNum(n: number)
+    bookmark.SetNum(n, b:dir_cwd)
+enddef
+
+
+export def BookmarkComplete(_, _, _): string
+    return bookmark.Names()->join("\n")
 enddef

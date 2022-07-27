@@ -31,10 +31,12 @@ b:undo_ftplugin ..= (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffe
 
 import autoload 'dir.vim'
 import autoload 'dir/action.vim'
-import autoload 'dir/bookmark.vim'
+
 
 command! -buffer -nargs=? -bang DirFilter action.DoFilter("<bang>", <f-args>)
 command! -buffer -nargs=? -bang DirFilterClear action.DoFilterClear()
+command! -buffer -nargs=1 -complete=custom,dir#action#BookmarkComplete DirBookmarkJump action.BookmarkJump(<q-args>)
+command! -buffer DirBookmark action.BookmarkSet()
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
@@ -81,8 +83,8 @@ noremap <buffer> [[ <scriptcmd>action.JumpBackward()<cr>
 nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>
 nnoremap <buffer> g~ <scriptcmd>Dir ~<cr>
 for idx in range(10)
-    exe $'nnoremap <buffer> g{idx} <scriptcmd>bookmark.GoNum({idx})<cr>'
-    exe $'nnoremap <buffer> <C-a>{idx} <scriptcmd>bookmark.GoNumSet({idx})<cr>'
+    exe $'nnoremap <buffer> g{idx} <scriptcmd>action.BookmarkJumpNum({idx})<cr>'
+    exe $'nnoremap <buffer> <C-a>{idx} <scriptcmd>action.BookmarkSetNum({idx})<cr>'
 endfor
 
 

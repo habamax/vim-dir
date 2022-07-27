@@ -48,6 +48,24 @@ COMMANDS                                             *vim-dir-commands*
                        Command is local to buffer, i.e. available only in
                        vim-dir buffers.
 
+                                                     *:DirBookmark*
+:DirBookmark           Save bookmark for a current directory.
+                       Bookmarks are saved in
+
+                       non-Windows: >
+                       ~/.config/vim-dir/bookmarks.json
+<
+                       Windows: >
+                       $APPDATA/vim-dir/bookmarks.json
+<
+                       where $APPDATA is usually >
+                       $HOME/AppData/Roaming/
+<
+
+                                                     *:DirBookmarkJump*
+:DirBookmarkJump       Jump to bookmarked directory.
+
+
 
 
 MAPPINGS                                             *vim-dir-mappings*
