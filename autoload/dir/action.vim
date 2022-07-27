@@ -386,7 +386,7 @@ enddef
 
 
 export def BookmarkSetNum(n: number)
-    bookmark.SetNum(n, b:dir_cwd)
+    bookmark.SetNum(n)
 enddef
 
 
