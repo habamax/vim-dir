@@ -403,7 +403,7 @@ export def HistoryJumpMenu()
         echohl None
         return
     endif
-    popup.List(dir_hist, 'Jump history', (d) => {
+    popup.List(dir_hist, 'Directory history', (d) => {
             HistoryJump(d)
         })
 enddef
