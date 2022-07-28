@@ -221,7 +221,9 @@ enddef
 export def DoCopy()
     if mark.IsEmpty() | return | endif
     if mark.Bufnr() == bufnr()
-        echo "Can't copy to the same location!"
+        echohl Error
+        echomsg "Can't copy to the same location!"
+        echohl None
         return
     endif
     # check if user wants to copy a directory into its own subdirectory... and prevent it.
@@ -229,7 +231,9 @@ export def DoCopy()
         if item.type !~ 'dir\|linkd\|junction' | continue | endif
         var path = $"{mark.Dir()}{os.Sep()}{item.name}"
         if path == strpart(b:dir_cwd, 0, path->len())
-            echo "Can't copy to self sub directory!"
+            echohl Error
+            echomsg "Can't copy to self sub directory!"
+            echohl None
             return
         endif
     endfor
@@ -256,7 +260,9 @@ enddef
 export def DoMove()
     if mark.IsEmpty() | return | endif
     if mark.Bufnr() == bufnr()
-        echo "Can't move to the same location!"
+        echohl Error
+        echomsg "Can't move to the same location!"
+        echohl None
         return
     endif
     # check if user wants to move a directory into its own subdirectory... and prevent it.
@@ -264,7 +270,9 @@ export def DoMove()
         if item.type !~ 'dir\|linkd\|junction' | continue | endif
         var path = $"{mark.Dir()}{os.Sep()}{item.name}"
         if path == strpart(b:dir_cwd, 0, path->len())
-            echo "Can't move to self sub directory!"
+            echohl Error
+            echomsg "Can't move to self sub directory!"
+            echohl None
             return
         endif
     endfor
