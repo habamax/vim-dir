@@ -19,10 +19,14 @@ Directory browser you can use to:
 
 COMMANDS                                             *vim-dir-commands*
 
+GLOBAL COMMANDS
                                                      *:Dir*
 :Dir {path}            Open {path} as directory. Default {path} is a current
                        file directory.
                        Use |:edit| to refresh contents.
+
+LOCAL COMMANDS
+Available only in vim-dir buffers.
 
                                                      *:DirFilter*
 :DirFilter[!] {regex}  Show files/directories matching {regex}.
@@ -40,13 +44,9 @@ COMMANDS                                             *vim-dir-commands*
 
                            :DirFilter! e.*p
 <
-                       Command is local to buffer, i.e. available only in
-                       vim-dir buffers.
 
                                                      *:DirFilterClear*
 :DirFilterClear        Clear current filter.
-                       Command is local to buffer, i.e. available only in
-                       vim-dir buffers.
 
                                                      *:DirBookmark*
 :DirBookmark           Save bookmark for a current directory.
