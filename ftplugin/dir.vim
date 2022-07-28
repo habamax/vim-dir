@@ -36,9 +36,9 @@ import autoload 'dir/action.vim'
 
 command! -buffer -nargs=? -bang DirFilter action.DoFilter("<bang>", <f-args>)
 command! -buffer -nargs=? -bang DirFilterClear action.DoFilterClear()
-command! -buffer -nargs=1 -complete=custom,dir#action#BookmarkComplete DirBookmarkJump action.BookmarkJump(<q-args>)
 command! -buffer DirBookmark action.BookmarkSet()
-command! -buffer -nargs=1 -complete=custom,dir#action#HistoryComplete DirHistoryJump action.HistoryJump(<q-args>)
+command! -buffer -nargs=1 -complete=custom,action.BookmarkComplete DirBookmarkJump action.BookmarkJump(<q-args>)
+command! -buffer -nargs=1 -complete=custom,action.HistoryComplete DirHistoryJump action.HistoryJump(<q-args>)
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
