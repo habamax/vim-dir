@@ -143,10 +143,12 @@ Sort
 - :kbd:`g` :kbd:`/` — sort current buffer dir by name.
 
 
-Filter
-~~~~~~
+Filter and View
+~~~~~~~~~~~~~~~
 
-- :kbd:`.` — toggle ``.hidden`` files/directories
+- :kbd:`.` — toggle ``.hidden`` files/directories.
+- :kbd:`>` — widen the dir view (adding some columns).
+- :kbd:`<` — shrink the dir view (removing some columns).
 
 
 Settings
@@ -162,8 +164,15 @@ Settings
   ``false``.
 - ``g:dir_show_hidden`` — show/hide ``.hidden`` files/directories. Default is
   ``true``.
-- ``g:dir_history_size`` — Maximum numbers of directories in history. Default is
+- ``g:dir_history_size`` — maximum numbers of directories in history. Default is
   `30`.
+- ``g:dir_columns`` — columns for the dir view. Default is
+    
+    - Windows: ``perm,size,time,name``
+    - Linux/Other: ``perm,user,group,size,time,name``
+
+    Columns ``perm`` and ``name`` are mandatory and should be in order.
+
 
 
 Maybe Features

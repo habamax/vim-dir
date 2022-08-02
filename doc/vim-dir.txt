@@ -203,6 +203,15 @@ g/                  Sort current buffer dir by name.
                                                      *vim-dir-.*
 .                   Toggle .hidden files/directories.
 
+                                                     *vim-dir->*
+>                   Widen dir view.
+                    If you don't have Size, Time or User+Group columns,
+                    add them to the view.
+
+                                                     *vim-dir-<*
+<                   Shrink dir view.
+                    If you have Size, Time or User+Group columns,
+                    remove them from the view.
 
 
 SETTINGS                                             *vim-dir-settings*
@@ -241,6 +250,16 @@ g:dir_show_hidden   Show/hide `.hidden` files/directories.
                                                      *g:dir_history_size*
 g:dir_history_size  Maximum number of directories to be saved in history.
                     Default is `30`.
+
+                                                     *g:dir_columns*
+g:dir_columns       Columns of the dir view.
+                    Default is
+                    Windows: `"perm,size,time,name`.
+                    Other:   `"perm,user,group,size,time,name`.
+
+                    Note, that `perm` and `name` are mandatory.
+                    Order also matters.
+
 
 
 vim:tw=78:ts=8:ft=help:norl:

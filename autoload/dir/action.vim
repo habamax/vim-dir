@@ -7,6 +7,7 @@ import autoload 'dir/os.vim'
 import autoload 'dir/mark.vim'
 import autoload 'dir/bookmark.vim'
 import autoload 'dir/history.vim'
+import autoload 'dir/fmt.vim'
 
 
 def VisualItemsInList(line1: number, line2: number): list<dict<any>>
@@ -317,6 +318,46 @@ export def DoAction()
         {name: "Delete", Action: DoDelete}
     ]
     popup.Menu(actions)
+enddef
+
+
+export def ShrinkView()
+    var columns = fmt.Columns()
+    if columns->split(',')->len() <= 2 | return | endif
+    if columns =~ 'user,group,'
+        columns = columns->substitute('user,group,', '', '')
+    elseif columns =~ 'size,'
+        columns = columns->substitute('size,', '', '')
+    elseif columns =~ 'time,'
+        columns = columns->substitute('time,', '', '')
+    endif
+    fmt.SetColumns(columns)
+    dir.PrintDir(b:dir)
+    dir.UpdateStatusInfo()
+    mark.RefreshVisual()
+    for buf_info in g.OtherDirBuffers()
+        setbufvar(buf_info.bufnr, "dir_invalidate", true)
+    endfor
+enddef
+
+
+export def WidenView()
+    var columns = fmt.Columns()
+    if columns->split(',')->len() >= (has("win32") ? 4 : 6) | return | endif
+    if columns !~ 'time,'
+        columns = columns->substitute('name', 'time,name', '')
+    elseif columns !~ 'size,'
+        columns = columns->substitute('time', 'size,time', '')
+    elseif columns !~ 'user,group,' && !has("win32")
+        columns = columns->substitute('perm', 'perm,user,group', '')
+    endif
+    fmt.SetColumns(columns)
+    dir.PrintDir(b:dir)
+    dir.UpdateStatusInfo()
+    mark.RefreshVisual()
+    for buf_info in g.OtherDirBuffers()
+        setbufvar(buf_info.bufnr, "dir_invalidate", true)
+    endfor
 enddef
 
 
