@@ -168,8 +168,8 @@ Settings
   `30`.
 - ``g:dir_columns`` — columns for the dir view. Default is
 
-    - Windows: ``perm,size,time,name``
-    - Linux/Other: ``perm,user,group,size,time,name``
+  - Windows: ``perm,size,time,name``
+  - Linux/Other: ``perm,user,group,size,time,name``
 
   Columns ``perm`` and ``name`` are mandatory and should be in order.
 
