@@ -171,7 +171,7 @@ Settings
     - Windows: ``perm,size,time,name``
     - Linux/Other: ``perm,user,group,size,time,name``
 
-    Columns ``perm`` and ``name`` are mandatory and should be in order.
+  Columns ``perm`` and ``name`` are mandatory and should be in order.
 
 
 
