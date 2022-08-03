@@ -167,7 +167,7 @@ Settings
 - ``g:dir_history_size`` — maximum numbers of directories in history. Default is
   `30`.
 - ``g:dir_columns`` — columns for the dir view. Default is
-    
+
     - Windows: ``perm,size,time,name``
     - Linux/Other: ``perm,user,group,size,time,name``
 
