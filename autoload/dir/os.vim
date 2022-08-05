@@ -42,7 +42,7 @@ export def Open(name: string)
     var job_opts = {}
     if exists("$WSLENV")
         job_opts.cwd = "/mnt/c/"
-        url = WslToWindowsPath(name)->escape('\\')
+        url = WslToWindowsPath(name)->escape('\')
     endif
     job_start(printf('%s "%s"', cmd, url), job_opts)
 enddef
