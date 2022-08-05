@@ -216,15 +216,16 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             if len(b:dir) > 0 && line('.') < g.DIRLIST_SHIFT
                 exe $":{g.DIRLIST_SHIFT}"
             endif
+            var rx_search = '\v((\d\d:\d\d)|([djl-][rwx-]{9}))\s+\zs'
             if len(b:dir) == 0
                 exe $"norm! $2F{os.Sep()}l"
             elseif !empty(focus)
-                if search($'\d\d:\d\d\s\+\zs{focus}', 'c') == 0
-                    search($'\d\d:\d\d\s\+\zs{focus}', 'b')
+                if search($'{rx_search}{focus}', 'c') == 0
+                    search($'{rx_search}{focus}', 'b')
                 endif
             else
                 norm! $
-                search('\d\d:\d\d\s\+\zs', 'b', line('.'))
+                search(rx_search, 'b', line('.'))
             endif
         endif
     else
