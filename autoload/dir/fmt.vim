@@ -62,23 +62,7 @@ export def BuildPrintf(): func(dict<any>): string
         fmt->add(columns_param[item][0])
         fmt_f->add(columns_param[item][1])
     endfor
-    # XXX: can't find better/more beautiful way to do it
-    if len(fmt) == 6
-        return (e: dict<any>) => printf(fmt->join(" "), fmt_f[0](e), fmt_f[1](e), fmt_f[2](e), fmt_f[3](e), fmt_f[4](e), fmt_f[5](e))
-    elseif len(fmt) == 5
-        return (e: dict<any>) => printf(fmt->join(" "), fmt_f[0](e), fmt_f[1](e), fmt_f[2](e), fmt_f[3](e), fmt_f[4](e))
-    elseif len(fmt) == 4
-        return (e: dict<any>) => printf(fmt->join(" "), fmt_f[0](e), fmt_f[1](e), fmt_f[2](e), fmt_f[3](e))
-    elseif len(fmt) == 3
-        return (e: dict<any>) => printf(fmt->join(" "), fmt_f[0](e), fmt_f[1](e), fmt_f[2](e))
-    elseif len(fmt) == 2
-        return (e: dict<any>) => printf(fmt->join(" "), fmt_f[0](e), fmt_f[1](e))
-    elseif len(fmt) == 1
-        return (e: dict<any>) => printf(fmt->join(" "), fmt_f[0](e))
-    else
-        throw "Format is not defined!"
-        return (e: dict<any>) => ""
-    endif
+    return (e: dict<any>): string => call("printf", [fmt->join(" ")] + fmt_f->mapnew((_, F) => F(e)))
 enddef
 
 
