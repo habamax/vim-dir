@@ -127,7 +127,7 @@ t                   Open a file/directory in a tab.
                     last/first directory.
 
                                                      *vim-dir-CTRL-L*
-<C-l>               Refresh directory contents.
+CTRL-L              Refresh directory contents.
 
 
                                                      *vim-dir-file-operations*
