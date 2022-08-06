@@ -12,8 +12,9 @@ syn match dirStatusSortBy '\(name\|size\|time\) [▲▼]' skipwhite contained
 syn match dirStatusHidden 'Show \zs\.\ze entries' skipwhite contained
 syn match dirStatusFilter '\(Hide\|Show\) matched: \zs.\{-}\ze\( | Selected:\|$\)' skipwhite contained
 syn match dirStatusSel 'Selected:' skipwhite contained nextgroup=dirStatusSelNum
-syn match dirStatusSelNum '\d\+' skipwhite contained nextgroup=dirStatusSelPath
-syn match dirStatusSelPath 'in \f\+' contained
+syn match dirStatusSelNum '\d\+' skipwhite contained nextgroup=dirStatusSelIn
+syn match dirStatusSelIn 'in' skipwhite contained nextgroup=dirStatusSelPath
+syn match dirStatusSelPath '\f\+' contained
 
 syn match dirDirectory '^[dj].*$' contains=dirPermission
 syn match dirFile '^[-].*$' contains=dirPermission
