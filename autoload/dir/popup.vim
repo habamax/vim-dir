@@ -3,8 +3,29 @@ vim9script
 
 # Show popup list, execute callback with a single parameter.
 export def List(items: list<string>, title: string, MenuCallback: func(any))
-    popup_menu(items, {
+    popup_create(items, {
         title: $' {title} ',
+        pos: 'center',
+        drag: 1,
+        wrap: 0,
+        border: [],
+        cursorline: 1,
+        padding: [0, 1, 0, 1],
+        mapping: 0,
+        filter: (id, key) => {
+            if key == "\<esc>"
+                popup_close(id, -1)
+            elseif key == "\<cr>"
+                popup_close(id, getcurpos(id)[1])
+            elseif key == "\<tab>" || key == "\<C-n>"
+                win_execute(id, "normal! j")
+            elseif key == "\<S-tab>" || key == "\<C-p>"
+                win_execute(id, "normal! k")
+            else
+                win_execute(id, $"search('[/\\-_]{key->escape('&*.\\')}')")
+            endif
+            return true
+        },
         callback: (id, result) => {
                 if result > 0
                     MenuCallback(items[result - 1])
