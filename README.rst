@@ -39,7 +39,7 @@ Global commands
 
 - ``:Dir [path]`` — open a path as a directory listing.
 
-- Use regular ``:edit``/``:e`` command to refresh directory listing.
+- Use ``:Dir`` or regular ``:edit``/``:e`` command to refresh directory listing.
 
 
 Local commands
@@ -107,6 +107,7 @@ Navigation
   directory.
 - :kbd:`[[` — jump over directories backward, place cursor on the last/first
   directory.
+- :kbd:`CTRL` + :kbd:`l` — refresh directory contents.
 
 
 File operations

@@ -23,7 +23,7 @@ GLOBAL COMMANDS
                                                      *:Dir*
 :Dir {path}            Open {path} as directory. Default {path} is a current
                        file directory.
-                       Use |:edit| to refresh contents.
+                       Use `:Dir` or |:edit| to refresh contents.
 
 LOCAL COMMANDS
 Available only in vim-dir buffers.
@@ -125,6 +125,9 @@ t                   Open a file/directory in a tab.
                                                      *vim-dir-[[*
 [[                  Jump over directories backward, place cursor on the
                     last/first directory.
+
+                                                     *vim-dir-CTRL-L*
+<C-l>               Refresh directory contents.
 
 
                                                      *vim-dir-file-operations*

@@ -19,7 +19,7 @@ var nop_maps = ['r', 'd', 'c', 'C', 'a', 'I',
                 'U', '<C-r>', '<C-w>f', '<C-w>F', 'gf', 'gF'
                ]
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
-                 '~', 'g~', 'gb', 'gh', '>', '<',
+                 '~', 'g~', 'gb', 'gh', '>', '<', '<C-l>',
                  't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'p', 'P', ']]', '[[',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
@@ -94,6 +94,8 @@ nnoremap <buffer> gh <scriptcmd>action.HistoryJumpMenu()<cr>
 
 noremap <buffer> > <scriptcmd>action.WidenView()<cr>
 noremap <buffer> < <scriptcmd>action.ShrinkView()<cr>
+
+noremap <buffer> <C-l> <scriptcmd>Dir<cr>
 
 # remove buffer editing mappings
 for key in nop_maps
