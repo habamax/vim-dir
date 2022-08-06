@@ -59,6 +59,8 @@ export def Delete(name: string)
         echohl ErrorMsg
         echom v:exception
         echohl None
+    finally
+        mark.Clear()
     endtry
 enddef
 
