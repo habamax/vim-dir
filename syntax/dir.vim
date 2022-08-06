@@ -15,20 +15,28 @@ syn match dirStatusSel 'Selected:' skipwhite contained nextgroup=dirStatusSelNum
 syn match dirStatusSelNum '\d\+' skipwhite contained nextgroup=dirStatusSelPath
 syn match dirStatusSelPath 'in \f\+' contained
 
-syn match dirDirectory "^[dj].*$" contains=dirType
-syn match dirFile "^[-].*$" contains=dirType
-syn match dirLink "^[l].*$" contains=dirType
+syn match dirDirectory '^[dj].*$' contains=dirPermission
+syn match dirFile '^[-].*$' contains=dirPermission
+syn match dirLink '^[l].*$' contains=dirPermission
 
+syn match dirPermission '[-djl][-rwx]\{9}' transparent skipwhite contained contains=dirType nextgroup=dirOwnerGroupSizeTimeView,dirSizeTimeView,DirTimeView
 syn match dirType "^[-djl]" contained nextgroup=dirPermissionUser
-syn match dirPermissionUser "[-r][-w][-x]" contained nextgroup=dirPermissionGroup
-syn match dirPermissionGroup "[-r][-w][-x]" contained nextgroup=dirPermissionOther
-syn match dirPermissionOther "[-r][-w][-x]" contained nextgroup=dirOwnerGroup,dirSize,dirTime skipwhite
-syn match dirOwnerGroup "\a\+\s\+\a\+\s\+\ze\(\d\+\)" contained transparent skipwhite contains=dirOwner,dirGroup nextgroup=dirSize,dirTime
-syn match dirOwner "\a\+" contained skipwhite
-syn match dirGroup "\a\+\ze\s\+\(\d\+\)" contained skipwhite
-syn match dirSize "\d\+[KMG]\? " contained contains=dirSizeMod skipwhite nextgroup=dirTime
-syn match dirSizeMod "[KMG]" contained
-syn match dirTime "\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d" contained skipwhite
+syn match dirPermissionUser '[-r][-w][-x]' contained nextgroup=dirPermissionGroup
+syn match dirPermissionGroup '[-r][-w][-x]' contained nextgroup=dirPermissionOther
+syn match dirPermissionOther '[-r][-w][-x]' contained
+
+syn match dirOwnerGroupSizeTimeView '\a\+\s\+\a\+\s\+\d\+[KMG]\?\s\+\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirOwnerGroup,dirSize,dirTime transparent
+syn match dirSizeTimeView '\d\+[KMG]\?\s\+\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirSize,dirTime transparent
+syn match dirTimeView '\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirTime transparent
+
+syn match dirOwnerGroup '\a\+\s\+\a\+\s\+\ze\(\d\+\)' contained transparent skipwhite contains=dirOwner,dirGroup
+syn match dirOwner '\a\+' contained skipwhite
+syn match dirGroup '\a\+\ze\s\+\(\d\+\)' contained skipwhite
+
+syn match dirSize '\d\+[KMG]\? ' contained contains=dirSizeMod skipwhite nextgroup=dirTime
+syn match dirSizeMod '[KMG]' contained
+
+syn match dirTime '\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained skipwhite
 
 
 hi def link dirCwd Title
