@@ -15,18 +15,18 @@ syn match dirStatusSel 'Selected:' skipwhite contained nextgroup=dirStatusSelNum
 syn match dirStatusSelNum '\d\+' skipwhite contained nextgroup=dirStatusSelPath
 syn match dirStatusSelPath 'in \f\+' contained
 
-syn match dirDirectory "^[dj].*$" contains=dirType,dirTime,dirSize
-syn match dirFile "^[-].*$" contains=dirType,dirTime,dirSize
-syn match dirLink "^[l].*$" contains=dirType,dirTime,dirSize
+syn match dirDirectory "^[dj].*$" contains=dirType
+syn match dirFile "^[-].*$" contains=dirType
+syn match dirLink "^[l].*$" contains=dirType
 
 syn match dirType "^[-djl]" contained nextgroup=dirPermissionUser
 syn match dirPermissionUser "[-r][-w][-x]" contained nextgroup=dirPermissionGroup
 syn match dirPermissionGroup "[-r][-w][-x]" contained nextgroup=dirPermissionOther
-syn match dirPermissionOther "[-r][-w][-x]" contained skipwhite nextgroup=dirOwnerGroup
-syn match dirOwnerGroup "\a\+\s\+\a\+\s\+\ze\(\d\+\)" contained transparent skipwhite contains=dirOwner,dirGroup keepend
+syn match dirPermissionOther "[-r][-w][-x]" contained nextgroup=dirOwnerGroup,dirSize,dirTime skipwhite
+syn match dirOwnerGroup "\a\+\s\+\a\+\s\+\ze\(\d\+\)" contained transparent skipwhite contains=dirOwner,dirGroup nextgroup=dirSize,dirTime
 syn match dirOwner "\a\+" contained skipwhite
 syn match dirGroup "\a\+\ze\s\+\(\d\+\)" contained skipwhite
-syn match dirSize "\d\+[KMG]\? " contained contains=dirSizeMod skipwhite
+syn match dirSize "\d\+[KMG]\? " contained contains=dirSizeMod skipwhite nextgroup=dirTime
 syn match dirSizeMod "[KMG]" contained
 syn match dirTime "\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d" contained skipwhite
 
