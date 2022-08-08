@@ -110,8 +110,8 @@ export def Names(): list<string>
 enddef
 
 
-export def NamesAndPaths(): list<string>
-    return bookmarks.named->items()->mapnew((_, v) => $'{v[0]} ({v[1]})')
+export def NamesAndPaths(): list<list<any>>
+    return bookmarks.named->items()
 enddef
 
 

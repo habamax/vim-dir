@@ -398,15 +398,18 @@ enddef
 
 
 export def BookmarkJumpMenu()
-    var bookmarks = bookmark.NamesAndPaths()->sort()
+    var bookmarks = bookmark.NamesAndPaths()
     if empty(bookmarks)
         echohl Error
         echomsg $'There are no bookmarks!'
         echohl None
         return
     endif
-    popup.List(bookmarks, 'Jump bookmark', (bk) => {
-            BookmarkJump(bk->substitute('\s(.\{-})$', '', ''))
+    popup.FilterMenu('Jump bookmark', bookmarks->mapnew((_, v) => {
+            return {text: $'{v[0]} ({v[1]})', name: v[0]}
+        }),
+        (res, _) => {
+            BookmarkJump(res.name)
         })
 enddef
 
@@ -452,8 +455,9 @@ export def HistoryJumpMenu()
         echohl None
         return
     endif
-    popup.List(dir_hist, 'Directory history', (d) => {
-            HistoryJump(d)
+    popup.FilterMenu('Jump history', dir_hist,
+        (res, _) => {
+            HistoryJump(res.text)
         })
 enddef
 

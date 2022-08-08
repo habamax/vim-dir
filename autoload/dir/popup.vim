@@ -226,3 +226,94 @@ export def Confirm(text: any, answer: list<dict<any>>): number
     endwhile
     return -1
 enddef
+
+
+# Popup menu with fuzzy filtering
+export def FilterMenu(title: string, items: list<any>, Callback: func(any, string))
+    if len(items) < 1 | return | endif
+    if empty(prop_type_get('FilterMenuMatch'))
+        hi def link FilterMenuMatch Constant
+        prop_type_add('FilterMenuMatch', {highlight: "FilterMenuMatch", override: true, priority: 1000, combine: true})
+    endif
+    var prompt = ""
+    var hint = ">>> type to filter <<<"
+    var items_dict: list<dict<any>>
+    if items[0]->type() != v:t_dict
+        items_dict = items->mapnew((_, v) => {
+            return {text: v}
+        })
+    else
+        items_dict = items
+    endif
+
+    var filtered_items: list<any> = [items_dict]
+    def Printify(itemsAny: list<any>, props: list<any>): list<any>
+        if itemsAny[0]->len() == 0 | return [] | endif
+        if itemsAny->len() > 1
+            return itemsAny[0]->mapnew((idx, v) => {
+                return {text: v.text, props: itemsAny[1][idx]->mapnew((_, c) => {
+                    return {col: v.text->byteidx(c) + 1, length: 1, type: 'FilterMenuMatch'}
+                })}
+            })
+        else
+            return itemsAny[0]->mapnew((_, v) => {
+                return {text: v.text}
+            })
+        endif
+    enddef
+    var winid = popup_create(Printify(filtered_items, []), {
+        title: $" {title}: {hint} ",
+        pos: 'center',
+        border: [],
+        borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
+        drag: 0,
+        wrap: 1,
+        minwidth: (&columns * 0.6)->float2nr(),
+        maxheight: (&lines * 0.8)->float2nr(),
+        cursorline: false,
+        padding: [0, 1, 0, 1],
+        mapping: 0,
+        filter: (id, key) => {
+            if key == "\<esc>"
+                popup_close(id, -1)
+            elseif ["\<cr>", "\<C-j>", "\<C-v>", "\<C-t>"]->index(key) > -1
+                    && filtered_items[0]->len() > 0
+                popup_close(id, {idx: getcurpos(id)[1], key: key})
+            elseif key == "\<tab>" || key == "\<C-n>"
+                win_execute(id, "normal! j")
+            elseif key == "\<S-tab>" || key == "\<C-p>"
+                win_execute(id, "normal! k")
+            elseif key != "\<cursorhold>" && key != "\<ignore>"
+                if key == "\<C-U>" && !empty(prompt)
+                    prompt = ""
+                    filtered_items = [items_dict]
+                elseif (key == "\<C-h>" || key == "\<bs>")
+                    if empty(prompt) | return true | endif
+                    prompt = prompt->strcharpart(0, prompt->strchars() - 1)
+                    if empty(prompt)
+                        filtered_items = [items_dict]
+                    else
+                        filtered_items = items_dict->matchfuzzypos(prompt, {key: "text"})
+                    endif
+                elseif key =~ '\p'
+                    prompt ..= key
+                    filtered_items = items_dict->matchfuzzypos(prompt, {key: "text"})
+                endif
+                popup_settext(id, Printify(filtered_items, []))
+                popup_setoptions(id, {title: $" {title}: {prompt ?? hint} "})
+            endif
+            return true
+        },
+        callback: (id, result) => {
+                if result->type() == v:t_number
+                    if result > 0
+                        Callback(filtered_items[0][result - 1], "")
+                    endif
+                else
+                    Callback(filtered_items[0][result.idx - 1], result.key)
+                endif
+            }
+        })
+
+    win_execute(winid, "setl nu cursorline cursorlineopt=both")
+enddef
