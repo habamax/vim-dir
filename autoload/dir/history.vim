@@ -60,5 +60,5 @@ enddef
 
 
 export def Paths(): list<string>
-    return dir_history
+    return dir_history->filter((_, v) => isdirectory(v))
 enddef
