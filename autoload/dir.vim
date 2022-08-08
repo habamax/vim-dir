@@ -158,10 +158,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         oname = simplify($"{base}{os.Sep()}{oname}")
     endif
     if !isdirectory(oname) && !filereadable(oname)
-        echohl Error
-        echomsg $'Can not read "{oname}"!'
-        echohl None
-        return
+        oname = getcwd()
     endif
 
     if oname =~ '.[/\\]$' && oname !~ '^\u:\\$'
