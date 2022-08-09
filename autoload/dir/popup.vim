@@ -229,8 +229,7 @@ enddef
 
 
 # Popup menu with fuzzy filtering
-export def FilterMenu(title: string, items: list<any>, Callback: func(any, string))
-    if len(items) < 1 | return | endif
+export def FilterMenu(title: string, items: list<any>, Callback: func(any, string), Setup: func(number) = null_function)
     if empty(prop_type_get('FilterMenuMatch'))
         hi def link FilterMenuMatch Constant
         prop_type_add('FilterMenuMatch', {highlight: "FilterMenuMatch", override: true, priority: 1000, combine: true})
@@ -238,7 +237,9 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
     var prompt = ""
     var hint = ">>> type to filter <<<"
     var items_dict: list<dict<any>>
-    if items[0]->type() != v:t_dict
+    if len(items) < 1
+        items_dict = [{text: ""}]
+    elseif items[0]->type() != v:t_dict
         items_dict = items->mapnew((_, v) => {
             return {text: v}
         })
@@ -261,15 +262,18 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
             })
         endif
     enddef
+    var height = min([&lines - 6, items->len()])
+    var pos_top = ((&lines - height) / 2) - 1
     var winid = popup_create(Printify(filtered_items, []), {
         title: $" {title}: {hint} ",
-        pos: 'center',
+        line: pos_top,
+        minwidth: (&columns * 0.6)->float2nr(),
+        minheight: height,
+        maxheight: height,
         border: [],
         borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
         drag: 0,
         wrap: 1,
-        minwidth: (&columns * 0.6)->float2nr(),
-        maxheight: (&lines * 0.8)->float2nr(),
         cursorline: false,
         padding: [0, 1, 0, 1],
         mapping: 0,
@@ -296,7 +300,10 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
                     prompt = ""
                     filtered_items = [items_dict]
                 elseif (key == "\<C-h>" || key == "\<bs>")
-                    if empty(prompt) | return true | endif
+                    if empty(prompt)
+                        popup_close(id, {idx: getcurpos(id)[1], key: key})
+                        return true
+                    endif
                     prompt = prompt->strcharpart(0, prompt->strchars() - 1)
                     if empty(prompt)
                         filtered_items = [items_dict]
@@ -324,4 +331,7 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
         })
 
     win_execute(winid, "setl nu cursorline cursorlineopt=both")
+    if Setup != null_function
+        Setup(winid)
+    endif
 enddef
