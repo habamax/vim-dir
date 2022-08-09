@@ -229,7 +229,7 @@ enddef
 
 
 # Popup menu with fuzzy filtering
-export def FilterMenu(title: string, items: list<any>, Callback: func(any, string), Setup: func(number) = null_function)
+export def FilterMenu(title: string, items: list<any>, Callback: func(any, string), Setup: func(number) = null_function, close_on_bs: bool = false)
     if empty(prop_type_get('FilterMenuMatch'))
         hi def link FilterMenuMatch Constant
         prop_type_add('FilterMenuMatch', {highlight: "FilterMenuMatch", override: true, priority: 1000, combine: true})
@@ -301,7 +301,7 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
                     prompt = ""
                     filtered_items = [items_dict]
                 elseif (key == "\<C-h>" || key == "\<bs>")
-                    if empty(prompt)
+                    if empty(prompt) && close_on_bs
                         popup_close(id, {idx: getcurpos(id)[1], key: key})
                         return true
                     endif
