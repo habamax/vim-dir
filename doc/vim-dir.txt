@@ -126,8 +126,6 @@ t                   Open a file/directory in a tab.
 [[                  Jump over directories backward, place cursor on the
                     last/first directory.
 
-                                                     *vim-dir-CTRL-L*
-CTRL-L              Refresh directory contents.
 
 
                                                      *vim-dir-file-operations*

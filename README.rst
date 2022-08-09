@@ -107,7 +107,6 @@ Navigation
   directory.
 - :kbd:`[[` — jump over directories backward, place cursor on the last/first
   directory.
-- :kbd:`CTRL` :kbd:`L` — refresh directory contents.
 
 
 File operations
