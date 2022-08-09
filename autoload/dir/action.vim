@@ -412,8 +412,8 @@ export def BookmarkJumpMenu()
             BookmarkJump(res.name)
         },
         (winid) => {
-            win_execute(winid, 'syn match DirFilterMenuBookmarkPath "(.*)$"')
-            hi def link DirFilterMenuBookmarkPath Comment
+            win_execute(winid, 'syn match dirFilterMenuBookmarkPath "(.*)$"')
+            hi def link dirFilterMenuBookmarkPath Comment
         })
 enddef
 
@@ -464,8 +464,8 @@ export def HistoryJumpMenu()
             HistoryJump(res.text)
         },
         (winid) => {
-            win_execute(winid, 'syn match DirFilterMenuHistoryPath "^.*\(/\|\\\)"')
-            hi def link DirFilterMenuHistoryPath Comment
+            win_execute(winid, 'syn match dirFilterMenuHistoryPath "^.*\(/\|\\\)"')
+            hi def link dirFilterMenuHistoryPath Comment
         })
 enddef
 
