@@ -410,6 +410,10 @@ export def BookmarkJumpMenu()
         }),
         (res, _) => {
             BookmarkJump(res.name)
+        },
+        (winid) => {
+            win_execute(winid, 'syn match DirFilterMenuBookmarkPath "(.*)$"')
+            hi def link DirFilterMenuBookmarkPath Comment
         })
 enddef
 
@@ -458,6 +462,10 @@ export def HistoryJumpMenu()
     popup.FilterMenu('Jump history', dir_hist,
         (res, _) => {
             HistoryJump(res.text)
+        },
+        (winid) => {
+            win_execute(winid, 'syn match DirFilterMenuHistoryPath "^.*\(/\|\\\)"')
+            hi def link DirFilterMenuHistoryPath Comment
         })
 enddef
 
