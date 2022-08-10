@@ -52,7 +52,7 @@ export def Add(path: string)
         dir_history->remove(idx)
     endif
     dir_history->insert(path)
-    if dir_history->len() > get(g:, "dir_history_size", 30)
+    if dir_history->len() > get(g:, "dir_history_size", 100)
         dir_history = dir_history[ : get(g:, "dir_history_size", 30) - 1]
     endif
     Save()

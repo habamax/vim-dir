@@ -165,7 +165,7 @@ Settings
 - ``g:dir_show_hidden`` — show/hide ``.hidden`` files/directories. Default is
   ``true``.
 - ``g:dir_history_size`` — maximum numbers of directories in history. Default is
-  `30`.
+  `100`.
 - ``g:dir_columns`` — columns for the dir view. Default is
 
   - Windows: ``perm,size,time,name``

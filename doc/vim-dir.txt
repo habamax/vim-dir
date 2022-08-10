@@ -250,7 +250,7 @@ g:dir_show_hidden   Show/hide `.hidden` files/directories.
 
                                                      *g:dir_history_size*
 g:dir_history_size  Maximum number of directories to be saved in history.
-                    Default is `30`.
+                    Default is `100`.
 
                                                      *g:dir_columns*
 g:dir_columns       Columns of the dir view.
