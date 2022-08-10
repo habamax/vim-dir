@@ -22,6 +22,15 @@ import autoload 'dir.vim'
 
 command! -nargs=? -complete=dir Dir dir.Open(expand(<q-args>))
 
+def DirOnDirectory()
+    if !exists("b:dir") && isdirectory(expand("<afile>"))
+        dir.Open()
+    endif
+enddef
 augroup dirautocommands | au!
     au BufReadCmd dir://* set ft=dir | dir.Open()
+
+    if !exists(":Explore")
+        au BufEnter * DirOnDirectory()
+    endif
 augroup END
