@@ -237,7 +237,8 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
     var prompt = ""
     var hint = ">>> type to filter <<<"
     var items_dict: list<dict<any>>
-    if len(items) < 1
+    var items_count = items->len()
+    if items_count < 1
         items_dict = [{text: ""}]
     elseif items[0]->type() != v:t_dict
         items_dict = items->mapnew((_, v) => {
@@ -265,14 +266,14 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
     var height = min([&lines - 6, items->len()])
     var pos_top = ((&lines - height) / 2) - 1
     var winid = popup_create(Printify(filtered_items, []), {
-        title: $" {title}: {hint} ",
+        title: $" ({items_count}/{items_count}) {title}: {hint} ",
         line: pos_top,
         minwidth: (&columns * 0.6)->float2nr(),
         maxwidth: (&columns - 5),
         minheight: height,
         maxheight: height,
         border: [],
-        borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
+        borderchars: ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
         drag: 0,
         wrap: 1,
         cursorline: false,
@@ -296,7 +297,7 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
                 if ln == getcurpos(id)[1]
                     win_execute(id, "normal! G")
                 endif
-            elseif key != "\<cursorhold>" && key != "\<ignore>"
+            elseif ["\<cursorhold>", "\<ignore>"]->index(key) == -1
                 if key == "\<C-U>" && !empty(prompt)
                     prompt = ""
                     filtered_items = [items_dict]
@@ -316,7 +317,7 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
                     filtered_items = items_dict->matchfuzzypos(prompt, {key: "text"})
                 endif
                 popup_settext(id, Printify(filtered_items, []))
-                popup_setoptions(id, {title: $" {title}: {prompt ?? hint} "})
+                popup_setoptions(id, {title: $" ({filtered_items[0]->len()}/{items_count}) {title}: {prompt ?? hint} "})
             endif
             return true
         },
