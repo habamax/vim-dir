@@ -5,8 +5,12 @@ import autoload 'dir/popup.vim'
 import autoload 'dir/g.vim'
 
 
-export def Sep(): string
-    return has("win32") ? '\' : '/'
+export def Sep(escape: bool = false): string
+    if escape
+        return has("win32") ? '\\' : '/'
+    else
+        return has("win32") ? '\' : '/'
+    endif
 enddef
 
 
