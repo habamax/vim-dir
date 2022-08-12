@@ -478,3 +478,17 @@ enddef
 export def HistoryComplete(_, _, _): string
     return history.Paths()->join("\n")
 enddef
+
+
+export def GotoMenu()
+    popup.FilterMenu('Go to', b:dir->mapnew((idx, v) => {
+            return {text: $'{v.name}', idx: idx}
+        }),
+        (res, _) => {
+            exe $":{res.idx + g.DIRLIST_SHIFT}"
+        },
+        (winid) => {
+            win_execute(winid, 'syn match dirFilterMenuBookmarkPath "(.*)$"')
+            hi def link dirFilterMenuBookmarkPath Comment
+        })
+enddef

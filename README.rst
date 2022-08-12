@@ -107,6 +107,7 @@ Navigation
   directory.
 - :kbd:`[[` — jump over directories backward, place cursor on the last/first
   directory.
+- :kbd:`gj` — open quick jump menu.
 
 
 File operations
