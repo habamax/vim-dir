@@ -168,6 +168,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
     # open using OS
     if oname =~ '\c' .. g:dir_open_ext->mapnew((_, v) => $'\%({v}\)')->join('\|')
         os.Open(oname)
+        history.Add(b:dir_cwd)
         return
     endif
 
