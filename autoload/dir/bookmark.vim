@@ -1,8 +1,8 @@
 vim9script
 
 # {
-#   named: [{'bookmark name': '/some/path'}, 'another name': '/other/path'],
-#   numbered: [{0: '/some/path'}, {1: '/some/other/path}]
+#   named: {'bookmark name': '/some/path', 'another name': '/other/path'},
+#   numbered: {0: '/some/path', 1: '/some/other/path}
 # }
 var bookmarks: dict<any> = {named: {}, numbered: {}}
 
