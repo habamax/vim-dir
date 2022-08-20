@@ -103,6 +103,7 @@ Navigation
 - :kbd:`s` — open a file/directory in a split.
 - :kbd:`S` — open a file/directory in a vertical split.
 - :kbd:`t` — open a file/directory in a tab.
+- :kbd:`Ctrl-R` — refresh directory.
 - :kbd:`]]` — jump over directories forward, place cursor on a first file/last
   directory.
 - :kbd:`[[` — jump over directories backward, place cursor on the last/first

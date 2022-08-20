@@ -16,10 +16,10 @@ setlocal noswapfile
 
 var nop_maps = ['r', 'd', 'c', 'C', 'a', 'I',
                 'gp', 'gP', 'gi', 'gI', 'gu', 'gU',  'gH', 'gw', 'gq',
-                'U', '<C-r>', '<C-w>f', '<C-w>F', 'gf', 'gF'
+                'U', '<C-w>f', '<C-w>F', 'gf', 'gF'
                ]
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
-                 '~', 'g~', 'gb', 'gh', '>', '<', 'gj',
+                 '~', 'g~', 'gb', 'gh', '>', '<', 'gj', '<C-r>',
                  't', 'i', 'x', 'X', 'D', 'dd', 'R', 'rr', 'p', 'P', ']]', '[[',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
@@ -52,6 +52,7 @@ nnoremap <buffer> s <scriptcmd>action.Do($"{g:dir_invert_split ? 'vert' : ''} sp
 xnoremap <buffer> s <nop>
 nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoInfo()<cr>
+nnoremap <buffer> <C-r> <scriptcmd>edit<cr>
 
 
 noremap <buffer> x <scriptcmd>action.DoMarkToggle()<cr>j

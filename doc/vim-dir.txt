@@ -115,6 +115,9 @@ s                   Open a file/directory in a split.
                                                      *vim-dir-S*
 S                   Open a file/directory in a vertical split.
 
+                                                     *vim-dir-CTRL-R*
+CTRL-R              Refresh directory.
+
                                                      *vim-dir-t*
 t                   Open a file/directory in a tab.
 
