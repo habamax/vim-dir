@@ -182,7 +182,7 @@ g{N}                Open bookmark number {N}.
                     *vim-dir-CTRL-A_1* *vim-dir-CTRL-A_2* *vim-dir-CTRL-A_3*
                     *vim-dir-CTRL-A_4* *vim-dir-CTRL-A_5* *vim-dir-CTRL-A_6*
                     *vim-dir-CTRL-A_7* *vim-dir-CTRL-A_8* *vim-dir-CTRL-A_9*
-<C-A>{N}            Set bookmark number {N} for a current directory.
+CTRL-A{N}           Set bookmark number {N} for a current directory.
 
 
                                                      *vim-dir-gb*
