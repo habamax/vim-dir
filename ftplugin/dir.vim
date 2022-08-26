@@ -8,7 +8,7 @@ b:did_ftplugin = 1
 var undo_opts = "setl spell< buftype< bufhidden< buflisted< swapfile<"
 
 setlocal nospell
-setlocal buftype=acwrite
+setlocal buftype=nofile
 setlocal bufhidden=hide
 setlocal nobuflisted
 setlocal noswapfile
