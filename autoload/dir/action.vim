@@ -315,7 +315,7 @@ export def DoAction()
         ]
     endif
     actions += [
-        {name: "Rename", Action: DoRename}
+        {name: "Rename", Action: DoRename},
         {name: "Delete", Action: DoDelete}
     ]
     popup.Menu(actions)
