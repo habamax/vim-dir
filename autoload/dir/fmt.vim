@@ -10,7 +10,7 @@ endif
 
 
 def Perm(e: dict<any>): string
-    return (e.type == 'file' ? '-' : e.type[0]) .. e.perm
+    return (e.type == 'file' ? '-' : e.type[0]) .. (e.perm ?? '---------')
 enddef
 
 
