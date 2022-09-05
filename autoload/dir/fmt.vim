@@ -38,12 +38,12 @@ enddef
 
 
 def User(e: dict<any>): string
-    return e.user
+    return e.user ?? 'root'
 enddef
 
 
 def Group(e: dict<any>): string
-    return e.group
+    return e.group ?? 'root'
 enddef
 
 
