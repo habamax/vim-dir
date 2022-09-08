@@ -84,6 +84,24 @@ enddef
 
 
 export def PrintDir(dir: list<dict<any>>)
+    # calc max width of user/group/size
+    var user_width: number = 1
+    var group_width: number = 1
+    var size_width: number = 1
+    for elt in dir
+        if len(elt.user) > user_width
+            user_width = len(elt.user)
+        endif
+        if len(elt.group) > group_width
+            group_width = len(elt.group)
+        endif
+        var cur_size = len(fmt.Size(elt))
+        if cur_size > size_width
+            size_width = cur_size
+        endif
+    endfor
+    fmt.Setup(user_width, group_width, size_width)
+
     var view = winsaveview()
     setl ma nomod noro
     sil! :%d _

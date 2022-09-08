@@ -9,6 +9,9 @@ else
 endif
 
 
+var DirPrintf: func(dict<any>): string
+
+
 def Perm(e: dict<any>): string
     return (e.type == 'file' ? '-' : e.type[0]) .. (e.perm ?? '---------')
 enddef
@@ -19,7 +22,7 @@ def Name(e: dict<any>): string
 enddef
 
 
-def Size(e: dict<any>): string
+export def Size(e: dict<any>): string
     if e.size >= 10 * 1073741824
         return $"{e.size / 1073741824}G"
     elseif e.size >= 10 * 1048576
@@ -47,14 +50,14 @@ def Group(e: dict<any>): string
 enddef
 
 
-export def BuildPrintf(): func(dict<any>): string
+export def BuildPrintf(user_width: number, group_width: number, size_width: number): func(dict<any>): string
     var columns_param: dict<any> = {
-            perm: ["%s", Perm],
-            user: ["%-8s", User],
-            group: ["%-8s", Group],
-            size: ["%7s", Size],
-            time: ["%s", Time],
-            name: ["%s", Name]
+            perm: ['%s', Perm],
+            user: [$'%-{user_width}s', User],
+            group: [$'%-{group_width}s', Group],
+            size: [$'%{size_width}s', Size],
+            time: ['%s', Time],
+            name: ['%s', Name]
         }
     var fmt = []
     var fmt_f = []
@@ -66,7 +69,9 @@ export def BuildPrintf(): func(dict<any>): string
 enddef
 
 
-var DirPrintf: func(dict<any>): string = BuildPrintf()
+export def Setup(user_width: number, group_width: number, size_width: number)
+    DirPrintf = BuildPrintf(user_width, group_width, size_width)
+enddef
 
 
 export def Columns(): string
@@ -76,7 +81,6 @@ enddef
 
 export def SetColumns(new_columns: string)
     columns = new_columns
-    DirPrintf = BuildPrintf()
 enddef
 
 
