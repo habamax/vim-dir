@@ -26,15 +26,15 @@ syn match dirPermissionUser '[-r][-w][-x]' contained nextgroup=dirPermissionGrou
 syn match dirPermissionGroup '[-r][-w][-x]' contained nextgroup=dirPermissionOther
 syn match dirPermissionOther '[-r][-w][-x]' contained
 
-syn match dirOwnerGroupSizeTimeView '[[:alpha:]-_]\+\s\+[[:alpha:]-_]\+\s\+-\?\d\+[KMG]\?\s\+\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirOwnerGroup,dirSize,dirTime transparent
-syn match dirSizeTimeView '-\?\d\+[KMG]\?\s\+\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirSize,dirTime transparent
+syn match dirOwnerGroupSizeTimeView '[[:alpha:]-_]\+\s\+[[:alpha:]-_]\+\s\+-\?\d\+\(\.\d\+\)\?[KMG]\?\s\+\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirOwnerGroup,dirSize,dirTime transparent
+syn match dirSizeTimeView '-\?\d\+\(\.\d\+\)\?[KMG]\?\s\+\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirSize,dirTime transparent
 syn match dirTimeView '\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained contains=dirTime transparent
 
-syn match dirOwnerGroup '[[:alpha:]-_]\+\s\+[[:alpha:]-_]\+\s\+\ze\(-\?\d\+\)' contained transparent skipwhite contains=dirOwner,dirGroup
+syn match dirOwnerGroup '[[:alpha:]-_]\+\s\+[[:alpha:]-_]\+\s\+\ze\(-\?\d\+\(\.\d\+\)\?\)' contained transparent skipwhite contains=dirOwner,dirGroup
 syn match dirOwner '[[:alpha:]-_]\+' contained skipwhite
 syn match dirGroup '[[:alpha:]-_]\+\ze\s\+\(-\?\d\+\)' contained skipwhite
 
-syn match dirSize '-\?\d\+[KMG]\? ' contained contains=dirSizeMod skipwhite nextgroup=dirTime
+syn match dirSize '-\?\d\+\(\.\d\+\)\?[KMG]\? ' contained contains=dirSizeMod skipwhite nextgroup=dirTime
 syn match dirSizeMod '[KMG]' contained
 
 syn match dirTime '\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contained skipwhite

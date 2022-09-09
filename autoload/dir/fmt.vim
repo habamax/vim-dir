@@ -23,12 +23,14 @@ enddef
 
 
 export def Size(e: dict<any>): string
-    if e.size >= 10 * 1073741824
-        return $"{e.size / 1073741824}G"
-    elseif e.size >= 10 * 1048576
-        return $"{e.size / 1048576}M"
-    elseif e.size >= 1048576
-        return $"{e.size / 1024}K"
+    if e.size >= 10 * 1073741824 # 10G
+        return printf("%.0fG", ceil(e.size / 1073741824.0))
+    elseif e.size >= 10 * 1048576 # 10M
+        return printf("%.0fM", ceil(e.size / 1048576.0))
+    elseif e.size >= 1048576 # 1M
+        return printf("%.1fM", e.size / 1048576.0)
+    elseif e.size >= 10240 # 10K
+        return printf("%.0fK", ceil(e.size / 1024.0))
     else
         return $"{e.size}"
     endif
