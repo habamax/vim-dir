@@ -28,7 +28,7 @@ export def UpdateStatusInfo()
         endif
 
         status->add(dsort.Info(buf_info.bufnr))
-        status->add(get(g:, "dir_show_hidden", true) ? "Show . entries" : "")
+        status->add(get(g:, "dir_show_hidden", true) ? "Show .hidden" : "")
         status->add(fltr_msg)
         status->add(mark.Info(buf_info.bufnr))
         status->filter((_, v) => !v->empty())
