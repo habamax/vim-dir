@@ -103,7 +103,7 @@ export def DoFilterHidden()
     b:dir_invalidate = true
     :edit
 
-    var msg = g:dir_show_hidden ? "Show" : "Do not show"
+    var msg = g:dir_show_hidden ? "Show" : "Hide"
     g.Echo({t: msg, hl: "WarningMsg"}, " .hidden")
 enddef
 
