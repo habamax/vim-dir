@@ -6,14 +6,12 @@ endif
 g:loaded_dir = 1
 
 # if a file or dir is matched with this -- open in OS
-g:dir_open_os = ['\.pdf$', '\.ods$', '\.odt$', '\.odp$',
-                 '\.xls$', '\.xlsx$', '\.doc$', '\.docx$', '\.ppt$', '\.pptx$',
-                 '\.png$', '\.jpg$', '\.gif$',
-                 '\.mkv$', '\.mov$', '\.mpeg$', '\.avi$', '\.mp4$',
-                 '\.mp3$', '\.ogg$', '\.flac$'
+g:dir_open_os = ['pdf', 'ods', 'odt', 'odp',
+                 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx',
+                 'png', 'jpg', 'gif',
+                 'mkv', 'mov', 'mpeg', 'avi', 'mp4',
+                 'mp3', 'ogg', 'flac'
                  ]
-
-g:dir_open_ext = [{}]
 
 # By default s split horizontally, S vertically.
 # Invert s and S.

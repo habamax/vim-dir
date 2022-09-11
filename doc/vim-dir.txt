@@ -225,16 +225,16 @@ SETTINGS                                             *vim-dir-settings*
 
 
                                                      *g:dir_open_os*
-g:dir_open_os       If a file/directory is matched against regexes in this
+g:dir_open_os       If a file is matched against extensions in this
                     list, open it using OS.
 
                     Default: >
 
-                    g:dir_open_os = ['\.pdf$', '\.ods$', '\.odt$', '\.odp$',
-                    '\.xls$', '\.xlsx$', '\.doc$', '\.docx$', '\.ppt$',
-                    '\.pptx$', '\.png$', '\.jpg$', '\.gif$',
-                    '\.mkv$', '\.mov$', '\.mpeg$', '\.avi$', '\.mp4$',
-                    '\.mp3$', '\.ogg$', '\.flac$']
+                    g:dir_open_os = ['pdf', 'ods', 'odt', 'odp',
+                            'xls', 'xlsx', 'doc', 'docx', 'ppt',
+                            'pptx', 'png', 'jpg', 'gif',
+                            'mkv', 'mov', 'mpeg', 'avi', 'mp4',
+                            'mp3', 'ogg', 'flac']
 <
 
                                                      *g:dir_invert_split*
