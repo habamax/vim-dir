@@ -156,7 +156,7 @@ Filter and View
 Settings
 ========
 
-- ``g:dir_open_ext`` — if a file/directory is matched against regexes in a
+- ``g:dir_open_os`` — if a file/directory is matched against regexes in a
   list, open it using OS.
 - ``g:dir_invert_split`` — by default :kbd:`s` splits horizontally and :kbd:`S`
   splits vertically. Set to ``1``/``true`` to make the opposite.

@@ -224,13 +224,13 @@ g/                  Sort current buffer dir by name.
 SETTINGS                                             *vim-dir-settings*
 
 
-                                                     *g:dir_open_ext*
-g:dir_open_ext      If a file/directory is matched against regexes in this
+                                                     *g:dir_open_os*
+g:dir_open_os       If a file/directory is matched against regexes in this
                     list, open it using OS.
 
                     Default: >
 
-                    g:dir_open_ext = ['\.pdf$', '\.ods$', '\.odt$', '\.odp$',
+                    g:dir_open_os = ['\.pdf$', '\.ods$', '\.odt$', '\.odp$',
                     '\.xls$', '\.xlsx$', '\.doc$', '\.docx$', '\.ppt$',
                     '\.pptx$', '\.png$', '\.jpg$', '\.gif$',
                     '\.mkv$', '\.mov$', '\.mpeg$', '\.avi$', '\.mp4$',
