@@ -294,6 +294,7 @@ export def DoMove()
         os.Move()
         winrestview(view)
         :edit
+        RefreshOtherDirWindows()
     endif
 enddef
 
@@ -336,9 +337,7 @@ export def ShrinkView()
     dir.PrintDir(b:dir)
     dir.UpdateStatusInfo()
     mark.RefreshVisual()
-    for buf_info in g.OtherDirBuffers()
-        setbufvar(buf_info.bufnr, "dir_invalidate", true)
-    endfor
+    RefreshOtherDirWindows()
 enddef
 
 
@@ -356,9 +355,7 @@ export def WidenView()
     dir.PrintDir(b:dir)
     dir.UpdateStatusInfo()
     mark.RefreshVisual()
-    for buf_info in g.OtherDirBuffers()
-        setbufvar(buf_info.bufnr, "dir_invalidate", true)
-    endfor
+    RefreshOtherDirWindows()
 enddef
 
 
@@ -492,4 +489,14 @@ export def GotoMenu()
             win_execute(winid, $'syn match dirFilterMenuDirectory "^.\+{os.Sep(true)}$"')
             hi def link dirFilterMenuDirectory Directory
         })
+enddef
+
+
+def RefreshOtherDirWindows()
+    for buf_info in g.OtherDirBuffers()
+        setbufvar(buf_info.bufnr, "dir_invalidate", true)
+        for winid in buf_info.windows
+            win_execute(winid, ":edit", "silent!")
+        endfor
+    endfor
 enddef
