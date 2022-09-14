@@ -229,19 +229,20 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         mark.RefreshVisual()
 
         if !invalidate || new_dirbuf
-            if len(b:dir) > 0 && line('.') < g.DIRLIST_SHIFT
-                exe $":{g.DIRLIST_SHIFT}"
-            endif
             if len(b:dir) == 0
                 exe $"norm! $2F{os.Sep()}l"
-            elseif !empty(focus)
-                var idx = b:dir->indexof((_, val) => val.name == focus)
-                if idx > -1
-                    exe $":{idx + g.DIRLIST_SHIFT}"
+            else
+                if line('.') < g.DIRLIST_SHIFT
+                    exe $":{g.DIRLIST_SHIFT}"
+                elseif !empty(focus)
+                    var idx = b:dir->indexof((_, val) => val.name == focus)
+                    if idx > -1
+                        exe $":{idx + g.DIRLIST_SHIFT}"
+                    endif
                 endif
+                norm! $
+                search('\v((\d\d:\d\d)|([djl-][rwx-]{9}))\s+\zs', 'b', line('.'))
             endif
-            norm! $
-            search('\v((\d\d:\d\d)|([djl-][rwx-]{9}))\s+\zs', 'b', line('.'))
         endif
     else
         history.Add(b:dir_cwd)
