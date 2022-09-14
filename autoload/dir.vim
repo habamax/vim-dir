@@ -196,7 +196,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         var focus = ""
         var new_dirbuf = g.GetBufnr($"dir://{oname}") == -1
         if filereadable(expand("%"))
-           || exists("b:dir_cwd") && len(oname) < len(b:dir_cwd) && new_dirbuf
+           || exists("b:dir_cwd") && len(oname) < len(b:dir_cwd)
             # focus if Dir is opened from a buffer with
             # 1. a regular file
             # 2. another Dir and you go up the tree to a not yet opened Dir
@@ -232,17 +232,16 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             if len(b:dir) > 0 && line('.') < g.DIRLIST_SHIFT
                 exe $":{g.DIRLIST_SHIFT}"
             endif
-            var rx_search = '\v((\d\d:\d\d)|([djl-][rwx-]{9}))\s+\zs'
             if len(b:dir) == 0
                 exe $"norm! $2F{os.Sep()}l"
             elseif !empty(focus)
-                if search($'{rx_search}{focus}', 'c') == 0
-                    search($'{rx_search}{focus}', 'b')
+                var idx = b:dir->indexof((_, val) => val.name == focus)
+                if idx > -1
+                    exe $":{idx + g.DIRLIST_SHIFT}"
                 endif
-            else
-                norm! $
-                search(rx_search, 'b', line('.'))
             endif
+            norm! $
+            search('\v((\d\d:\d\d)|([djl-][rwx-]{9}))\s+\zs', 'b', line('.'))
         endif
     else
         history.Add(b:dir_cwd)
