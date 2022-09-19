@@ -264,8 +264,8 @@ g:dir_columns       Columns of the dir view.
                     Windows: `"perm,size,time,name`.
                     Other:   `"perm,user,group,size,time,name`.
 
-                    Note, that `perm` and `name` are mandatory.
-                    Order also matters.
+                    Note, that `name` is mandatory.
+                    Always preserv order of columns.
 
 
 
