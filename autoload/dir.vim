@@ -241,7 +241,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
                     endif
                 endif
                 norm! $
-                search('\v((\d\d:\d\d)|([djl-][rwx-]{9}))\s+\zs', 'b', line('.'))
+                search('\v((\d\d:\d\d\s+)|([djl-][rwx-]{9}\s+)|^)\zs', 'b', line('.'))
             endif
         endif
     else
