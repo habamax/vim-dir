@@ -22,7 +22,7 @@ syn match dirPermissionUser '[-r][-w][-x]' contained nextgroup=dirPermissionGrou
 syn match dirPermissionGroup '[-r][-w][-x]' contained nextgroup=dirPermissionOther
 syn match dirPermissionOther '[-r][-w][-x]' contained
 
-syn match dirOwnerGroup '\s\a[[:alpha:]-_]*\s\+\a[[:alpha:]-_]*\s' transparent contains=dirOwner,dirGroup
+syn match dirOwnerGroup '\([-djl][-rwx]\{9}\s\)\@<=\a[[:alpha:]-_]*\s\+\a[[:alpha:]-_]*\ze\s' transparent contains=dirOwner,dirGroup
 syn match dirOwner '\a[[:alpha:]-_]*' contained skipwhite
 syn match dirGroup '\a[[:alpha:]-_]*' contained
 
