@@ -484,13 +484,13 @@ enddef
 
 export def GotoMenu()
     popup.FilterMenu('Jump to', b:dir->mapnew((idx, v) => {
-            return {text: $'{v.name}{g.IsFile(v) ? "" : os.Sep()}', idx: idx}
+            return {text: $'{g.IsFile(v) ? "" : os.Sep()}{v.name}', idx: idx}
         }),
         (res, _) => {
             exe $":{res.idx + g.DIRLIST_SHIFT}"
         },
         (winid) => {
-            win_execute(winid, $'syn match dirFilterMenuDirectory "^.\+{os.Sep(true)}$"')
+            win_execute(winid, $'syn match dirFilterMenuDirectory "^{os.Sep(true)}.\+$"')
             hi def link dirFilterMenuDirectory Directory
         })
 enddef
