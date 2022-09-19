@@ -22,11 +22,11 @@ syn match dirPermissionUser '[-r][-w][-x]' contained nextgroup=dirPermissionGrou
 syn match dirPermissionGroup '[-r][-w][-x]' contained nextgroup=dirPermissionOther
 syn match dirPermissionOther '[-r][-w][-x]' contained
 
-syn match dirOwnerGroup '\([-djl][-rwx]\{9}\s\)\@<=\a[[:alpha:]-_]*\s\+\a[[:alpha:]-_]*\ze\s' transparent contains=dirOwner,dirGroup
+syn match dirOwnerGroup '\(^[-djl][-rwx]\{9}\s\)\@<=\a[[:alpha:]-_]*\s\+\a[[:alpha:]-_]*\ze\s' transparent contains=dirOwner,dirGroup
 syn match dirOwner '\a[[:alpha:]-_]*' contained skipwhite
 syn match dirGroup '\a[[:alpha:]-_]*' contained
 
-syn match dirSize '-\?\d\+\(\.\d\+\)\?[KMG]\? ' contains=dirSizeMod skipwhite nextgroup=dirTime
+syn match dirSize '-\?\d\+\(\.\d\+\)\?[KMG]\? \ze\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d' contains=dirSizeMod skipwhite nextgroup=dirTime
 syn match dirSizeMod '[KMG]' contained
 
 syn match dirTime '\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d'
