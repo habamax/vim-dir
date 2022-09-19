@@ -1,5 +1,6 @@
 vim9script
 
+import autoload 'dir/os.vim'
 
 var columns: string
 if has("win32")
@@ -18,7 +19,14 @@ enddef
 
 
 def Name(e: dict<any>): string
-    return e.name .. (e.type =~ 'link' ? ' -> ' .. resolve(e.name) : '')
+    var res = e.name
+    if e.type =~ 'link'
+        res ..= ' -> ' .. resolve(e.name)
+    endif
+    if e.type == 'linkd' || e.type == 'dir' || e.type == 'junction'
+        res = os.Sep() .. res
+    endif
+    return res
 enddef
 
 

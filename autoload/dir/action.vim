@@ -325,9 +325,11 @@ enddef
 
 export def ShrinkView()
     var columns = fmt.Columns()
-    if columns->split(',')->len() <= 2 | return | endif
+    if columns->split(',')->len() <= 1 | return | endif
     if columns =~ 'user,group,'
         columns = columns->substitute('user,group,', '', '')
+    elseif columns =~ 'perm,'
+        columns = columns->substitute('perm,', '', '')
     elseif columns =~ 'size,'
         columns = columns->substitute('size,', '', '')
     elseif columns =~ 'time,'
@@ -348,6 +350,8 @@ export def WidenView()
         columns = columns->substitute('name', 'time,name', '')
     elseif columns !~ 'size,'
         columns = columns->substitute('time', 'size,time', '')
+    elseif columns !~ 'perm,'
+        columns = columns->substitute('size', 'perm,size', '')
     elseif columns !~ 'user,group,' && !has("win32")
         columns = columns->substitute('perm', 'perm,user,group', '')
     endif
