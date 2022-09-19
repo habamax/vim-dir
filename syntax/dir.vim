@@ -31,7 +31,7 @@ syn match dirSizeMod '[KMG]' contained
 
 syn match dirTime '\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d'
 
-syn match dirDirectory '\(^\|\s\)/.\{-}\ze\($\| ->\)'
+syn match dirDirectory '\(^\|\s\)[\/].\{-}\ze\($\| ->\)'
 syn match dirLink '-> .*'
 
 
