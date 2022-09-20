@@ -9,7 +9,7 @@ g:loaded_dir = 1
 g:dir_open_os = ['pdf', 'ods', 'odt', 'odp',
                  'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx',
                  'png', 'jpg', 'gif',
-                 'mkv', 'mov', 'mpeg', 'avi', 'mp4',
+                 'mkv', 'mov', 'mpeg', 'avi', 'mp4', 'm4v',
                  'mp3', 'ogg', 'flac'
                  ]
 
