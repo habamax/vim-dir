@@ -224,17 +224,23 @@ export def Duplicate()
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
 
     var copy_cmd = "cp -R"
+    var copy_dir_cmd = "cp -R"
     var dest_dir = $"{b:dir_cwd}"
 
     if has("win32")
         copy_cmd = "copy /Y"
+        copy_dir_cmd = "xcopy /EIH"
     endif
 
     for item in mark.List()
         var src = $"{mark.Dir()}{Sep()}{item.name}"
         var dst = $"{b:dir_cwd}{Sep()}{GetDuplicateName(item.name)}"
         try
-            system($'{copy_cmd} "{resolve(src)}" "{dst}"')
+            if item.type == 'dir'
+                system($'{copy_dir_cmd} "{resolve(src)}" "{dst}"')
+            else
+                system($'{copy_cmd} "{resolve(src)}" "{dst}"')
+            endif
         catch
             echo v:exception
         endtry
