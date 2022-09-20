@@ -222,12 +222,7 @@ enddef
 
 export def DoCopy()
     if mark.IsEmpty() | return | endif
-    if mark.Bufnr() == bufnr()
-        echohl Error
-        echomsg "Can't copy to the same location!"
-        echohl None
-        return
-    endif
+
     # check if user wants to copy a directory into its own subdirectory... and prevent it.
     for item in mark.List()
         if item.type !~ 'dir\|linkd\|junction' | continue | endif
@@ -243,18 +238,33 @@ export def DoCopy()
     var cnt = mark.List()->len()
 
     var msg = []
-    if cnt == 1
-        msg = [$'Copy {FileOrDirMsg(mark.List())} here?', $'"{mark.List()[0].name}"']
-    else
-        msg = [$'Copy {cnt} {FileOrDirMsg(mark.List())} here?']
-    endif
+    if mark.Bufnr() == bufnr()
+        if cnt == 1
+            msg = [$'Duplicate {FileOrDirMsg(mark.List())} here?', $'"{mark.List()[0].name}"']
+        else
+            msg = [$'Duplicate {cnt} {FileOrDirMsg(mark.List())} here?']
+        endif
 
-    var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
-    if res == 0
-        var view = winsaveview()
-        os.Copy()
-        winrestview(view)
-        :edit
+        var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
+        if res == 0
+            var view = winsaveview()
+            os.Duplicate()
+            winrestview(view)
+            :edit
+        endif
+    else
+        if cnt == 1
+            msg = [$'Copy {FileOrDirMsg(mark.List())} here?', $'"{mark.List()[0].name}"']
+        else
+            msg = [$'Copy {cnt} {FileOrDirMsg(mark.List())} here?']
+        endif
+        var res = popup.Confirm(msg, [{text: "&yes", act: 'y'}, {text: "&no", act: 'n'}])
+        if res == 0
+            var view = winsaveview()
+            os.Copy()
+            winrestview(view)
+            :edit
+        endif
     endif
 enddef
 

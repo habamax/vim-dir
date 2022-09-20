@@ -219,6 +219,30 @@ export def Copy()
 enddef
 
 
+export def Duplicate()
+    if mark.IsEmpty() | return | endif
+    if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
+
+    var copy_cmd = "cp -R"
+    var dest_dir = $"{b:dir_cwd}"
+
+    if has("win32")
+        copy_cmd = "copy /Y"
+    endif
+
+    for item in mark.List()
+        var src = $"{mark.Dir()}{Sep()}{item.name}"
+        var dst = $"{b:dir_cwd}{Sep()}{GetDuplicateName(item.name)}"
+        try
+            system($'{copy_cmd} "{resolve(src)}" "{dst}"')
+        catch
+            echo v:exception
+        endtry
+    endfor
+    mark.Clear()
+enddef
+
+
 # XXX: explore jobs here...
 export def Move()
     if mark.IsEmpty() | return | endif
@@ -324,4 +348,12 @@ export def DirInfo(name: string): list<string>
         output = systemlist($'stat -L "{resolve(name)}"') + [""] + ["  Size: " .. system($'du -sh "{resolve(name)}"')->trim()]
     endif
     return output
+enddef
+
+
+def GetDuplicateName(name: string): string
+    var new_name = $"{name}.1"
+    var files = readdirex(b:dir_cwd, (e) => e.name =~ $'^{escape(name, ".~$")}\(\.\d\+\)$', {sort: "none"})
+    var idx = (files->mapnew((_, v) => v.name->strpart(strlen(name) + 1)->str2nr())->max() ?? 0) + 1
+    return $"{name}.{idx}"
 enddef
