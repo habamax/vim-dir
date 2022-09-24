@@ -232,13 +232,13 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             if len(b:dir) == 0
                 exe $"norm! $2F{os.Sep()}l"
             else
-                if line('.') < g.DIRLIST_SHIFT
-                    exe $":{g.DIRLIST_SHIFT}"
-                elseif !empty(focus)
+                if !empty(focus)
                     var idx = b:dir->indexof((_, val) => val.name == focus)
                     if idx > -1
                         exe $":{idx + g.DIRLIST_SHIFT}"
                     endif
+                elseif line('.') < g.DIRLIST_SHIFT
+                    exe $":{g.DIRLIST_SHIFT}"
                 endif
                 norm! $
                 search('\v((\d\d:\d\d\s+)|([djl-][rwx-]{9}\s+)|^)\zs', 'b', line('.'))
