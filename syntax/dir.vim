@@ -4,8 +4,6 @@ if exists("b:current_syntax")
     finish
 endif
 
-syn match dirCwd "\%^.*$"
-
 syn match dirStatus '\%2l^.*$' transparent contains=dirStatusSort,dirStatusHidden,dirStatusFilter,dirStatusSel
 syn match dirStatusSort 'Sort by' skipwhite contained nextgroup=dirStatusSortBy
 syn match dirStatusSortBy '\(name\|size\|time\) [▲▼]' skipwhite contained
@@ -34,8 +32,10 @@ syn match dirTime '\d\{4}-\d\{2}-\d\{2}\s\d\d:\d\d'
 syn match dirDirectory '\(^\|\s\)[\/].\{-}\ze\($\| ->\)'
 syn match dirLink '-> .*'
 
+syn match dirCwd "\%^.*$"
 
-hi def link dirCwd Title
+
+hi def link dirCwd Directory
 hi def link dirType Type
 hi def link dirPermissionUser Constant
 hi def link dirPermissionGroup PreProc
