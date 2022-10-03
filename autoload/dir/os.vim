@@ -358,8 +358,10 @@ enddef
 
 
 def GetDuplicateName(name: string): string
-    var new_name = $"{name}.1"
-    var files = readdirex(b:dir_cwd, (e) => e.name =~ $'^{escape(name, ".~$")}\(\.\d\+\)$', {sort: "none"})
-    var idx = (files->mapnew((_, v) => v.name->strpart(strlen(name) + 1)->str2nr())->max() ?? 0) + 1
-    return $"{name}.{idx}"
+    var ext = fnamemodify(name, ":e")
+    if !empty(ext) | ext = "." .. ext | endif
+    var base = fnamemodify(name, ":r")
+    var files = readdirex(b:dir_cwd, (e) => e.name =~ $'^{escape(base, ".~$")} (\d\+)', {sort: "none"})
+    var idx = (files->mapnew((_, v) => v.name->matchstr($'^{escape(base, ".~$")} (\zs\d\+\ze)')->str2nr())->max() ?? 0) + 1
+    return $"{base} ({idx}){ext}"
 enddef
