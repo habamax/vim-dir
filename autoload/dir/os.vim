@@ -277,7 +277,7 @@ export def Move()
         try
             if item.type =~ 'dir\|linkd\|junction' && !isdirectory(dst)
                 mkdir(dst, "p")
-            else
+            elseif !isdirectory(src)
                 var file_exists = filereadable(dst)
                 if file_exists && override_all == 0
                     var res = popup.Confirm(['Override existing', $'"{dst}"?'], [
