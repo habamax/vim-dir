@@ -8,7 +8,7 @@ g:loaded_dir = 1
 # if a file or dir is matched with this -- open in OS
 g:dir_open_os = ['pdf', 'ods', 'odt', 'odp',
                  'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx',
-                 'png', 'jpg', 'gif',
+                 'png', 'jpg', 'jpeg', 'gif',
                  'mkv', 'mov', 'mpeg', 'avi', 'mp4', 'm4v', 'webm',
                  'mp3', 'ogg', 'flac'
                  ]
