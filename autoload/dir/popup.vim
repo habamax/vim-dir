@@ -35,29 +35,6 @@ export def List(items: list<string>, title: string, MenuCallback: func(any))
 enddef
 
 
-# Show popup menu with actions.
-# Actions is a list of dict [{name: string, Action: func}]
-# for example:
-# var actions = [
-#     {name: "Create directory", Action: DoCreateDir},
-#     {name: "Rename", Action: DoRename}
-# ]
-export def Menu(actions: list<dict<any>>)
-    var menu_items = actions->mapnew((_, v) => v.name)
-    popup_menu(menu_items, {
-        pos: 'botleft',
-        line: 'cursor-1',
-        col: 'cursor',
-        moved: 'WORD',
-        callback: (id, result) => {
-                if result > 0
-                    actions[result - 1].Action()
-                endif
-            }
-        })
-enddef
-
-
 export def YesNo(text: any, DialogCallback: func)
     var msg = []
     if type(text) == v:t_string
