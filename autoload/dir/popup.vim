@@ -3,7 +3,8 @@ vim9script
 var borderchars     = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 var bordertitle     = ['─┐', '┌']
 var borderhighlight = []
-var popuphighlight  = ''
+var popuphighlight  = get(g:, "popuphighlight", '')
+
 
 # Show popup list, execute callback with a single parameter.
 export def List(items: list<string>, title: string, MenuCallback: func(any))
