@@ -1,5 +1,9 @@
 vim9script
 
+var borderchars     = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
+var bordertitle     = ['─┐', '┌']
+var borderhighlight = []
+var popuphighlight  = ''
 
 # Show popup list, execute callback with a single parameter.
 export def List(items: list<string>, title: string, MenuCallback: func(any))
@@ -212,7 +216,6 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
         prop_type_add('FilterMenuMatch', {highlight: "FilterMenuMatch", override: true, priority: 1000, combine: true})
     endif
     var prompt = ""
-    var hint = ">>> type to filter <<<"
     var items_dict: list<dict<any>>
     var items_count = items->len()
     if items_count < 1
@@ -241,25 +244,33 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
         endif
     enddef
     var height = min([&lines - 6, items->len()])
+    var minwidth = (&columns * 0.6)->float2nr()
     var pos_top = ((&lines - height) / 2) - 1
     var winid = popup_create(Printify(filtered_items, []), {
-        title: $" ({items_count}/{items_count}) {title}: {hint} ",
+        title: $" ({items_count}/{items_count}) {title} {bordertitle[0]} {bordertitle[1]}",
         line: pos_top,
-        minwidth: (&columns * 0.6)->float2nr(),
+        minwidth: minwidth,
         maxwidth: (&columns - 5),
         minheight: height,
         maxheight: height,
         border: [],
-        borderchars: ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
+        borderchars: borderchars,
+        borderhighlight: borderhighlight,
+        highlight: popuphighlight,
         drag: 0,
         wrap: 1,
         cursorline: false,
         padding: [0, 1, 0, 1],
         mapping: 0,
         filter: (id, key) => {
+            var new_minwidth = popup_getpos(id).core_width
+            if new_minwidth > minwidth
+                minwidth = new_minwidth
+                popup_move(id, {minwidth: minwidth})
+            endif
             if key == "\<esc>"
                 popup_close(id, -1)
-            elseif ["\<cr>", "\<C-j>", "\<C-v>", "\<C-t>"]->index(key) > -1
+            elseif ["\<cr>", "\<C-j>", "\<C-v>", "\<C-t>", "\<C-o>"]->index(key) > -1
                     && filtered_items[0]->len() > 0 && items_count > 0
                 popup_close(id, {idx: getcurpos(id)[1], key: key})
             elseif key == "\<Right>"
@@ -297,9 +308,8 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
                     prompt ..= key
                     filtered_items = items_dict->matchfuzzypos(prompt, {key: "text"})
                 endif
+                popup_setoptions(id, {title: $" ({items_count > 0 ? filtered_items[0]->len() : 0}/{items_count}) {title} {bordertitle[0]} {prompt} {bordertitle[1]}" })
                 popup_settext(id, Printify(filtered_items, []))
-                popup_setoptions(id,
-                    {title: $" ({items_count > 0 ? filtered_items[0]->len() : 0}/{items_count}) {title}: {prompt ?? hint} "})
             endif
             return true
         },
