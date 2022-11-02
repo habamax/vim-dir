@@ -49,9 +49,7 @@ export def YesNo(text: any, DialogCallback: func)
     endif
     var winid = popup_dialog(msg + ["", "yes  |  no"], {
         filter: 'popup_filter_yesno',
-        pos: 'botleft',
-        line: 'cursor-1',
-        col: 'cursor',
+        pos: 'center',
         border: [],
         highlight: 'ErrorMsg',
         callback: (id, result) => {
@@ -177,9 +175,7 @@ export def Confirm(text: any, answer: list<dict<any>>): number
         idx = answer_txt->stridx('&')
     endwhile
     var winid = popup_create(msg + [{text: answer_txt, props: props}], {
-        pos: 'botleft',
-        line: 'cursor-1',
-        col: 'cursor',
+        pos: 'center',
         border: [],
         highlight: 'ErrorMsg',
         padding: [0, 1, 0, 1]})
