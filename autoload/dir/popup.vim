@@ -70,23 +70,6 @@ export def YesNo(text: any, DialogCallback: func)
 enddef
 
 
-# Returns winnr of created popup window
-export def ShowAtCursor(text: any, title: string = ''): number
-    var winnr = popup_atcursor(text, {
-            title: empty(title) ? "" : $" {title} ",
-            padding: [0, 1, 0, 1],
-            border: [],
-            pos: "botleft",
-            maxheight: &lines - 5,
-            maxwidth: &columns - 5,
-            filter: "PopupFilter",
-            filtermode: 'n',
-            mapping: 0
-          })
-    return winnr
-enddef
-
-
 export def Show(text: any, title: string = ''): number
     var winnr = popup_create(text, {
             title: empty(title) ? "" : $" {title} ",
