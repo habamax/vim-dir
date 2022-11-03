@@ -36,15 +36,15 @@ syn match dirCwd "\%^.*$"
 
 
 hi def link dirCwd Directory
-hi def link dirType Type
-hi def link dirPermissionUser Constant
-hi def link dirPermissionGroup PreProc
+hi def link dirType Statement
+hi def link dirPermissionUser Type
+hi def link dirPermissionGroup String
 hi def link dirPermissionOther Special
-hi def link dirOwner Identifier
-hi def link dirGroup Identifier
+hi def link dirOwner Comment
+hi def link dirGroup Comment
 hi def link dirSize Constant
-hi def link dirSizeMod Type
-hi def link dirTime PreProc
+hi def link dirSizeMod Statement
+hi def link dirTime Comment
 hi def link dirDirectory Directory
 hi def link dirLink Type
 hi def link dirStatusSelNum Constant
