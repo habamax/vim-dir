@@ -261,11 +261,12 @@ g:dir_history_size  Maximum number of directories to be saved in history.
                                                      *g:dir_columns*
 g:dir_columns       Columns of the dir view.
                     Default is
-                    Windows: `"perm,size,time,name`.
-                    Other:   `"perm,user,group,size,time,name`.
+
+                    Windows: `"perm,size,time,name"`.
+                    Other:   `"perm,user,group,size,time,name"`.
 
                     Note, that `name` is mandatory.
-                    Always preserv order of columns.
+                    Always preserve order of columns.
 
 
 
