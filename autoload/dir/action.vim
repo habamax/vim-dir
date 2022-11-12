@@ -59,7 +59,14 @@ export def DoInfo()
     if empty(item) | return | endif
     var path = $"{b:dir_cwd}{os.Sep()}{item}"
     if filereadable(path)
-        popup.Show(readfile($"{path}", "", 100), item)
+        popup.Show(readfile($"{path}", "", 100), item, (winid) => {
+            var syn = get(g.SYNTAX_MAP, fnamemodify(item, ":e"), "")
+            if empty(syn)
+                win_execute(winid, "filetype detect")
+            else
+                win_execute(winid, $"setl syntax={syn}")
+            endif
+        })
     elseif isdirectory(path)
         var info = os.DirInfo(path)
         if !empty(info)

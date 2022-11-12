@@ -2,6 +2,13 @@ vim9script
 
 export const DIRLIST_SHIFT = 4
 
+export const SYNTAX_MAP = {
+    "py": "python", "rb": "ruby", "c": "c", "cpp": "cpp", "cc": "cpp", "sh": "sh",
+    "java": "java", "cs": "cs", "php": "php", "pl": "perl", "tex": "tex",
+    "js": "javascript", "ts": "typescript", "go": "go",
+    "md": "markdown", "adoc": "asciidoctor", "rst": "rst", "reST": "rst"
+}
+
 
 export def IsFile(item: dict<any>): bool
     return item.type == 'file' || item.type == 'link'

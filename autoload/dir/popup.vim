@@ -36,11 +36,11 @@ export def YesNo(text: any, DialogCallback: func)
 enddef
 
 
-export def Show(text: any, title: string = ''): number
+export def Show(text: any, title: string = '', Setup: func(number) = null_function): number
     var height = min([&lines - 6, text->len()])
     var minwidth = (&columns * 0.6)->float2nr()
     var pos_top = ((&lines - height) / 2) - 1
-    var winnr = popup_create(text, {
+    var winid = popup_create(text, {
         title: empty(title) ? "" : $" {title} ",
         line: pos_top,
         minwidth: minwidth,
@@ -89,7 +89,10 @@ export def Show(text: any, title: string = ''): number
             return true
         }
     })
-    return winnr
+    if Setup != null_function
+        Setup(winid)
+    endif
+    return winid
 enddef
 
 
