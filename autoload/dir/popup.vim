@@ -6,40 +6,6 @@ var borderhighlight = []
 var popuphighlight  = get(g:, "popuphighlight", '')
 
 
-# Show popup list, execute callback with a single parameter.
-export def List(items: list<string>, title: string, MenuCallback: func(any))
-    popup_create(items, {
-        title: $' {title} ',
-        pos: 'center',
-        drag: 1,
-        wrap: 0,
-        border: [],
-        cursorline: 1,
-        padding: [0, 1, 0, 1],
-        mapping: 0,
-        filter: (id, key) => {
-            if key == "\<esc>"
-                popup_close(id, -1)
-            elseif key == "\<cr>"
-                popup_close(id, getcurpos(id)[1])
-            elseif key == "\<tab>" || key == "\<C-n>"
-                win_execute(id, "normal! j")
-            elseif key == "\<S-tab>" || key == "\<C-p>"
-                win_execute(id, "normal! k")
-            else
-                win_execute(id, $"search('[/\\-_]{key->escape('&*.\\')}')")
-            endif
-            return true
-        },
-        callback: (id, result) => {
-                if result > 0
-                    MenuCallback(items[result - 1])
-                endif
-            }
-        })
-enddef
-
-
 export def YesNo(text: any, DialogCallback: func)
     var msg = []
     if type(text) == v:t_string
@@ -71,49 +37,59 @@ enddef
 
 
 export def Show(text: any, title: string = ''): number
+    var height = min([&lines - 6, text->len()])
+    var minwidth = (&columns * 0.6)->float2nr()
+    var pos_top = ((&lines - height) / 2) - 1
     var winnr = popup_create(text, {
-            title: empty(title) ? "" : $" {title} ",
-            padding: [0, 1, 0, 1],
-            border: [],
-            pos: "center",
-            minwidth: &columns / 2,
-            minheight: &lines / 3,
-            maxheight: &lines - 5,
-            maxwidth: &columns - 5,
-            filter: "PopupFilter",
-            filtermode: 'n',
-            mapping: 0
-          })
+        title: empty(title) ? "" : $" {title} ",
+        line: pos_top,
+        minwidth: minwidth,
+        maxwidth: (&columns - 5),
+        minheight: height,
+        maxheight: height,
+        border: [],
+        borderchars: borderchars,
+        borderhighlight: borderhighlight,
+        highlight: popuphighlight,
+        drag: 0,
+        wrap: 1,
+        cursorline: false,
+        padding: [0, 1, 0, 1],
+        mapping: 0,
+        filter: (winid: number, key: string) => {
+            var new_minwidth = popup_getpos(winid).core_width
+            if new_minwidth > minwidth
+                minwidth = new_minwidth
+                popup_move(winid, {minwidth: minwidth})
+            endif
+            if key == "\<Space>"
+                win_execute(winid, "normal! \<C-d>\<C-d>")
+                return true
+            endif
+            if key == "j"
+                win_execute(winid, "normal! \<C-d>")
+                return true
+            endif
+            if key == "g"
+                win_execute(winid, "normal! gg")
+                return true
+            endif
+            if key == "G"
+                win_execute(winid, "normal! G")
+                return true
+            endif
+            if key == "k"
+                win_execute(winid, "normal! \<C-u>")
+                return true
+            endif
+            if key == "\<ESC>" || key == "q" || key == "i"
+                popup_close(winid)
+                return true
+            endif
+            return true
+        }
+    })
     return winnr
-enddef
-
-
-def PopupFilter(winid: number, key: string): bool
-    if key == "\<Space>"
-        win_execute(winid, "normal! \<C-d>\<C-d>")
-        return true
-    endif
-    if key == "j"
-        win_execute(winid, "normal! \<C-d>")
-        return true
-    endif
-    if key == "g"
-        win_execute(winid, "normal! gg")
-        return true
-    endif
-    if key == "G"
-        win_execute(winid, "normal! G")
-        return true
-    endif
-    if key == "k"
-        win_execute(winid, "normal! \<C-u>")
-        return true
-    endif
-    if key == "\<ESC>" || key == "q" || key == "i"
-        popup_close(winid)
-        return true
-    endif
-    return true
 enddef
 
 
