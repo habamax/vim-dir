@@ -3,9 +3,9 @@ vim9script
 export const DIRLIST_SHIFT = 4
 
 export const SYNTAX_MAP = {
-    "py": "python", "rb": "ruby", "c": "c", "cpp": "cpp", "cc": "cpp", "sh": "sh",
-    "java": "java", "cs": "cs", "php": "php", "pl": "perl", "tex": "tex",
-    "js": "javascript", "ts": "typescript", "go": "go",
+    "py": "python", "rb": "ruby", "c": "c", "h": "c", "cpp": "cpp", "cc": "cpp", "sh": "sh",
+    "java": "java", "cs": "cs", "php": "php", "pl": "perl", "tex": "tex", "vim": "vim",
+    "js": "javascript", "ts": "typescript", "go": "go", "html": "html", "htm": "html", "xml": "xml",
     "md": "markdown", "adoc": "asciidoctor", "rst": "rst", "reST": "rst"
 }
 
