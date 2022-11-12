@@ -10,7 +10,8 @@ export const SYNTAX_MAP_EXT = {
 }
 
 export const SYNTAX_MAP_FILE = {
-    '\.\?g\?vimrc': "vim", '\.bash\(rc\|_profile\)': "sh", '\.zshrc': "zsh"
+    '\.\?g\?vimrc': "vim", '\.bash\(rc\|_profile\)': "sh", '\.zshrc': "zsh",
+    '\.X\(resources\|defaults\)': "xdefaults"
 }
 
 
