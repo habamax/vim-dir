@@ -59,15 +59,10 @@ export def DoInfo()
     if empty(item) | return | endif
     var path = $"{b:dir_cwd}{os.Sep()}{item}"
     if filereadable(path)
-        popup.Show(readfile($"{path}", "", 100), item, (winid) => {
-            var syn_ext = get(g.SYNTAX_MAP_EXT, fnamemodify(item, ":e"), "")
-            if !empty(syn_ext)
-                win_execute(winid, $"setl syntax={syn_ext}")
-                return
-            endif
+        popup.Show(readfile($"{path}", "", g.PREVIEW_LINES), item, (winid) => {
             var fname = fnamemodify(item, ":t")
-            for [pat, syn] in g.SYNTAX_MAP_FILE->items()
-                if fname =~ $'^{pat}$'
+            for [syn, pat] in g.PREVIEW_SYNTAX_MAP->items()
+                if fname =~ pat
                     win_execute(winid, $"setl syntax={syn}")
                     return
                 endif
