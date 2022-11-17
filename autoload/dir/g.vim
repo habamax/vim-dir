@@ -6,18 +6,14 @@ export const PREVIEW_LINES = 1000
 
 export const PREVIEW_SYNTAX_MAP = {
     vim: '\.\?\(g\?vimrc\|vim\)$',
-    zsh: '\.zshrc$', sh: '\.\(\(bash\(rc\|_profile\)\)\|\(sh\)\)$',
+    zsh: '\.zshrc$', sh: '\.\(\(bash\(rc\|_profile\)\)\|\(sh\)\)$', tmux: '\.tmux.conf$',
     xdefaults: '\.X\(resources\|defaults\)$',
-    python: '\.py$', ruby: '\.rb$',
-    c: '\.[ch]$', cpp: '\.\(cpp\|cc\)$',
-    java: '\.java$', cs: '\.cs$',
+    python: '\.py$', ruby: '\.rb$', php: '\.php$', pl: '\.pl$',
+    c: '\.[ch]$', cpp: '\.\(cpp\|cc\)$', java: '\.java$', cs: '\.cs$', go: '\.go$',
     gdscript: '\.gd$', gdresource: '\.t\%(scn\|res\)$', gdshader: '\.\%(gd\)\?shader$',
-    php: '\.php$', pl: '\.pl$',
-    tex: '\.tex$', json: '\.json', conf: '\.conf',
     javascript: '\.js$', typescript: '\.ts$',
-    go: '\.go$', tmux: '\.tmux.conf$',
-    html: '\.\(html\|htm\)$', xml: '\.xml$',
-    markdown: '\.md$', asciidoctor: '\.adoc$', rst: '\.\(rst\|rest\|txt\)$'
+    html: '\.\(html\|htm\)$', xml: '\.xml$', json: '\.json', conf: '\.conf',
+    markdown: '\.md$', asciidoctor: '\.adoc$', rst: '\.\(rst\|rest\|txt\)$', tex: '\.tex$'
 }
 
 
