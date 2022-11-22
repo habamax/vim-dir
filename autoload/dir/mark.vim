@@ -98,6 +98,9 @@ enddef
 
 
 export def All()
+    if b:dir->empty()
+        return
+    endif
     mark_list = b:dir->copy()
     mark_dir = b:dir_cwd
     mark_bufnr = bufnr()
