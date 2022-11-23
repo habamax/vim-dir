@@ -61,7 +61,7 @@ export def DoInfo()
     if filereadable(path)
         popup.Show(readfile($"{path}", "", g.PREVIEW_LINES), item, (winid) => {
             var fname = fnamemodify(item, ":t")
-            for [syn, pat] in g.PREVIEW_SYNTAX_MAP->items()
+            for [syn, pat] in g.PREVIEW_SYNTAX_MAP
                 if fname =~ pat
                     win_execute(winid, $"setl syntax={syn}")
                     return
