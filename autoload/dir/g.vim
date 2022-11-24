@@ -11,7 +11,7 @@ export const PREVIEW_SYNTAX_MAP = [
     ["python", '\.py$'], ["ruby", '\.rb$'], ["php", '\.php$'], ["pl", '\.pl$'],
     ["c", '\.[ch]$'], ["cpp", '\.\(cpp\|cc\)$'], ["java", '\.java$'], ["cs", '\.cs$'], ["go", '\.go$'],
     ["gdscript", '\.gd$'], ["gdresource", '\.t\%(scn\|res\)$'], ["gdshader", '\.\%(gd\)\?shader$'],
-    ["javascript", '\.js$'], ["typescript", '\.ts$'], ["sql", '\.sql$'],
+    ["javascript", '\.js$'], ["typescript", '\.ts$'], ["sql", '\.sql$'], ["lua", '\.lua$'],
     ["html", '\.\(html\|htm\)$'], ["xml", '\.xml$'], ["json", '\.json'], ["conf", '\.conf$'],
     ["markdown", '\.md$'], ["asciidoctor", '\.adoc$'], ["rst", '\.\(rst\|rest\|txt\)$'], ["tex", '\.tex$']
 ]
