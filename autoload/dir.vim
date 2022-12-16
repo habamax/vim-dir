@@ -190,6 +190,7 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
         return
     endif
 
+    var dir_cwd = get(b:, "dir_cwd", "")
     if !empty(mod) | exe $"{mod}" | endif
 
     if isdirectory(oname)
@@ -245,7 +246,9 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             endif
         endif
     else
-        history.Add(b:dir_cwd)
+        if !empty(dir_cwd)
+            history.Add(dir_cwd)
+        endif
         exe $"e {oname->escape('%#')}"
     endif
 enddef
