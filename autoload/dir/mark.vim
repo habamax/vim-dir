@@ -6,6 +6,9 @@ var mark_list: list<dict<any>> = []
 var mark_dir: string = ""
 var mark_bufnr: number = -1
 
+if !hlexists('DirMark')
+    hi def link DirMark Todo
+endif
 prop_type_add('DirMark', {highlight: 'DirMark', priority: 1000})
 
 
