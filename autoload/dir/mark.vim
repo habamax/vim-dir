@@ -127,11 +127,3 @@ enddef
 export def IsEmpty(): bool
     return len(mark_list) == 0
 enddef
-
-
-# export def DebugPrint()
-#     echo mark_list->mapnew((_, v) => $"[{v.type}]\t{v.name}")->join("\n")
-#     echo $"count: {mark_list->len()}"
-#     echo $"Mark Dir: {mark_dir}"
-#     echo $"Mark Buffer: {mark_bufnr}"
-# enddef
