@@ -136,8 +136,6 @@ def OpenBuffer(name: string): bool
     endtry
 
     var bufname = $"dir://{name}"
-    # buffer names are unreliable in :b command...
-    var bufnrs = getbufinfo()->filter((_, v) => v.name == bufname)
     var bufnr = g.GetBufnr(bufname)
     if &hidden
         if bufnr > 0
