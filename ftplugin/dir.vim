@@ -15,7 +15,7 @@ setlocal noswapfile
 
 
 var nop_maps = ['r', 'd', 'c', 'C', 'a', 'I',
-                'gp', 'gP', 'gi', 'gI', 'gu', 'gU',  'gH', 'gw', 'gq',
+                'gp', 'gP', 'gi', 'gI', 'gu', 'gU',  'gH', 'gw',
                 'U', '<C-w>f', '<C-w>F', 'gf', 'gF'
                ]
 var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
@@ -24,6 +24,7 @@ var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
                  '<C-a>6', '<C-a>7', '<C-a>8', '<C-a>9', '<C-a>0',
+                 'gq'
                 ]
 
 b:undo_ftplugin = undo_opts .. ' | '
@@ -82,7 +83,6 @@ nnoremap <buffer> . <scriptcmd>action.DoFilterHidden()<cr>
 noremap <buffer> ]] <scriptcmd>action.JumpForward()<cr>
 noremap <buffer> [[ <scriptcmd>action.JumpBackward()<cr>
 
-
 nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>
 nnoremap <buffer> g~ <scriptcmd>Dir ~<cr>
 for idx in range(10)
@@ -96,6 +96,8 @@ nnoremap <buffer> gj <scriptcmd>action.GotoMenu()<cr>
 
 noremap <buffer> > <scriptcmd>action.WidenView()<cr>
 noremap <buffer> < <scriptcmd>action.ShrinkView()<cr>
+
+nnoremap <buffer> gq <C-w>c
 
 # remove buffer editing mappings
 for key in nop_maps

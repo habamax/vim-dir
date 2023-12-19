@@ -220,6 +220,9 @@ g/                  Sort current buffer dir by name.
                     If you have Size, Time or User+Group columns,
                     remove them from the view.
 
+                                                     *vim-dir-gq*
+gq                  Close vim-dir window, alias to |CTRL-W_c|.
+
 
 SETTINGS                                             *vim-dir-settings*
 
