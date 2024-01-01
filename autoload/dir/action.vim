@@ -329,18 +329,27 @@ enddef
 export def DoAction()
     var actions = []
     var selection = VisualItemsInList(line('v'), line('.'))
+    var cur_list = mark.List()
     if len(selection) <= 1 && mark.IsEmpty() && mode() !~ '[vV]'
         actions += [
-            {text: "Create directory", Action: DoCreateDir},
+            {text: "Create directory", Action: (_, _) => {
+                DoCreateDir()
+            }},
         ]
     endif
     actions += [
-        {text: "Rename", Action: DoRename},
-        {text: "Delete", Action: DoDelete}
+        {text: "Rename", Action: (_, _) => {
+            DoRename()
+        }},
+        {text: "Delete", Action: (_, _) => {
+            DoDelete()
+        }}
     ]
+    # TODO: document custom user actions
+    extend(actions, get(g:, "dir_actions", []))
     popup.FilterMenu('Actions', actions,
         (res, _) => {
-            res.Action()
+            res.Action(selection, cur_list)
         })
 enddef
 
