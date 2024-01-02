@@ -329,19 +329,24 @@ enddef
 export def DoAction()
     var actions = []
     var selection = VisualItemsInList(line('v'), line('.'))
-    var cur_list = mark.List()
+    var items = []
+    if mark.IsEmpty()
+        items = selection
+    else
+        items = mark.List()
+    endif
     if len(selection) <= 1 && mark.IsEmpty() && mode() !~ '[vV]'
         actions += [
-            {text: "Create directory", Action: (_, _) => {
+            {text: "Create directory", Action: (_) => {
                 DoCreateDir()
             }},
         ]
     endif
     actions += [
-        {text: "Rename", Action: (_, _) => {
+        {text: "Rename", Action: (_) => {
             DoRename()
         }},
-        {text: "Delete", Action: (_, _) => {
+        {text: "Delete", Action: (_) => {
             DoDelete()
         }}
     ]
@@ -349,7 +354,7 @@ export def DoAction()
     extend(actions, get(g:, "dir_actions", []))
     popup.FilterMenu('Actions', actions,
         (res, _) => {
-            res.Action(selection, cur_list)
+            res.Action(items)
         })
 enddef
 
