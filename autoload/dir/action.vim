@@ -327,22 +327,16 @@ enddef
 
 
 export def DoAction()
-    var actions = []
-    var selection = VisualItemsInList(line('v'), line('.'))
     var items = []
     if mark.IsEmpty()
-        items = selection
+        items = VisualItemsInList(line('v'), line('.'))
     else
         items = mark.List()
     endif
-    if len(selection) <= 1 && mark.IsEmpty() && mode() !~ '[vV]'
-        actions += [
-            {text: "Create directory", Action: (_) => {
-                DoCreateDir()
-            }},
-        ]
-    endif
-    actions += [
+    var actions = [
+        {text: "Create directory", Action: (_) => {
+            DoCreateDir()
+        }},
         {text: "Rename", Action: (_) => {
             DoRename()
         }},
