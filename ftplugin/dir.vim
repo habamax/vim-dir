@@ -14,7 +14,7 @@ setlocal nobuflisted
 setlocal noswapfile
 
 
-var nop_maps = ['r', 'd', 'c', 'a', 'I',
+var nop_maps = ['r', 'd', 'c', 'a', 'I', 'K',
                 'gp', 'gP', 'gi', 'gI', 'gu', 'gU',  'gH', 'gw',
                 'U', '<C-w>f', '<C-w>F', 'gf', 'gF'
                ]
