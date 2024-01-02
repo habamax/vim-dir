@@ -327,12 +327,6 @@ enddef
 
 
 export def DoAction()
-    var items = []
-    if mark.IsEmpty()
-        items = VisualItemsInList(line('v'), line('.'))
-    else
-        items = mark.List()
-    endif
     var actions = [
         {text: "Create directory", Action: (_) => {
             DoCreateDir()
@@ -346,6 +340,14 @@ export def DoAction()
     ]
     # TODO: document custom user actions
     extend(actions, get(g:, "dir_actions", []))
+
+    var items = []
+    if mark.IsEmpty()
+        items = VisualItemsInList(line('v'), line('.'))
+    else
+        items = mark.List()
+    endif
+
     popup.FilterMenu('Actions', actions,
         (res, _) => {
             res.Action(items)
