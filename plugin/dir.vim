@@ -30,7 +30,7 @@ def g:DirOnDirectory()
 enddef
 
 augroup dirautocommands | au!
-    au BufReadCmd dir://* set ft=dir | dir.Open()
+    au BufReadCmd dir://* dir.Open()
 
     if !exists(":Explore")
         au BufEnter * g:DirOnDirectory()

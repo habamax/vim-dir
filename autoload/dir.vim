@@ -140,6 +140,7 @@ def OpenBuffer(name: string): bool
     if &hidden
         if bufnr > 0
             exe $"sil! keepj keepalt b {bufnr}"
+            set ft=dir
             return false
         else
             enew
