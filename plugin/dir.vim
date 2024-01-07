@@ -25,7 +25,9 @@ command! -nargs=? -complete=dir Dir dir.Open(expand(<q-args>))
 
 def g:DirOnDirectory()
     if !exists("b:dir") && isdirectory(expand("<afile>"))
+        var bufnr = expand("<abuf>")
         dir.Open()
+        exe $":bwipeout {bufnr}"
     endif
 enddef
 
