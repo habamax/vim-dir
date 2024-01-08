@@ -142,7 +142,7 @@ def OpenBuffer(name: string): bool
             exe $"sil! keepj keepalt b {bufnr}"
             set ft=dir
             return false
-        else
+        elseif !isdirectory(bufname())
             enew
         endif
     elseif &modified && bufnr > 0
@@ -153,7 +153,7 @@ def OpenBuffer(name: string): bool
         return false
     elseif &modified
         new
-    else
+    elseif !isdirectory(bufname())
         enew
     endif
     set ft=dir
