@@ -4,7 +4,6 @@ import autoload 'dir/mark.vim'
 import autoload 'dir/popup.vim'
 import autoload 'dir/g.vim'
 
-
 export def Sep(escape: bool = false): string
     if escape
         return has("win32") ? '\\' : '/'
@@ -12,7 +11,6 @@ export def Sep(escape: bool = false): string
         return has("win32") ? '\' : '/'
     endif
 enddef
-
 
 def WslToWindowsPath(path: string): string
     if !exists("$WSLENV")
@@ -26,7 +24,6 @@ def WslToWindowsPath(path: string): string
     var res = systemlist($"wslpath -w '{path}'")
     return empty(res) ? path : res[0]
 enddef
-
 
 export def Open(name: string)
     var url = name
@@ -51,7 +48,6 @@ export def Open(name: string)
     job_start(printf('%s "%s"', cmd, url), job_opts)
 enddef
 
-
 export def Delete(name: string)
     try
         if isdirectory(name)
@@ -67,7 +63,6 @@ export def Delete(name: string)
         mark.Clear()
     endtry
 enddef
-
 
 export def Rename(name: string)
     var old_name = fnamemodify(name, ":t")
@@ -92,7 +87,6 @@ export def Rename(name: string)
         echohl None
     endtry
 enddef
-
 
 export def RenameWithPattern(name: string, pattern: string, counter: number = -1)
     var fname = fnamemodify(name, ':t:r')
@@ -123,7 +117,6 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
     endtry
 enddef
 
-
 export def ListDirTree(name: string): list<dict<any>>
     var result = []
     var basename = fnamemodify(name, ":t")
@@ -148,7 +141,6 @@ export def ListDirTree(name: string): list<dict<any>>
         return result
     endtry
 enddef
-
 
 # XXX: explore jobs here...
 export def Copy()
@@ -218,7 +210,6 @@ export def Copy()
     mark.Clear()
 enddef
 
-
 export def Duplicate()
     if mark.IsEmpty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
@@ -247,7 +238,6 @@ export def Duplicate()
     endfor
     mark.Clear()
 enddef
-
 
 # XXX: explore jobs here...
 export def Move()
@@ -322,7 +312,6 @@ export def Move()
     endfor
     mark.Clear()
 enddef
-
 
 export def CreateDir()
     var new_name = input($'Create directory: ')
@@ -410,6 +399,7 @@ export def CompressZip(items: list<any>): string
     endtry
     return ""
 enddef
+
 export def DirInfo(name: string): list<string>
     var output = []
     if executable('stat') && executable('du')
@@ -417,7 +407,6 @@ export def DirInfo(name: string): list<string>
     endif
     return output
 enddef
-
 
 def GetDuplicateName(name: string): string
     var ext = fnamemodify(name, ":e")
