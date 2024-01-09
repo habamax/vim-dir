@@ -347,7 +347,69 @@ export def CreateDir()
     endtry
 enddef
 
+export def CompressGzip(items: list<any>): string
+    var arch_name = input('Archive name: ')
+    if empty(arch_name) | return "" | endif
+    if arch_name !~ '^\S.*\.tar.gz$'
+        arch_name ..= '.tar.gz'
+    endif
+    if isdirectory(arch_name) || filereadable(arch_name)
+        echo "    "
+        echohl ErrorMsg
+        echo $"Directory or file '{arch_name}' exists!"
+        echohl None
+        return ""
+    endif
 
+    try
+        # XXX: should only be available if tar is present
+        var cmd = $'tar -czvf "{arch_name}"'
+        for item in items
+            cmd ..= $' "{item.name}"'
+        endfor
+        system(cmd)
+        return arch_name
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl None
+    endtry
+    return ""
+enddef
+
+export def CompressZip(items: list<any>): string
+    var arch_name = input('Archive name: ')
+    if empty(arch_name) | return "" | endif
+    if arch_name !~ '^\S.*zip$'
+        arch_name ..= '.zip'
+    endif
+    if isdirectory(arch_name) || filereadable(arch_name)
+        echo "    "
+        echohl ErrorMsg
+        echo $"Directory or file '{arch_name}' exists!"
+        echohl None
+        return ""
+    endif
+
+    try
+        # XXX: should only be available if zip is present
+        var cmd = $'zip -r "{arch_name}"'
+        for item in items
+            var name = item.name
+            if item.type == 'dir'
+                name ..= "/"
+            endif
+            cmd ..= $' "{name}"'
+        endfor
+        system(cmd)
+        return arch_name
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl None
+    endtry
+    return ""
+enddef
 export def DirInfo(name: string): list<string>
     var output = []
     if executable('stat') && executable('du')

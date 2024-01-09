@@ -9,7 +9,6 @@ import autoload 'dir/bookmark.vim'
 import autoload 'dir/history.vim'
 import autoload 'dir/fmt.vim'
 
-
 def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     var l1 = (line1 > line2 ? line2 : line1) - g.DIRLIST_SHIFT
     var l2 = (line2 > line1 ? line2 : line1) - g.DIRLIST_SHIFT
@@ -18,13 +17,11 @@ def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     return b:dir[l1 : l2]
 enddef
 
-
 def CursorItemInList(): dict<any>
     var idx = line('.') - g.DIRLIST_SHIFT
     if idx < 0 | return {name: ""} | endif
     return b:dir[idx]
 enddef
-
 
 def CursorItem(): string
     if line('.') == 1
@@ -40,7 +37,6 @@ def CursorItem(): string
     return ""
 enddef
 
-
 export def Do(mod: string = '')
     var item = CursorItem()
     if !empty(item)
@@ -48,11 +44,9 @@ export def Do(mod: string = '')
     endif
 enddef
 
-
 export def DoUp()
     dir.Open(fnamemodify(b:dir_cwd, ":h"), '', false)
 enddef
-
 
 export def DoInfo()
     var item = CursorItem()
@@ -86,7 +80,6 @@ export def DoOS()
     endif
 enddef
 
-
 export def DoSort(by: string)
     if ["time", "size", "name"]->index(by) == -1 | return | endif
 
@@ -106,7 +99,6 @@ export def DoSort(by: string)
     g.Echo("Sort by ", {t: $'{by} {(b:dir_sort_desc ? "▼" : "▲")}', hl: 'WarningMsg'})
 enddef
 
-
 export def DoFilterHidden()
     g:dir_show_hidden = !get(g:, "dir_show_hidden", "true")
     b:dir_invalidate = true
@@ -115,7 +107,6 @@ export def DoFilterHidden()
     var msg = g:dir_show_hidden ? "Show" : "Hide"
     g.Echo({t: msg, hl: "WarningMsg"}, " .hidden")
 enddef
-
 
 export def DoFilter(bang: string, fltr: string)
     b:dir_filter = fltr
@@ -126,7 +117,6 @@ export def DoFilter(bang: string, fltr: string)
     g.Echo($"{msg} matched ", {t: $"{fltr}", hl: "WarningMsg"})
 enddef
 
-
 export def DoFilterClear()
     b:dir_filter = ""
     b:dir_filter_bang = ""
@@ -134,7 +124,6 @@ export def DoFilterClear()
 
     g.Echo("Show all!")
 enddef
-
 
 def FileOrDirMsg(items: list<dict<any>>): string
     var cnt = len(items)
@@ -182,7 +171,6 @@ export def DoDelete()
     endif
 enddef
 
-
 export def DoMarkToggle()
     var file_list = VisualItemsInList(line('v'), line('.'))
     if len(file_list) > 0
@@ -191,12 +179,10 @@ export def DoMarkToggle()
     endif
 enddef
 
-
 export def DoMarksAllToggle()
     mark.ToggleAll()
     dir.UpdateStatusInfo()
 enddef
-
 
 export def DoRename()
     var del_list = []
@@ -227,7 +213,6 @@ export def DoRename()
         winrestview(view)
     endif
 enddef
-
 
 export def DoCopy()
     if mark.IsEmpty() | return | endif
@@ -277,7 +262,6 @@ export def DoCopy()
     endif
 enddef
 
-
 export def DoMove()
     if mark.IsEmpty() | return | endif
     if mark.Bufnr() == bufnr()
@@ -317,7 +301,6 @@ export def DoMove()
     endif
 enddef
 
-
 export def DoCreateDir()
     var view = winsaveview()
     os.CreateDir()
@@ -325,18 +308,38 @@ export def DoCreateDir()
     winrestview(view)
 enddef
 
+export def DoCompressGzip(items: list<any>)
+    var view = winsaveview()
+    var arch_name = os.CompressGzip(items)
+    mark.Clear()
+    :edit
+    winrestview(view)
+    if !empty(arch_name)
+        var idx = b:dir->indexof((_, val) => val.name == arch_name)
+        if idx > -1
+            exe $":{idx + g.DIRLIST_SHIFT}"
+        endif
+    endif
+enddef
+
+export def DoCompressZip(items: list<any>)
+    var view = winsaveview()
+    var arch_name = os.CompressZip(items)
+    mark.Clear()
+    :edit
+    winrestview(view)
+    if !empty(arch_name)
+        var idx = b:dir->indexof((_, val) => val.name == arch_name)
+        if idx > -1
+            exe $":{idx + g.DIRLIST_SHIFT}"
+        endif
+    endif
+enddef
 
 export def DoAction()
     var actions = [
-        {text: "Create directory", Action: (_) => {
-            DoCreateDir()
-        }},
-        {text: "Rename", Action: (_) => {
-            DoRename()
-        }},
-        {text: "Delete", Action: (_) => {
-            DoDelete()
-        }}
+        {text: 'Compress with tar.gz', Action: DoCompressGzip},
+        {text: 'Compress with zip', Action: DoCompressZip}
     ]
     # TODO: document custom user actions
     extend(actions, get(g:, "dir_actions", []))
@@ -353,7 +356,6 @@ export def DoAction()
             res.Action(items)
         })
 enddef
-
 
 export def ShrinkView()
     var columns = fmt.Columns()
@@ -373,7 +375,6 @@ export def ShrinkView()
     mark.RefreshVisual()
     RefreshOtherDirWindows()
 enddef
-
 
 export def WidenView()
     var columns = fmt.Columns()
