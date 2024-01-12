@@ -309,7 +309,7 @@ export def DoCreateDir()
 enddef
 
 export def DoCompressGzip(items: list<any>)
-    var arch_name = input('Archive name: ')
+    var arch_name = input('Archive name: ', fnamemodify(items[0].name, ":t:r"))
     if empty(arch_name) | return | endif
     if arch_name !~ '^\S.*\.tar.gz$'
         arch_name ..= '.tar.gz'
@@ -327,7 +327,7 @@ export def DoCompressGzip(items: list<any>)
 enddef
 
 export def DoCompressZip(items: list<any>)
-    var arch_name = input('Archive name: ')
+    var arch_name = input('Archive name: ', fnamemodify(items[0].name, ":t:r"))
     if empty(arch_name) | return | endif
     if arch_name !~ '^\S.*zip$'
         arch_name ..= '.zip'
