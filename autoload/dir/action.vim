@@ -309,12 +309,16 @@ export def DoCreateDir()
 enddef
 
 export def DoCompressGzip(items: list<any>)
+    var arch_name = input('Archive name: ')
+    if empty(arch_name) | return | endif
+    if arch_name !~ '^\S.*\.tar.gz$'
+        arch_name ..= '.tar.gz'
+    endif
     var view = winsaveview()
-    var arch_name = os.CompressGzip(items)
     mark.Clear()
-    :edit
-    winrestview(view)
-    if !empty(arch_name)
+    if os.CompressGzip(arch_name, items)
+        :edit
+        winrestview(view)
         var idx = b:dir->indexof((_, val) => val.name == arch_name)
         if idx > -1
             exe $":{idx + g.DIRLIST_SHIFT}"
@@ -323,12 +327,16 @@ export def DoCompressGzip(items: list<any>)
 enddef
 
 export def DoCompressZip(items: list<any>)
+    var arch_name = input('Archive name: ')
+    if empty(arch_name) | return | endif
+    if arch_name !~ '^\S.*zip$'
+        arch_name ..= '.zip'
+    endif
     var view = winsaveview()
-    var arch_name = os.CompressZip(items)
     mark.Clear()
-    :edit
-    winrestview(view)
-    if !empty(arch_name)
+    if os.CompressZip(arch_name, items)
+        :edit
+        winrestview(view)
         var idx = b:dir->indexof((_, val) => val.name == arch_name)
         if idx > -1
             exe $":{idx + g.DIRLIST_SHIFT}"
@@ -338,8 +346,8 @@ enddef
 
 export def DoAction()
     var actions = [
-        {text: 'Compress with tar.gz', Action: DoCompressGzip},
-        {text: 'Compress with zip', Action: DoCompressZip}
+        {text: 'Compress to tar.gz', Action: DoCompressGzip},
+        {text: 'Compress to zip', Action: DoCompressZip}
     ]
     # TODO: document custom user actions
     extend(actions, get(g:, "dir_actions", []))

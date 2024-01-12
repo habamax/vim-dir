@@ -336,18 +336,13 @@ export def CreateDir()
     endtry
 enddef
 
-export def CompressGzip(items: list<any>): string
-    var arch_name = input('Archive name: ')
-    if empty(arch_name) | return "" | endif
-    if arch_name !~ '^\S.*\.tar.gz$'
-        arch_name ..= '.tar.gz'
-    endif
+export def CompressGzip(arch_name: string, items: list<any>): bool
     if isdirectory(arch_name) || filereadable(arch_name)
         echo "    "
         echohl ErrorMsg
         echo $"Directory or file '{arch_name}' exists!"
         echohl None
-        return ""
+        return false
     endif
 
     try
@@ -357,27 +352,22 @@ export def CompressGzip(items: list<any>): string
             cmd ..= $' "{item.name}"'
         endfor
         system(cmd)
-        return arch_name
+        return true
     catch
         echohl ErrorMsg
         echom v:exception
         echohl None
     endtry
-    return ""
+    return false
 enddef
 
-export def CompressZip(items: list<any>): string
-    var arch_name = input('Archive name: ')
-    if empty(arch_name) | return "" | endif
-    if arch_name !~ '^\S.*zip$'
-        arch_name ..= '.zip'
-    endif
+export def CompressZip(arch_name: string, items: list<any>): bool
     if isdirectory(arch_name) || filereadable(arch_name)
         echo "    "
         echohl ErrorMsg
         echo $"Directory or file '{arch_name}' exists!"
         echohl None
-        return ""
+        return false
     endif
 
     try
@@ -391,13 +381,13 @@ export def CompressZip(items: list<any>): string
             cmd ..= $' "{name}"'
         endfor
         system(cmd)
-        return arch_name
+        return true
     catch
         echohl ErrorMsg
         echom v:exception
         echohl None
     endtry
-    return ""
+    return false
 enddef
 
 export def DirInfo(name: string): list<string>
