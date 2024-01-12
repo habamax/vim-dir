@@ -313,27 +313,24 @@ export def Move()
     mark.Clear()
 enddef
 
-export def CreateDir()
-    var new_name = input($'Create directory: ')
-    if empty(new_name) | return | endif
-    if !isabsolutepath(new_name)
-        new_name = simplify($'{getcwd()}{Sep()}{new_name}')
-    endif
-    if isdirectory(new_name) || filereadable(new_name)
+export def CreateDir(name: string): bool
+    if isdirectory(name) || filereadable(name)
         echo "    "
         echohl ErrorMsg
         echo "File or Directory exists!"
         echohl None
-        return
+        return false
     endif
 
     try
-        mkdir(new_name, "p")
+        mkdir(name, "p")
+        return true
     catch
         echohl ErrorMsg
         echom v:exception
         echohl None
     endtry
+    return false
 enddef
 
 export def CompressGzip(arch_name: string, items: list<any>): bool

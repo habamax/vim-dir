@@ -302,10 +302,18 @@ export def DoMove()
 enddef
 
 export def DoCreateDir()
+    var name = input($'Create directory: ')
+    if empty(name) | return | endif
     var view = winsaveview()
-    os.CreateDir()
-    :edit
-    winrestview(view)
+    if os.CreateDir(name)
+        :edit
+        winrestview(view)
+        var first_dir = split(name, '[/\\]')[0]
+        var idx = b:dir->indexof((_, val) => val.name == first_dir)
+        if idx > -1
+            exe $":{idx + g.DIRLIST_SHIFT}"
+        endif
+    endif
 enddef
 
 export def DoCompressGzip(items: list<any>)
