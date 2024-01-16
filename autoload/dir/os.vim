@@ -387,6 +387,35 @@ export def CompressZip(arch_name: string, items: list<any>): bool
     return false
 enddef
 
+export def ExtractArch(arch_name: string): bool
+    if !filereadable(arch_name)
+        echo "    "
+        echohl ErrorMsg
+        echo $"'{arch_name}' doesn't exists!"
+        echohl None
+        return false
+    endif
+
+    var cmd: string
+    try
+        # XXX: should only be available if unzip/tar is present
+        if arch_name =~ '\.zip$'
+            cmd = $'unzip "{arch_name}"'
+        elseif arch_name =~ '\.gz$'
+            cmd = $'tar -xvzf "{arch_name}"'
+        endif
+        if !cmd->empty()
+            system(cmd)
+            return true
+        endif
+    catch
+        echohl ErrorMsg
+        echom v:exception
+        echohl None
+    endtry
+    return false
+enddef
+
 export def DirInfo(name: string): list<string>
     var output = []
     if executable('stat') && executable('du')

@@ -352,13 +352,25 @@ export def DoCompressZip(items: list<any>)
     endif
 enddef
 
+export def DoExtractArch(items: list<any>)
+    # XXX: need to add more checks and control:
+    # - extract to directory named after archive file-name
+    # - what to do if files/directories in archive are already present?
+    #   as of now they just overriden silently.
+    if items->len() != 1 | return | endif
+    var view = winsaveview()
+    mark.Clear()
+    if os.ExtractArch(items[0].name)
+        :edit
+        winrestview(view)
+    endif
+enddef
+
 export def DoAction()
     var actions = [
         {text: 'Compress to tar.gz', Action: DoCompressGzip},
         {text: 'Compress to zip', Action: DoCompressZip}
     ]
-    # TODO: document custom user actions
-    extend(actions, get(g:, "dir_actions", []))
 
     var items = []
     if mark.IsEmpty()
@@ -366,6 +378,15 @@ export def DoAction()
     else
         items = mark.List()
     endif
+
+    if items->len() == 1
+        if items[0].name =~ '\.\(zip\|gz\)$'
+            actions->add({text: 'Extract archive here', Action: DoExtractArch})
+        endif
+    endif
+
+    # TODO: document custom user actions
+    extend(actions, get(g:, "dir_actions", []))
 
     popup.FilterMenu('Actions', actions,
         (res, _) => {
