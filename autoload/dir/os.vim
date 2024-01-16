@@ -401,8 +401,8 @@ export def ExtractArch(arch_name: string): bool
         # XXX: should only be available if unzip/tar is present
         if arch_name =~ '\.zip$'
             cmd = $'unzip "{arch_name}"'
-        elseif arch_name =~ '\.gz$'
-            cmd = $'tar -xvzf "{arch_name}"'
+        elseif arch_name =~ '\.[gx]z$'
+            cmd = $'tar -xf "{arch_name}"'
         endif
         if !cmd->empty()
             system(cmd)

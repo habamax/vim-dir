@@ -380,7 +380,7 @@ export def DoAction()
     endif
 
     if items->len() == 1
-        if items[0].name =~ '\.\(zip\|gz\)$'
+        if items[0].name =~ '\.\(zip\|[xg]z\)$'
             actions->add({text: 'Extract archive here', Action: DoExtractArch})
         endif
     endif
