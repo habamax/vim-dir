@@ -387,11 +387,17 @@ export def CompressZip(arch_name: string, items: list<any>): bool
     return false
 enddef
 
-export def ExtractArch(arch_name: string): bool
+export def ExtractArch(arch_name: string, path: string = '.'): bool
     if !filereadable(arch_name)
         echo "    "
         echohl ErrorMsg
         echo $"'{arch_name}' doesn't exists!"
+        echohl None
+        return false
+    endif
+    if isdirectory(path) && path !~ '^\.\.\?/\?\s*$'
+        echohl ErrorMsg
+        echo $"'{path}' exists!"
         echohl None
         return false
     endif
@@ -400,9 +406,12 @@ export def ExtractArch(arch_name: string): bool
     try
         # XXX: should only be available if unzip/tar is present
         if arch_name =~ '\.zip$'
-            cmd = $'unzip "{arch_name}"'
+            cmd = $'unzip "{arch_name}" -d "{path}"'
         elseif arch_name =~ '\.[gx]z$'
-            cmd = $'tar -xf "{arch_name}"'
+            if path !~ '^\.\.\?/\?\s*$'
+                mkdir(path, "p")
+            endif
+            cmd = $'tar -xf "{arch_name}" --directory "{path}"'
         endif
         if !cmd->empty()
             system(cmd)

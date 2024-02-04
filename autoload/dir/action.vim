@@ -359,8 +359,12 @@ export def DoExtractArch(items: list<any>)
     #   as of now they just overriden silently.
     if items->len() != 1 | return | endif
     var view = winsaveview()
+    var dir_name = input('Extract to: ', fnamemodify(items[0].name, ":t:r:r"))
+    if empty(dir_name)
+        dir_name = "."
+    endif
     mark.Clear()
-    if os.ExtractArch(items[0].name)
+    if os.ExtractArch(items[0].name, dir_name)
         :edit
         winrestview(view)
     endif
@@ -381,7 +385,7 @@ export def DoAction()
 
     if items->len() == 1
         if items[0].name =~ '\.\(zip\|[xg]z\)$'
-            actions->add({text: 'Extract archive here', Action: DoExtractArch})
+            actions->add({text: 'Extract archive', Action: DoExtractArch})
         endif
     endif
 
