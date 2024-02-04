@@ -71,7 +71,6 @@ export def DoInfo()
     endif
 enddef
 
-
 export def DoOS()
     var item = CursorItem()
     if !empty(item)
@@ -138,7 +137,6 @@ def FileOrDirMsg(items: list<dict<any>>): string
     endif
     return res
 enddef
-
 
 export def DoDelete()
     var del_list = []
@@ -436,7 +434,6 @@ export def WidenView()
     RefreshOtherDirWindows()
 enddef
 
-
 export def JumpForward()
     var idx = line('.') - g.DIRLIST_SHIFT
     if idx < 0
@@ -451,7 +448,6 @@ export def JumpForward()
         exe $":{idx + g.DIRLIST_SHIFT}"
     endif
 enddef
-
 
 export def JumpBackward()
     var idx = line('.') - g.DIRLIST_SHIFT
@@ -511,21 +507,17 @@ export def BookmarkSet()
     bookmark.Set(name, b:dir_cwd)
 enddef
 
-
 export def BookmarkJumpNum(n: number)
     bookmark.JumpNum(n)
 enddef
-
 
 export def BookmarkSetNum(n: number)
     bookmark.SetNum(n)
 enddef
 
-
 export def BookmarkComplete(_, _, _): string
     return bookmark.Names()->join("\n")
 enddef
-
 
 export def HistoryJumpMenu()
     var dir_hist = history.Paths()
@@ -545,16 +537,13 @@ export def HistoryJumpMenu()
         })
 enddef
 
-
 export def HistoryJump(name: string)
     dir.Open(name)
 enddef
 
-
 export def HistoryComplete(_, _, _): string
     return history.Paths()->join("\n")
 enddef
-
 
 export def GotoMenu()
     popup.FilterMenu('Jump to', b:dir->mapnew((idx, v) => {
@@ -568,7 +557,6 @@ export def GotoMenu()
             hi def link dirFilterMenuDirectory Directory
         })
 enddef
-
 
 def RefreshOtherDirWindows()
     for buf_info in g.OtherDirBuffers()
