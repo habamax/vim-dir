@@ -260,6 +260,10 @@ export def DoCopy()
     endif
 enddef
 
+export def DoCopy2Pane()
+    echo "Two panes copy is not implemented!"
+enddef
+
 export def DoMove()
     if mark.IsEmpty() | return | endif
     if mark.Bufnr() == bufnr()
@@ -297,6 +301,10 @@ export def DoMove()
         :edit
         RefreshOtherDirWindows()
     endif
+enddef
+
+export def DoMove2Pane()
+    echo "Two panes move is not implemented!"
 enddef
 
 export def DoCreateDir()

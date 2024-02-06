@@ -24,7 +24,8 @@ var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
                  '<C-a>6', '<C-a>7', '<C-a>8', '<C-a>9', '<C-a>0',
-                 'gq', 'g/', ']]', '[[', '.'
+                 'gq', 'g/', ']]', '[[', '.',
+                 '<F2>', '<F3>', '<F4>', '<F5>', '<F6>', '<F7>', '<F8>'
                 ]
 
 b:undo_ftplugin = undo_opts .. ' | '
@@ -46,6 +47,7 @@ nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
 xnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
 nnoremap <buffer> o <scriptcmd>action.Do()<cr>
+nnoremap <buffer> <F4> <scriptcmd>action.Do()<cr>
 nnoremap <buffer> O <scriptcmd>action.DoOS()<cr>
 nnoremap <buffer> S <scriptcmd>action.Do($"{g:dir_invert_split ? '' : 'vert'} split")<cr>
 xnoremap <buffer> S <nop>
@@ -53,6 +55,7 @@ nnoremap <buffer> s <scriptcmd>action.Do($"{g:dir_invert_split ? 'vert' : ''} sp
 xnoremap <buffer> s <nop>
 nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer> i <scriptcmd>action.DoInfo()<cr>
+nnoremap <buffer> <F3> <scriptcmd>action.DoInfo()<cr>
 nnoremap <buffer> <C-r> <scriptcmd>edit<cr>
 
 
@@ -63,19 +66,28 @@ xnoremap <buffer> X <scriptcmd>action.DoMarksAllToggle()<cr>
 noremap <buffer> D <scriptcmd>action.DoDelete()<cr>
 xnoremap <buffer> D <scriptcmd>action.DoDelete()<cr>
 noremap <buffer> C <scriptcmd>action.DoCreateDir()<cr>
+noremap <buffer> <F7> <scriptcmd>action.DoCreateDir()<cr>
 xnoremap <buffer> C <nop>
 noremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
 xnoremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
+noremap <buffer> <F8> <scriptcmd>action.DoDelete()<cr>
+xnoremap <buffer> <F8> <scriptcmd>action.DoDelete()<cr>
 noremap <buffer> p <scriptcmd>action.DoCopy()<cr>
 xnoremap <buffer> p <scriptcmd>action.DoCopy()<cr>
+noremap <buffer> <F5> <scriptcmd>action.DoCopy2Pane()<cr>
+xnoremap <buffer> <F5> <scriptcmd>action.DoCopy2Pane()<cr>
 noremap <buffer> P <scriptcmd>action.DoMove()<cr>
 xnoremap <buffer> P <scriptcmd>action.DoMove()<cr>
+noremap <buffer> <F6> <scriptcmd>action.DoMove2Pane()<cr>
+xnoremap <buffer> <F6> <scriptcmd>action.DoMove2Pane()<cr>
 noremap <buffer> R <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> R <scriptcmd>action.DoRename()<cr>
 noremap <buffer> rr <scriptcmd>action.DoRename()<cr>
 xnoremap <buffer> rr <scriptcmd>action.DoRename()<cr>
 nnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
 xnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
+nnoremap <buffer> <F2> <scriptcmd>action.DoAction()<cr>
+xnoremap <buffer> <F2> <scriptcmd>action.DoAction()<cr>
 nnoremap <buffer> g, <scriptcmd>action.DoSort("size")<cr>
 nnoremap <buffer> g. <scriptcmd>action.DoSort("time")<cr>
 nnoremap <buffer> g/ <scriptcmd>action.DoSort("name")<cr>
