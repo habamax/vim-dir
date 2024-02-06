@@ -427,8 +427,12 @@ enddef
 
 export def DirInfo(name: string): list<string>
     var output = []
-    if executable('stat') && executable('du')
-        output = systemlist($'stat -L "{resolve(name)}"') + [""] + ["  Size: " .. system($'du -sh "{resolve(name)}"')->trim()]
+    if executable('du')
+        output = ["Size: " .. system($'du -sh "{resolve(name)}"')->matchstr('^\S\+')]
+        output += [""]
+    endif
+    if executable('tree')
+        output += systemlist($'tree "{resolve(name)}"')
     endif
     return output
 enddef
