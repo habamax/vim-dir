@@ -432,7 +432,11 @@ export def DirInfo(name: string): list<string>
         output += [""]
     endif
     if executable('tree')
-        output += systemlist($'tree "{resolve(name)}"')
+        if has("win32")
+            output += systemlist($'tree /A "{resolve(name)}"')->mapnew((_, elem) => elem->trim("\r", 2))
+        else
+            output += systemlist($'tree "{resolve(name)}"')
+        endif
     endif
     return output
 enddef
