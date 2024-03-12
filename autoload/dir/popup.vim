@@ -1,10 +1,10 @@
 vim9script
 
 var borderchars     = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
-var bordertitle     = ['─┐', '┌']
+var bordercharsp    = ['─', '│', '─', '│', '┌', '┐', '┤', '├']
 var borderhighlight = []
 var popuphighlight  = get(g:, "popuphighlight", '')
-
+var popupcursor = '█'
 
 export def YesNo(text: any, DialogCallback: func)
     var msg = []
@@ -34,7 +34,6 @@ export def YesNo(text: any, DialogCallback: func)
         win_execute(winid, $"syn match Yes '\\zsy\\zees' contained | hi def link Yes DirActionChar")
         win_execute(winid, $"syn match No '\\zsn\\zeo' contained | hi def link No DirActionChar")
 enddef
-
 
 export def Show(text: any, title: string = '', Setup: func(number) = null_function): number
     var height = min([&lines - 6, text->len()])
@@ -167,7 +166,6 @@ export def Confirm(text: any, answer: list<dict<any>>): number
     return -1
 enddef
 
-
 # Popup menu with fuzzy filtering
 export def FilterMenu(title: string, items: list<any>, Callback: func(any, string), Setup: func(number) = null_function, close_on_bs: bool = false)
     if empty(prop_type_get('FilterMenuMatch'))
@@ -177,9 +175,7 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
     var prompt = ""
     var items_dict: list<dict<any>>
     var items_count = items->len()
-    if items_count < 1
-        items_dict = [{text: ""}]
-    elseif items[0]->type() != v:t_dict
+    if items_count > 0 && items[0]->type() != v:t_dict
         items_dict = items->mapnew((_, v) => {
             return {text: v}
         })
@@ -202,9 +198,34 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
             })
         endif
     enddef
-    var height = min([&lines - 6, max([items->len(), 5])])
+
+    var height = min([&lines - 9, max([items->len(), 5])])
     var minwidth = (&columns * 0.6)->float2nr()
     var pos_top = ((&lines - height) / 2) - 1
+
+    def AlignPopups(pwinid: number, winid: number)
+        var pos = popup_getpos(winid)
+        if pos.core_width > minwidth
+            minwidth = pos.core_width
+            popup_move(winid, { minwidth: minwidth })
+        endif
+        popup_move(pwinid, {
+            minwidth: minwidth + (pos.scrollbar ? 1 : 0),
+            maxwidth: minwidth + (pos.scrollbar ? 1 : 0)
+        })
+    enddef
+
+    def UpdatePopups(pwinid: number, winid: number)
+        popup_setoptions(pwinid, {title: $" ({items_count > 0 ? filtered_items[0]->len() : 0}/{items_count}) {title} " })
+        popup_settext(pwinid, $"> {prompt}{popupcursor}")
+        popup_settext(winid, Printify(filtered_items, []))
+        if filtered_items[0]->empty()
+            win_execute(winid, "setl nonu nocursorline")
+        else
+            win_execute(winid, "setl nu cursorline")
+        endif
+    enddef
+
     var ignore_input = ["\<cursorhold>", "\<ignore>", "\<Nul>",
           \ "\<LeftMouse>", "\<LeftRelease>", "\<LeftDrag>", $"\<2-LeftMouse>",
           \ "\<RightMouse>", "\<RightRelease>", "\<RightDrag>", "\<2-RightMouse>",
@@ -216,33 +237,43 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
     # this sequence of bytes are generated when left/right mouse is pressed and
     # mouse wheel is rolled
     var ignore_input_wtf = [128, 253, 100]
-    var winid = popup_create(Printify(filtered_items, []), {
-        title: $" ({items_count}/{items_count}) {title} {bordertitle[0]}  {bordertitle[1]}",
-        line: pos_top,
+
+    var winopts = {
         minwidth: minwidth,
-        maxwidth: (&columns - 5),
-        minheight: height,
-        maxheight: height,
-        border: [],
-        borderchars: borderchars,
+        maxwidth: minwidth,
         borderhighlight: borderhighlight,
         highlight: popuphighlight,
         drag: 0,
         wrap: 1,
+        scrollbar: true,
         cursorline: false,
-        padding: [0, 1, 0, 1],
+        padding: [0, 0, 0, 0],
         mapping: 0,
+    }
+    var pwinid = popup_create([$"> {popupcursor}"],
+        winopts->copy()->extend({
+            border: [1, 1, 1, 1],
+            borderchars: bordercharsp,
+            line: pos_top,
+            maxheight: 1,
+            minheight: 1,
+            title: $" ({items_count}/{items_count}) {title} "
+        })
+    )
+    var winid = popup_create(Printify(filtered_items, []), winopts->copy()->extend({
+        border: [0, 1, 1, 1],
+        borderchars: borderchars,
+        line: pos_top + 3,
+        maxheight: height,
+        minheight: height,
         filter: (id, key) => {
-            var new_minwidth = popup_getpos(id).core_width
-            if new_minwidth > minwidth
-                minwidth = new_minwidth
-                popup_move(id, {minwidth: minwidth})
-            endif
             if key == "\<esc>"
                 popup_close(id, -1)
+                popup_close(pwinid, -1)
             elseif ["\<cr>", "\<C-j>", "\<C-v>", "\<C-t>", "\<C-o>"]->index(key) > -1
-                    && filtered_items[0]->len() > 0 && items_count > 0
+                    && !filtered_items[0]->empty() && items_count > 0
                 popup_close(id, {idx: getcurpos(id)[1], key: key})
+                popup_close(pwinid, -1)
             elseif key == "\<Right>"
                 win_execute(id, 'normal! ' .. "\<C-d>")
             elseif key == "\<Left>"
@@ -267,6 +298,7 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
                 elseif (key == "\<C-h>" || key == "\<bs>")
                     if empty(prompt) && close_on_bs
                         popup_close(id, {idx: getcurpos(id)[1], key: key})
+                        popup_close(pwinid, -1)
                         return true
                     endif
                     prompt = prompt->strcharpart(0, prompt->strchars() - 1)
@@ -279,23 +311,26 @@ export def FilterMenu(title: string, items: list<any>, Callback: func(any, strin
                     prompt ..= key
                     filtered_items = items_dict->matchfuzzypos(prompt, {key: "text"})
                 endif
-                popup_setoptions(id, {title: $" ({items_count > 0 ? filtered_items[0]->len() : 0}/{items_count}) {title} {bordertitle[0]} {prompt} {bordertitle[1]}" })
-                popup_settext(id, Printify(filtered_items, []))
+                UpdatePopups(pwinid, id)
+                AlignPopups(pwinid, id)
             endif
             return true
         },
         callback: (id, result) => {
-                if result->type() == v:t_number
-                    if result > 0
-                        Callback(filtered_items[0][result - 1], "")
-                    endif
-                else
-                    Callback(filtered_items[0][result.idx - 1], result.key)
+            if result->type() == v:t_number
+                if result > 0
+                    Callback(filtered_items[0][result - 1], "")
                 endif
-            }
-        })
+            else
+                Callback(filtered_items[0][result.idx - 1], result.key)
+            endif
+        }
+    }))
 
-    win_execute(winid, "setl nu cursorline cursorlineopt=both")
+    win_execute(winid, "setl cursorlineopt=both")
+    UpdatePopups(pwinid, winid)
+    AlignPopups(pwinid, winid)
+
     if Setup != null_function
         Setup(winid)
     endif
