@@ -485,7 +485,7 @@ export def BookmarkJumpMenu()
         echohl None
         return
     endif
-    popup.FilterMenu('Jump bookmark', bookmarks->mapnew((_, v) => {
+    popup.FilterMenu('Dir bookmarks', bookmarks->mapnew((_, v) => {
             return {text: $'{v[0]} ({v[1]})', name: v[0]}
         }),
         (res, _) => {
@@ -535,7 +535,7 @@ export def HistoryJumpMenu()
         echohl None
         return
     endif
-    popup.FilterMenu('Jump history', dir_hist,
+    popup.FilterMenu('Dir history', dir_hist,
         (res, _) => {
             HistoryJump(res.text)
         },
