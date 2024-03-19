@@ -90,7 +90,6 @@ enddef
 
 
 export def Jump(name: string)
-    if !exists("b:dir_cwd") | return | endif
     var name_bookmarks = get(bookmarks, 'named', {})
     var path = get(name_bookmarks, name, '')
     if empty(path)

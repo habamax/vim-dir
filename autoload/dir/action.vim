@@ -472,7 +472,10 @@ export def JumpBackward()
 enddef
 
 
-export def BookmarkJump(name: string)
+export def BookmarkJump(name: string, cmd: string = "")
+    if !empty(cmd)
+        execute(cmd)
+    endif
     bookmark.Jump(name)
 enddef
 
@@ -488,8 +491,16 @@ export def BookmarkJumpMenu()
     popup.FilterMenu('Dir bookmarks', bookmarks->mapnew((_, v) => {
             return {text: $'{v[0]} ({v[1]})', name: v[0]}
         }),
-        (res, _) => {
-            BookmarkJump(res.name)
+        (res, key) => {
+            if key == "\<c-t>"
+                BookmarkJump(res.name, "tabnew")
+            elseif key == "\<c-j>"
+                BookmarkJump(res.name, "split")
+            elseif key == "\<c-v>"
+                BookmarkJump(res.name, "vert split")
+            else
+                BookmarkJump(res.name)
+            endif
         },
         (winid) => {
             win_execute(winid, 'syn match dirFilterMenuBookmarkPath "(.*)$"')
@@ -536,8 +547,16 @@ export def HistoryJumpMenu()
         return
     endif
     popup.FilterMenu('Dir history', dir_hist,
-        (res, _) => {
-            HistoryJump(res.text)
+        (res, key) => {
+            if key == "\<c-t>"
+                HistoryJump(res.text, "tabnew")
+            elseif key == "\<c-j>"
+                HistoryJump(res.text, "split")
+            elseif key == "\<c-v>"
+                HistoryJump(res.text, "vert split")
+            else
+                HistoryJump(res.text)
+            endif
         },
         (winid) => {
             win_execute(winid, 'syn match dirFilterMenuHistoryPath "^.*\(/\|\\\)"')
@@ -545,7 +564,10 @@ export def HistoryJumpMenu()
         })
 enddef
 
-export def HistoryJump(name: string)
+export def HistoryJump(name: string, cmd: string = "")
+    if !empty(cmd)
+        execute(cmd)
+    endif
     dir.Open(name)
 enddef
 
