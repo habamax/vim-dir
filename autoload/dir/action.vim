@@ -398,7 +398,7 @@ export def DoAction()
     # TODO: document custom user actions
     extend(actions, get(g:, "dir_actions", []))
 
-    popup.FilterMenu('Actions', actions,
+    popup.Select('Actions', actions,
         (res, _) => {
             res.Action(items)
         })
@@ -488,7 +488,7 @@ export def BookmarkJumpMenu()
         echohl None
         return
     endif
-    popup.FilterMenu('Dir bookmarks', bookmarks->mapnew((_, v) => {
+    popup.Select('Dir bookmarks', bookmarks->mapnew((_, v) => {
             return {text: $'{v[0]} ({v[1]})', name: v[0]}
         }),
         (res, key) => {
@@ -503,8 +503,8 @@ export def BookmarkJumpMenu()
             endif
         },
         (winid) => {
-            win_execute(winid, 'syn match dirFilterMenuBookmarkPath "(.*)$"')
-            hi def link dirFilterMenuBookmarkPath Comment
+            win_execute(winid, 'syn match dirPopupSelectBookmarkPath "(.*)$"')
+            hi def link dirPopupSelectBookmarkPath Comment
         })
 enddef
 
@@ -546,7 +546,7 @@ export def HistoryJumpMenu()
         echohl None
         return
     endif
-    popup.FilterMenu('Dir history', dir_hist,
+    popup.Select('Dir history', dir_hist,
         (res, key) => {
             if key == "\<c-t>"
                 HistoryJump(res.text, "tabnew")
@@ -559,8 +559,8 @@ export def HistoryJumpMenu()
             endif
         },
         (winid) => {
-            win_execute(winid, 'syn match dirFilterMenuHistoryPath "^.*\(/\|\\\)"')
-            hi def link dirFilterMenuHistoryPath Comment
+            win_execute(winid, 'syn match dirPopupSelectHistoryPath "^.*\(/\|\\\)"')
+            hi def link dirPopupSelectHistoryPath Comment
         })
 enddef
 
@@ -576,15 +576,15 @@ export def HistoryComplete(_, _, _): string
 enddef
 
 export def GotoMenu()
-    popup.FilterMenu('Jump to', b:dir->mapnew((idx, v) => {
+    popup.Select('Jump to', b:dir->mapnew((idx, v) => {
             return {text: $'{g.IsFile(v) ? "" : os.Sep()}{v.name}', idx: idx}
         }),
         (res, _) => {
             exe $":{res.idx + g.DIRLIST_SHIFT}"
         },
         (winid) => {
-            win_execute(winid, $'syn match dirFilterMenuDirectory "^{os.Sep(true)}.\+$"')
-            hi def link dirFilterMenuDirectory Directory
+            win_execute(winid, $'syn match dirPopupSelectDirectory "^{os.Sep(true)}.\+$"')
+            hi def link dirPopupSelectDirectory Directory
         })
 enddef
 
