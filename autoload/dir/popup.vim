@@ -218,13 +218,25 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
             items_count->string()->len())
         var count = $"{count_f}/{items_count}"
         if filtered_items[0]->empty()
-            win_execute(winid, "setl nonu nocursorline")
+            win_execute(winid, "if &l:nu | setl nonu nocul | endif")
         else
-            win_execute(winid, "setl nu cursorline")
+            win_execute(winid, "if !&l:nu | setl nu cul | endif")
         endif
         popup_setoptions(pwinid, {title: $" {title} ({count}) "})
         popup_settext(pwinid, $"> {prompt}{popup_cursor}")
         popup_settext(winid, Printify(filtered_items, []))
+    enddef
+
+    # hide cursor
+    set t_ve=
+    var gui_cursor = hlget("Cursor")
+    hlset([{name: 'Cursor', cleared: true}])
+
+    def RestoreCursor()
+        set t_ve&
+        if hlget("Cursor")[0]->get('cleared', false)
+            hlset(gui_cursor)
+        endif
     enddef
 
     var ignore_input = ["\<cursorhold>", "\<ignore>", "\<Nul>",
@@ -270,10 +282,12 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
             if key == "\<esc>"
                 popup_close(id, -1)
                 popup_close(pwinid)
+                RestoreCursor()
             elseif ["\<cr>", "\<C-j>", "\<C-v>", "\<C-t>", "\<C-o>"]->index(key) > -1
                     && !filtered_items[0]->empty() && items_count > 0
                 popup_close(id, {idx: getcurpos(id)[1], key: key})
                 popup_close(pwinid)
+                RestoreCursor()
             elseif key == "\<Right>"
                 win_execute(id, 'normal! ' .. "\<C-d>")
             elseif key == "\<Left>"
@@ -299,6 +313,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                     if empty(prompt) && close_on_bs
                         popup_close(id, {idx: getcurpos(id)[1], key: key})
                         popup_close(pwinid)
+                        RestoreCursor()
                         return true
                     endif
                     prompt = prompt->strcharpart(0, prompt->strchars() - 1)
@@ -318,6 +333,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
         },
         callback: (id, result) => {
             popup_close(pwinid)
+            RestoreCursor()
             if result->type() == v:t_number
                 if result > 0
                     Callback(filtered_items[0][result - 1], "")
