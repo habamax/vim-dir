@@ -126,7 +126,6 @@ enddef
 
 def OpenBuffer(name: string): bool
     try
-        silent! exe $"lcd {name->escape('%#')}"
         readdir(resolve(name), '0')
     catch
         echohl ErrorMsg
@@ -208,7 +207,6 @@ export def Open(name: string = '', mod: string = '', invalidate: bool = true)
             var dir_ls: list<dict<any>>
             try
                  dir_ls = ReadDir(oname)
-                 silent! exe $"lcd {oname->escape('%#')}"
             catch
                 echohl ErrorMsg
                 echom v:exception
