@@ -175,6 +175,8 @@ Settings
 
   Columns ``perm`` and ``name`` are mandatory and should be in order.
 
+- ``g:dir_change_cwd`` — change current working directory on file opening.
+  Default is ``0``.
 
 
 Maybe Features

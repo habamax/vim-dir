@@ -271,6 +271,10 @@ g:dir_columns       Columns of the dir view.
                     Note, that `name` is mandatory.
                     Always preserve order of columns.
 
+                                                     *g:dir_change_cwd*
+g:dir_change_cwd    Whether to change current working directory on file
+                    opening.
+                    Default is `0`
 
 
 vim:tw=78:ts=8:ft=help:norl:
