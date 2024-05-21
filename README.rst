@@ -123,6 +123,8 @@ File operations
 - :kbd:`p` — copy selected files/directories into current directory.
 - :kbd:`P` — move selected files/directories into current directory.
 - :kbd:`A` — open actions menu.
+- :kbd:`C` — create directory.
+- :kbd:`cc` — create file.
 
 
 Bookmarks & History

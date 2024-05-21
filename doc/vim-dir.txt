@@ -155,6 +155,12 @@ dd                  Delete files/directories.
 R       or
 rr                  Rename files/directories.
 
+                                                     *vim-dir-C*
+C                   Create directory in current directory.
+
+                                                     *vim-dir-cc*
+cc                  Create file in current directory.
+
                                                      *vim-dir-p*
 p                   Copy selected files/directories into current directory.
 

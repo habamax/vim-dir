@@ -326,6 +326,16 @@ export def DoCreateDir()
     endif
 enddef
 
+export def DoCreateFile()
+    var name = input($'Create file: ')
+    if empty(name) | return | endif
+    var view = winsaveview()
+    if !isabsolutepath(name)
+        name = $"{b:dir_cwd}/{name}"
+    endif
+    exe "edit" name
+enddef
+
 export def DoCompressGzip(items: list<any>)
     var arch_name = input('Archive name: ', fnamemodify(items[0].name, ":t:r"))
     if empty(arch_name) | return | endif
