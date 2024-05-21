@@ -157,7 +157,7 @@ export def DoDelete()
         popup.YesNo(msg, () => {
             for item in del_list
                 try
-                    os.Delete(item.name)
+                    os.Delete(isabsolutepath(item.name) ? item.name : $"{b:dir_cwd}/{item.name}")
                 catch
                     echohl Error
                     echomsg $'Can not delete "{fnamemodify(item.name, ":t")}"!'
@@ -189,6 +189,7 @@ export def DoRename()
         del_list = VisualItemsInList(line('v'), line('.'))
     else
         del_list = mark.List()
+        mark.Clear()
     endif
 
     if len(del_list) > 1
@@ -199,14 +200,14 @@ export def DoRename()
         var view = winsaveview()
         var counter = 0
         for item in del_list
-            os.RenameWithPattern(item.name, pattern, counter)
+            os.RenameWithPattern($"{b:dir_cwd}/{item.name}", pattern, counter)
             counter += 1
         endfor
         :edit
         winrestview(view)
     else
         var view = winsaveview()
-        os.Rename(del_list[0].name)
+        os.Rename($"{b:dir_cwd}/{del_list[0].name}")
         :edit
         winrestview(view)
     endif
@@ -311,6 +312,9 @@ export def DoCreateDir()
     var name = input($'Create directory: ')
     if empty(name) | return | endif
     var view = winsaveview()
+    if !isabsolutepath(name)
+        name = $"{b:dir_cwd}/{name}"
+    endif
     if os.CreateDir(name)
         :edit
         winrestview(view)

@@ -70,7 +70,7 @@ export def Rename(name: string)
     if empty(new_name) | return | endif
     if new_name == old_name | return | endif
     if !isabsolutepath(new_name)
-        new_name = simplify($'{getcwd()}{Sep()}{new_name}')
+        new_name = simplify($'{b:dir_cwd}{Sep()}{new_name}')
     endif
     if isdirectory(new_name) || filereadable(new_name)
         echohl ErrorMsg
@@ -85,6 +85,8 @@ export def Rename(name: string)
         echohl ErrorMsg
         echom v:exception
         echohl None
+    finally
+        mark.Clear()
     endtry
 enddef
 
@@ -99,7 +101,7 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
     endif
     if empty(new_name) | return | endif
     if !isabsolutepath(new_name)
-        new_name = simplify($'{getcwd()}{Sep()}{new_name}')
+        new_name = simplify($'{b:dir_cwd}{Sep()}{new_name}')
     endif
     if isdirectory(new_name) || filereadable(new_name)
         echohl ErrorMsg
@@ -114,6 +116,8 @@ export def RenameWithPattern(name: string, pattern: string, counter: number = -1
         echohl ErrorMsg
         echom v:exception
         echohl None
+    finally
+        mark.Clear()
     endtry
 enddef
 
