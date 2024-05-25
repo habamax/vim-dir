@@ -74,7 +74,7 @@ enddef
 export def DoOS()
     var item = CursorItem()
     if !empty(item)
-        os.Open(item)
+        os.Open($"{b:dir_cwd}/{item}")
         history.Add(b:dir_cwd)
     endif
 enddef
