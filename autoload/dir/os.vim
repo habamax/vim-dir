@@ -45,7 +45,11 @@ export def Open(name: string)
         job_opts.cwd = "/mnt/c/"
         url = WslToWindowsPath(name)->escape('\')
     endif
-    job_start(printf('%s "%s"', cmd, url), job_opts)
+    if $DESKTOP_SESSION == "plasma"
+        system(printf('%s "%s" &', cmd, url))
+    else
+        job_start(printf('%s "%s"', cmd, url), job_opts)
+    endif
 enddef
 
 export def Delete(name: string)
