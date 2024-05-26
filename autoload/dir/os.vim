@@ -351,6 +351,7 @@ export def CompressGzip(arch_name: string, items: list<any>): bool
     endif
 
     try
+        exe "lcd" b:dir_cwd
         # XXX: should only be available if tar is present
         var cmd = $'tar -czvf "{arch_name}"'
         for item in items
@@ -362,6 +363,8 @@ export def CompressGzip(arch_name: string, items: list<any>): bool
         echohl ErrorMsg
         echom v:exception
         echohl None
+    finally
+        lcd -
     endtry
     return false
 enddef
@@ -376,6 +379,7 @@ export def CompressZip(arch_name: string, items: list<any>): bool
     endif
 
     try
+        exe "lcd" b:dir_cwd
         # XXX: should only be available if zip is present
         var cmd = $'zip -r "{arch_name}"'
         for item in items
@@ -391,13 +395,14 @@ export def CompressZip(arch_name: string, items: list<any>): bool
         echohl ErrorMsg
         echom v:exception
         echohl None
+    finally
+        lcd -
     endtry
     return false
 enddef
 
 export def ExtractArch(arch_name: string, path: string = '.'): bool
     if !filereadable(arch_name)
-        echo "    "
         echohl ErrorMsg
         echo $"'{arch_name}' doesn't exists!"
         echohl None

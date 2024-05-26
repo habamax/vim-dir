@@ -384,7 +384,7 @@ export def DoExtractArch(items: list<any>)
         dir_name = "."
     endif
     mark.Clear()
-    if os.ExtractArch(items[0].name, dir_name)
+    if os.ExtractArch($"{b:dir_cwd}/{items[0].name}", $"{b:dir_cwd}/{dir_name}")
         :edit
         winrestview(view)
     endif
