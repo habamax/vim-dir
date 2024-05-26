@@ -98,8 +98,11 @@ There are no global mappings. You can set them to quickly call vim-dir: >
 
                                                      *vim-dir-<BS>*
                                                      *vim-dir-u*
+                                                     *vim-dir-minus*
 <BS>    or
-u                   One directory up.
+u       or
+-
+                    One directory up.
 
                                                      *vim-dir-<CR>*
                                                      *vim-dir-o*

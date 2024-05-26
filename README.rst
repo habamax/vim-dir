@@ -97,7 +97,7 @@ Local mappings
 Navigation
 ~~~~~~~~~~
 
-- :kbd:`Backspace` or :kbd:`u` — one directory up.
+- :kbd:`Backspace` or :kbd:`u` or :kbd:`-` — one directory up.
 - :kbd:`Enter` or :kbd:`o` — open a file or a directory under cursor.
 - :kbd:`O` — open a file/directory with OS.
 - :kbd:`s` — open a file/directory in a split.

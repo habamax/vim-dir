@@ -18,7 +18,7 @@ var nop_maps = ['r', 'd', 'c', 'a', 'I', 'K',
                 'gp', 'gP', 'gi', 'gI', 'gu', 'gU',  'gH', 'gw',
                 'U', '<C-w>f', '<C-w>F', 'gf', 'gF'
                ]
-var undo_maps = ['<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
+var undo_maps = ['-', '<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
                  '~', 'g~', 'gb', 'gh', '>', '<', 'gj', '<C-r>',
                  't', 'i', 'x', 'X', 'C', 'cc', 'D', 'dd', 'R', 'rr', 'p', 'P',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
@@ -43,6 +43,7 @@ command! -buffer -nargs=1 -complete=custom,action.BookmarkComplete DirBookmarkJu
 command! -buffer -nargs=1 -complete=custom,action.HistoryComplete DirHistoryJump action.HistoryJump(<q-args>)
 
 nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
+nnoremap <buffer> - <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
 xnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
 nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
