@@ -380,9 +380,6 @@ export def DoExtractArch(items: list<any>)
     if items->len() != 1 | return | endif
     var view = winsaveview()
     var dir_name = input('Extract to: ', fnamemodify(items[0].name, ":t:r:r"))
-    if empty(dir_name)
-        dir_name = "."
-    endif
     mark.Clear()
     if os.ExtractArch($"{b:dir_cwd}/{items[0].name}", $"{b:dir_cwd}/{dir_name}")
         :edit

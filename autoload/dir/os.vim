@@ -408,12 +408,6 @@ export def ExtractArch(arch_name: string, path: string = '.'): bool
         echohl None
         return false
     endif
-    if isdirectory(path) && path !~ '^\.\.\?/\?\s*$'
-        echohl ErrorMsg
-        echo $"'{path}' exists!"
-        echohl None
-        return false
-    endif
 
     var cmd: string
     try
