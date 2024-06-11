@@ -192,6 +192,8 @@ export def DoRename()
         mark.Clear()
     endif
 
+    if len(del_list) == 0 | return | endif
+
     if len(del_list) > 1
         var input_pat = "{name}{ext}"
         var pattern = input("Rename with pattern: ", input_pat)
