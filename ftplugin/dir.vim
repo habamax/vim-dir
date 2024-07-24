@@ -31,6 +31,13 @@ var undo_maps = ['-', '<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
 b:undo_ftplugin = undo_opts .. ' | '
 b:undo_ftplugin ..= (nop_maps + undo_maps)->mapnew((_, v) => $'exe "unmap <buffer> {v}"')->join(' | ')
 
+if !get(g:, "dir_change_cwd", 0)
+    augroup dir_cwd
+        au!
+        au BufLeave <buffer> exe "lcd" getcwd(-1)
+    augroup END
+endif
+
 
 import autoload 'dir.vim'
 import autoload 'dir/action.vim'
