@@ -52,6 +52,6 @@ hi def link dirStatusSelPath Directory
 hi def link dirStatusSortBy Constant
 hi def link dirStatusHidden Constant
 hi def link dirStatusFilter Constant
-hi def link dirMark Todo
+hi def link dirMark DiffChange
 
 b:current_syntax = "dir"
