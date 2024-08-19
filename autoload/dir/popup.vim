@@ -312,7 +312,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                 if ln == getcurpos(id)[1]
                     win_execute(id, "normal! gg")
                 endif
-            elseif ["\<S-tab>", "\<C-p>", "\<Up>", "\<ScrollWheelUp>"]->index(key) > -1
+            elseif ["\<S-Tab>", "\<C-p>", "\<Up>", "\<ScrollWheelUp>"]->index(key) > -1
                 var ln = getcurpos(id)[1]
                 win_execute(id, "normal! k")
                 if ln == getcurpos(id)[1]
@@ -320,10 +320,17 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                 endif
             # Ignoring fancy events and double clicks, which are 6 char long: `<80><fc> <80><fd>.`
             elseif ignore_input->index(key) == -1 && strcharlen(key) != 6 && str2list(key) != ignore_input_wtf
-                if key == "\<C-U>"
+                if key == "\<C-u>"
                     prompt = ""
                     filtered_items = [items_dict]
-                elseif (key == "\<C-h>" || key == "\<bs>")
+                elseif key == "\<C-w>"
+                    prompt = matchstr(prompt, '\v^.{-}\ze(([[:punct:][:space:]]+)|([[:lower:][:upper:][:digit:]]+\s*))$')
+                    if empty(prompt)
+                        filtered_items = [items_dict]
+                    else
+                        filtered_items = items_dict->matchfuzzypos(prompt, {key: "text"})
+                    endif
+                elseif (key == "\<C-h>" || key == "\<BS>")
                     if empty(prompt) && close_on_bs
                         popup_close(id, {idx: getcurpos(id)[1], key: key})
                         popup_close(pwinid)
