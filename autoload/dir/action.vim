@@ -142,6 +142,7 @@ export def DoDelete()
     var del_list = []
     if mark.IsEmpty() || mark.Bufnr() != bufnr()
         mark.Clear()
+        dir.UpdateStatusInfo()
         del_list = VisualItemsInList(line('v'), line('.'))
     else
         del_list = mark.List()
