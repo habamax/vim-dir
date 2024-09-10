@@ -503,7 +503,7 @@ export def BookmarkJumpMenu()
         return
     endif
     popup.Select('Dir bookmarks', bookmarks->mapnew((_, v) => {
-            return {text: $'{v[0]} ({v[1]})', name: v[0]}
+            return {text: v[0], posttext: $' ({v[1]})', name: v[0]}
         }),
         (res, key) => {
             if key == "\<c-t>"
