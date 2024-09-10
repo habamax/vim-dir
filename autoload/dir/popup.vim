@@ -4,7 +4,8 @@ var popup_borderchars     = get(g:, "popup_borderchars", ['─', '│', '─', '
 var popup_borderchars_t   = get(g:, "popup_borderchars_t", ['─', '│', '─', '│', '├', '┤', '┘', '└'])
 var popup_borderhighlight = get(g:, "popup_borderhighlight", ['Normal'])
 var popup_highlight       = get(g:, "popup_highlight", 'Normal')
-var popup_cursor          = get(g:, "popup_cursor", '█')
+var popup_cursor          = get(g:, "popup_cursor", '▏')
+var popup_number          = get(g:, "popup_number", false)
 
 export def YesNo(text: any, DialogCallback: func)
     var msg = []
@@ -184,27 +185,77 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
     endif
 
     var filtered_items: list<any> = [items_dict]
-    def Printify(itemsAny: list<any>, props: list<any>): list<any>
-        if itemsAny[0]->len() == 0 | return [] | endif
-        if itemsAny->len() > 1
-            return itemsAny[0]->mapnew((idx, v) => {
-                return {text: v.text, props: itemsAny[1][idx]->mapnew((_, c) => {
-                    return {col: v.text->byteidx(c) + 1, length: 1, type: 'PopupSelectMatch'}
-                })}
-            })
-        else
-            return itemsAny[0]->mapnew((_, v) => {
-                return {text: v.text}
-            })
-        endif
-    enddef
-
     var maxwidth = (&columns * 0.9)->float2nr()
     var minwidth = max([min([70, maxwidth]), (&columns * 0.6)->float2nr()])
     var maxheight = &lines - 9
     var minheight = min([maxheight, max([items->len(), 10])])
     var pos_top = ((&lines - minheight) / 2) - 1
     var scrollbar_before_update = 0
+
+    def Format(itemsAny: list<any>, props: list<any>): list<any>
+        if itemsAny[0]->len() == 0 | return [] | endif
+
+        var max_visible_pretext_len = 0
+        var max_visible_posttext_len = 0
+        var max_visible_text_len = 0
+        var i = 0
+        while i < maxheight && i < itemsAny[0]->len()
+            if max_visible_text_len < len(itemsAny[0][i].text)
+                max_visible_text_len = len(itemsAny[0][i].text)
+            endif
+            var pretext = get(itemsAny[0][i], "pretext", "")
+            if max_visible_pretext_len < len(pretext)
+                max_visible_pretext_len = len(pretext)
+            endif
+            var posttext = get(itemsAny[0][i], "posttext", "")
+            if max_visible_posttext_len < len(posttext)
+                max_visible_posttext_len = len(posttext)
+            endif
+            i += 1
+        endwhile
+        if max_visible_text_len + max_visible_pretext_len + max_visible_posttext_len >= maxwidth
+            max_visible_text_len = maxwidth - max_visible_pretext_len - max_visible_posttext_len
+        endif
+
+        if itemsAny->len() > 1
+            return itemsAny[0]->mapnew((idx, v) => {
+                var pretext = get(v, "pretext", "")
+                var posttext = get(v, "posttext", "")
+                var text = pretext
+                if len(pretext) < max_visible_pretext_len
+                    text ..= repeat(" ", max_visible_pretext_len - len(pretext))
+                endif
+                text ..= v.text
+                if !empty(posttext)
+                    if len(v.text) < max_visible_text_len
+                        text ..= repeat(" ", max_visible_text_len - len(v.text))
+                    endif
+                    text ..= posttext
+                endif
+                return {text: text, props: itemsAny[1][idx]->mapnew((_, c) => {
+                    return {col: len(pretext) + v.text->byteidx(c) + 1, length: 1, type: 'PopupSelectMatch'}
+                })}
+            })
+        else
+            return itemsAny[0]->mapnew((_, v) => {
+                var pretext = get(v, "pretext", "")
+                var posttext = get(v, "posttext", "")
+                var text = pretext
+                if len(pretext) < max_visible_pretext_len
+                    text ..= repeat(" ", max_visible_pretext_len - len(pretext))
+                endif
+                text ..= v.text
+                if !empty(posttext)
+                    if len(v.text) < max_visible_text_len
+                        text ..= repeat(" ", max_visible_text_len - len(v.text))
+                    endif
+                    text ..= posttext
+                endif
+
+                return {text: text}
+            })
+        endif
+    enddef
 
     def AlignPopups(pwinid: number, winid: number)
         var width = popup_getpos(winid).core_width + (scrollbar_before_update - popup_getpos(winid).scrollbar)
@@ -214,9 +265,10 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
         })
 
         width = popup_getpos(winid).core_width + popup_getpos(winid).scrollbar
+        var padding = (popup_number ? 0 : 1)
         popup_move(pwinid, {
-            minwidth: width,
-            maxwidth: width
+            minwidth: width + padding,
+            maxwidth: width + padding
         })
     enddef
 
@@ -227,14 +279,14 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
             items_count->string()->len())
         var count = $"{count_f}/{items_count}"
         if filtered_items[0]->empty()
-            win_execute(winid, "if &l:nu | setl nonu nocul | endif")
+            win_execute(winid, $"if &l:cul | setl {popup_number ? "nonu" : ""} nocul | endif")
         else
-            win_execute(winid, "if !&l:nu | setl nu cul | endif")
+            win_execute(winid, $"if !&l:cul | setl {popup_number ? "nu" : ""} cul | endif")
         endif
         popup_setoptions(pwinid, {title: $" {title} ({count}) "})
         popup_settext(pwinid, $"> {prompt}{popup_cursor}")
         scrollbar_before_update = popup_getpos(winid).scrollbar
-        popup_settext(winid, Printify(filtered_items, []))
+        popup_settext(winid, Format(filtered_items, []))
     enddef
 
     # hide cursor
@@ -282,10 +334,11 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
             minheight: 1,
         })
     )
-    var winid = popup_create(Printify(filtered_items, []), popts->copy()->extend({
+    var winid = popup_create(Format(filtered_items, []), popts->copy()->extend({
         border: [1, 1, 1, 1],
         borderchars: popup_borderchars_t,
         line: pos_top + 2,
+        padding: [0, 0, 0, (popup_number ? 0 : 1)],
         minheight: minheight,
         maxheight: maxheight,
         filter: (id, key) => {
