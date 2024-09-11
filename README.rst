@@ -1,18 +1,8 @@
-################################################################################
-                       VIM-DIR: Browse directories in Vim
-################################################################################
+********************************************************************************
+                             VIM-DIR: file manager
+********************************************************************************
 
-:Minimum requirements: ``Vim9``, ``Huge``
-
-**WIP**, use at your own risk:
-
-- there might be bugs;
-
-- beware of dangerous file operations like move/rename/delete, only me testing
-  it probably is not enough :).
-
-Note that, copy/move file operations are way slower compared to "real" file
-managers.
+:Minimum requirements: ``Vim9``, ``Huge version``
 
 .. image:: https://user-images.githubusercontent.com/234774/178149719-1a77e114-728b-42e9-9530-701f1a701380.gif
 
@@ -188,14 +178,14 @@ Maybe Features
 
 - Background file operations (copy/move/delete).
 
-- Mass rename ala ``qmv``/``vidir`` (explore feasibility).
-
-- Networking ala ``netrw`` or ``mc`` with shell/sftp links to machines (explore
-  feasibility). Here probably I should rely on openssh.
-
 
 
 Non Features
 ============
 
 - ✗ No treeview, no sidepanel.
+
+- ✗ Mass rename ala ``qmv``/``vidir`` (explore feasibility).
+
+- ✗ Networking ala ``netrw`` or ``mc``.
+
