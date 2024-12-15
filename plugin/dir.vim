@@ -25,7 +25,7 @@ command! -nargs=? -complete=dir Dir dir.Open(expand(<q-args>))
 
 def g:DirOnDirectory()
     if !exists("b:dir") && isdirectory(expand("<afile>"))
-        dir.Open()
+        dir.Open(expand('%:p'))
     endif
 enddef
 
