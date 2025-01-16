@@ -9,7 +9,7 @@ import autoload 'dir/bookmark.vim'
 import autoload 'dir/history.vim'
 import autoload 'dir/fmt.vim'
 
-def VisualItemsInList(line1: number, line2: number): list<dict<any>>
+export def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     var l1 = (line1 > line2 ? line2 : line1) - g.DIRLIST_SHIFT
     var l2 = (line2 > line1 ? line2 : line1) - g.DIRLIST_SHIFT
     if l2 < 0 | return [] | endif
@@ -17,13 +17,13 @@ def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     return b:dir[l1 : l2]
 enddef
 
-def CursorItemInList(): dict<any>
+export def CursorItemInList(): dict<any>
     var idx = line('.') - g.DIRLIST_SHIFT
     if idx < 0 | return {name: ""} | endif
     return b:dir[idx]
 enddef
 
-def CursorItem(): string
+export def CursorItem(): string
     if line('.') == 1
         var view = winsaveview()
         var new_dir = getline(1)[0 : searchpos($'{os.Sep()->escape("\\")}\|$', 'c', 1)[1] - 1]
