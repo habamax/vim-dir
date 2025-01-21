@@ -2,7 +2,6 @@ vim9script
 
 var dir_history: list<any>
 
-import autoload 'dir.vim'
 import autoload 'dir/g.vim'
 import autoload 'dir/os.vim'
 
