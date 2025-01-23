@@ -18,6 +18,7 @@ export def YesNo(text: any, DialogCallback: func)
         filter: 'popup_filter_yesno',
         pos: 'center',
         border: [],
+        borderchars: popup_borderchars,
         highlight: 'ErrorMsg',
         callback: (id, result) => {
             if result == 1
