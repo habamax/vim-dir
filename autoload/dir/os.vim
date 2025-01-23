@@ -45,7 +45,7 @@ export def Open(name: string)
         job_opts.cwd = "/mnt/c/"
         url = WslToWindowsPath(name)->escape('\')
     endif
-    if $DESKTOP_SESSION == "plasma"
+    if $DESKTOP_SESSION =~ 'plasma\(wayland\)\?'
         system(printf('%s "%s" &', cmd, url))
     else
         job_start(printf('%s "%s"', cmd, url), job_opts)
