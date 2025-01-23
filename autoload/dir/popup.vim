@@ -139,6 +139,7 @@ export def Confirm(text: any, answer: list<dict<any>>): number
     var winid = popup_create(msg + [{text: answer_txt, props: props}], {
         pos: 'center',
         border: [],
+        borderchars: popup_borderchars,
         highlight: 'ErrorMsg',
         padding: [0, 1, 0, 1]})
 
