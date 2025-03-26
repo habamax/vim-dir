@@ -74,7 +74,8 @@ enddef
 export def DoOS()
     var item = CursorItem()
     if !empty(item)
-        os.Open($"{b:dir_cwd}/{item}")
+        var path = isabsolutepath(item) ? item : $"{b:dir_cwd}/{item}"
+        os.Open(path)
         history.Add(b:dir_cwd)
     endif
 enddef
