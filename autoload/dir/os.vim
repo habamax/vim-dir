@@ -158,7 +158,9 @@ export def Copy()
     var copy_cmd = "cp"
     var dest_dir = $"{b:dir_cwd}"
 
-    if has("win32")
+    if &shell == 'pwsh'
+        copy_cmd = "Copy-Item -Force"
+    elseif has("win32")
         copy_cmd = "copy /Y"
     endif
 
@@ -255,7 +257,9 @@ export def Move()
     var move_cmd = "mv"
     var dest_dir = $"{b:dir_cwd}"
 
-    if has("win32")
+    if &shell == 'pwsh'
+        move_cmd = "Move-Item -Force"
+    elseif has("win32")
         move_cmd = "move /Y"
     endif
 
