@@ -9,7 +9,7 @@ import autoload 'dir/bookmark.vim'
 import autoload 'dir/history.vim'
 import autoload 'dir/fmt.vim'
 
-def RefreshDir()
+export def RefreshDir()
     :edit
     if &shell == 'pwsh'
         :syntax on
