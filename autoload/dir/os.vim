@@ -384,15 +384,22 @@ export def CompressZip(arch_name: string, items: list<any>): bool
 
     try
         exe "lcd" b:dir_cwd
+        var cmd_args: list<string> = [arch_name]
         # XXX: should only be available if zip is present
-        var cmd = $'zip -r "{arch_name}"'
         for item in items
             var name = item.name
             if item.type == 'dir'
                 name ..= "/"
             endif
-            cmd ..= $' "{name}"'
+            cmd_args += [name]
         endfor
+        map(cmd_args, (_, v) => $'"{v}"')
+        var cmd: string
+        if &shell == 'pwsh'
+            cmd = $'Compress-Archive -Path {join(cmd_args[1 : ], ',')} -DestinationPath {cmd_args[0]}'->escape('"')
+        else
+            cmd = $'zip -r {join(cmd_args, ' ')}'
+        endif
         system(cmd)
         return true
     catch
@@ -416,8 +423,12 @@ export def ExtractArch(arch_name: string, path: string = '.'): bool
     var cmd: string
     try
         # XXX: should only be available if unzip/tar is present
-        if arch_name =~ '\.zip$'
-            cmd = $'unzip "{arch_name}" -d "{path}"'
+        if arch_name =~ '\.z.ip$'
+            if &shell == 'pwsh'
+                cmd = $'Expand-Archive -Path "{arch_name}" -DestinationPath "{path}"'->escape('"')
+            else
+                cmd = $'unzip "{arch_name}" -d "{path}"'
+            endif
         elseif arch_name =~ '\.[gx]z$'
             if path !~ '^\.\.\?/\?\s*$'
                 mkdir(path, "p")
