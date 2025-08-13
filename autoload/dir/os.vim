@@ -210,7 +210,11 @@ export def Copy()
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
-                    system($'{copy_cmd} "{resolve(src)}" "{dst}"')
+                    if &shell == 'pwsh'
+                        system($'{copy_cmd} "{resolve(src)}" "{dst}"'->escape('"'))
+                    else
+                        system($'{copy_cmd} "{resolve(src)}" "{dst}"')
+                    endif
                 endif
             endif
         catch
@@ -309,7 +313,11 @@ export def Move()
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
-                    system($'{move_cmd} "{resolve(src)}" "{dst}"')
+                    if &shell == 'pwsh'
+                        system($'{move_cmd} "{resolve(src)}" "{dst}"'->escape('"'))
+                    else
+                        system($'{move_cmd} "{resolve(src)}" "{dst}"')
+                    endif
                 endif
             endif
         catch
