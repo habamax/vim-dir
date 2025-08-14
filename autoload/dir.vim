@@ -135,31 +135,31 @@ def OpenBuffer(name: string): bool
         return false
     endtry
 
+    var result = true
     var bufname = $"dir://{name}"
     var bufnr = g.GetBufnr(bufname)
     if &hidden
         if bufnr > 0
             exe $"sil! keepj keepalt b {bufnr}"
-            set ft=dir
-            return false
+            result = false
         elseif !isdirectory(bufname())
             enew
         endif
     elseif &modified && bufnr > 0
         exe $"sil! keepj keepalt sb {bufnr}"
-        return false
+        result = false
     elseif bufnr > 0
         exe $"sil! keepj keepalt b {bufnr}"
-        return false
+        result = false
     elseif &modified
         new
     elseif !isdirectory(bufname())
         enew
     endif
-    set ft=dir
     exe $"sil! keepj keepalt file {bufname}"
+    set ft=dir
 
-    return true
+    return result
 enddef
 
 
