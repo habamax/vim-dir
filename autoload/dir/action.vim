@@ -11,7 +11,7 @@ import autoload 'dir/fmt.vim'
 
 export def RefreshDir()
     :edit
-    if &shell == 'pwsh'
+    if &shell =~ 'pwsh'
         :syntax on
     endif
 enddef

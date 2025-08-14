@@ -158,7 +158,7 @@ export def Copy()
     var copy_cmd = "cp"
     var dest_dir = $"{b:dir_cwd}"
 
-    if &shell == 'pwsh'
+    if &shell =~ 'pwsh'
         copy_cmd = "Copy-Item -Force"
     elseif has("win32")
         copy_cmd = "copy /Y"
@@ -210,7 +210,7 @@ export def Copy()
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
-                    if &shell == 'pwsh'
+                    if &shell =~ 'pwsh'
                         system($'{copy_cmd} "{resolve(src)}" "{dst}"'->escape('"'))
                     else
                         system($'{copy_cmd} "{resolve(src)}" "{dst}"')
@@ -261,7 +261,7 @@ export def Move()
     var move_cmd = "mv"
     var dest_dir = $"{b:dir_cwd}"
 
-    if &shell == 'pwsh'
+    if &shell =~ 'pwsh'
         move_cmd = "Move-Item -Force"
     elseif has("win32")
         move_cmd = "move /Y"
@@ -313,7 +313,7 @@ export def Move()
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
-                    if &shell == 'pwsh'
+                    if &shell =~ 'pwsh'
                         system($'{move_cmd} "{resolve(src)}" "{dst}"'->escape('"'))
                     else
                         system($'{move_cmd} "{resolve(src)}" "{dst}"')
@@ -403,7 +403,7 @@ export def CompressZip(arch_name: string, items: list<any>): bool
         endfor
         map(cmd_args, (_, v) => $'"{v}"')
         var cmd: string
-        if &shell == 'pwsh'
+        if &shell =~ 'pwsh'
             cmd = $'Compress-Archive -Path {join(cmd_args[1 : ], ',')} -DestinationPath {cmd_args[0]}'->escape('"')
         else
             cmd = $'zip -r {join(cmd_args, ' ')}'
@@ -431,8 +431,8 @@ export def ExtractArch(arch_name: string, path: string = '.'): bool
     var cmd: string
     try
         # XXX: should only be available if unzip/tar is present
-        if arch_name =~ '\.z.ip$'
-            if &shell == 'pwsh'
+        if arch_name =~ '\.zip$'
+            if &shell =~ 'pwsh'
                 cmd = $'Expand-Archive -Path "{arch_name}" -DestinationPath "{path}"'->escape('"')
             else
                 cmd = $'unzip "{arch_name}" -d "{path}"'
