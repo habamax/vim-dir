@@ -353,11 +353,17 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                 popup_close(id, -1)
                 popup_close(pwinid)
                 RestoreCursor()
+                if &shell == 'pwsh'
+                    redraw!
+                endif
             elseif ["\<cr>", "\<C-j>", "\<C-v>", "\<C-t>", "\<C-o>"]->index(key) > -1
                     && !filtered_items[0]->empty() && items_count > 0
                 popup_close(id, {idx: getcurpos(id)[1], key: key})
                 popup_close(pwinid)
                 RestoreCursor()
+                if &shell == 'pwsh'
+                    redraw!
+                endif
             elseif ["\<Right>", "\<PageDown>"]->index(key) > -1
                 win_execute(id, 'normal! ' .. maxheight .. "\<C-d>")
             elseif ["\<Left>", "\<PageUp>"]->index(key) > -1
@@ -395,6 +401,9 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                         popup_close(id, {idx: getcurpos(id)[1], key: key})
                         popup_close(pwinid)
                         RestoreCursor()
+                        if &shell == 'pwsh'
+                            redraw!
+                        endif
                         return true
                     endif
                     prompt_text = prompt_text->strcharpart(0, prompt_text->strchars() - 1)
@@ -415,6 +424,9 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
         callback: (id, result) => {
             popup_close(pwinid)
             RestoreCursor()
+            if &shell == 'pwsh'
+                redraw!
+            endif
             if result->type() == v:t_number
                 if result > 0
                     Callback(filtered_items[0][result - 1], "")
