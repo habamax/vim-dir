@@ -408,7 +408,6 @@ export def CompressZip(arch_name: string, items: list<any>): bool
         else
             cmd = $'zip -r {join(cmd_args, ' ')}'
         endif
-        g:aaa = cmd
         system(cmd)
         return true
     catch
