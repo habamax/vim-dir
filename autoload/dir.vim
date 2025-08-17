@@ -104,11 +104,11 @@ export def PrintDir(dir: list<dict<any>>)
 
     var view = winsaveview()
     setl ma nomod noro
-    sil! :%d _
-    setline(1, b:dir_cwd)
+    sil! keepj :%d _
+    keepj setline(1, b:dir_cwd)
     var dir_text = dir->mapnew((_, v) => fmt.Dir(v))
     if len(dir_text) > 0
-        setline(2, ["", ""] + dir_text)
+        keepj setline(2, ["", ""] + dir_text)
     endif
     setl noma nomod ro
     winrestview(view)
@@ -140,23 +140,23 @@ def OpenBuffer(name: string): bool
     var bufnr = g.GetBufnr(bufname)
     if &hidden
         if bufnr > 0
-            exe $"sil! keepj keepalt b {bufnr}"
+            exe $"sil! keepalt b {bufnr}"
             result = false
         elseif !isdirectory(bufname())
             enew
         endif
     elseif &modified && bufnr > 0
-        exe $"sil! keepj keepalt sb {bufnr}"
+        exe $"sil! keepalt sb {bufnr}"
         result = false
     elseif bufnr > 0
-        exe $"sil! keepj keepalt b {bufnr}"
+        exe $"sil! keepalt b {bufnr}"
         result = false
     elseif &modified
         new
     elseif !isdirectory(bufname())
         enew
     endif
-    exe $"sil! keepj keepalt file {bufname}"
+    exe $"sil! keepalt file {bufname}"
     set ft=dir
 
     return result
