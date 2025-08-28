@@ -12,99 +12,69 @@ enddef
 
 
 export def BySize(dir: list<dict<any>>, desc: bool = false)
-    if desc
-        dir->sort((d1, d2) => {
-            if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
-                if d2.size > d1.size
-                    return 1
-                elseif d2.size < d1.size
-                    return -1
-                else
-                    return 0
-                endif
+    dir->sort((d1, d2) => {
+        var ret = 0
+        if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
+            if d2.size > d1.size
+                ret = -1
+            elseif d2.size < d1.size
+                ret = 1
             else
-                return 0
+                ret = 0
             endif
-        })
-    else
-        dir->sort((d1, d2) => {
-            if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
-                if d2.size > d1.size
-                    return -1
-                elseif d2.size < d1.size
-                    return 1
-                else
-                    return 0
-                endif
-            else
-                return 0
-            endif
-        })
-    endif
+        endif
+        return ret * (desc ? -1 : 1)
+    })
 enddef
 
 
 export def ByTime(dir: list<dict<any>>, desc: bool = false)
-    if desc
-        dir->sort((d1, d2) => {
-            if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
-                if d2.time > d1.time
-                    return 1
-                elseif d2.time < d1.time
-                    return -1
-                else
-                    return 0
-                endif
+    dir->sort((d1, d2) => {
+        var ret = 0
+        if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
+            if d2.time > d1.time
+                ret = -1
+            elseif d2.time < d1.time
+                ret = 1
             else
-                return 0
+                ret = 0
             endif
-        })
-    else
-        dir->sort((d1, d2) => {
-            if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
-                if d2.time > d1.time
-                    return -1
-                elseif d2.time < d1.time
-                    return 1
-                else
-                    return 0
-                endif
-            else
-                return 0
-            endif
-        })
-    endif
+        endif
+        return ret * (desc ? -1 : 1)
+    })
 enddef
 
 
 export def ByName(dir: list<dict<any>>, desc: bool = false)
-    if desc
-        dir->sort((d1, d2) => {
-            if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
-                if d2.name > d1.name
-                    return 1
-                elseif d2.name < d1.name
-                    return -1
-                else
-                    return 0
-                endif
+    dir->sort((d1, d2) => {
+        var ret = 0
+        if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
+            if d2.name > d1.name
+                ret = -1
+            elseif d2.name < d1.name
+                ret = 1
             else
-                return 0
+                ret =  0
             endif
-        })
-    else
-        dir->sort((d1, d2) => {
-            if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
-                if d2.name > d1.name
-                    return -1
-                elseif d2.name < d1.name
-                    return 1
-                else
-                    return 0
-                endif
+        endif
+        return ret * (desc ? -1 : 1)
+    })
+enddef
+
+export def ByExtension(dir: list<dict<any>>, desc: bool = false)
+    dir->sort((d1, d2) => {
+        var ret = 0
+        if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
+            const ext1 = d1.name->fnamemodify(':e')
+            const ext2 = d2.name->fnamemodify(':e')
+            if ext2 > ext1
+                ret = -1
+            elseif ext2 < ext1
+                ret = 1
             else
-                return 0
+                ret = 0
             endif
-        })
-    endif
+        endif
+        return ret * (desc ? -1 : 1)
+    })
 enddef

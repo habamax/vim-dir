@@ -63,6 +63,8 @@ export def SortDir(dir: list<dict<any>>)
         dsort.BySize(dir, b:dir_sort_desc)
     elseif b:dir_sort_by == 'name'
         dsort.ByName(dir, b:dir_sort_desc)
+    elseif b:dir_sort_by == 'extension'
+        dsort.ByExtension(dir, b:dir_sort_desc)
     endif
 enddef
 

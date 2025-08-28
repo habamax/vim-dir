@@ -24,7 +24,7 @@ var undo_maps = ['-', '<bs>', '\<cr>', 'u', 'o', 'O', 'S', 's', 'A',
                  'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g0',
                  '<C-a>1', '<C-a>2', '<C-a>3', '<C-a>4', '<C-a>5',
                  '<C-a>6', '<C-a>7', '<C-a>8', '<C-a>9', '<C-a>0',
-                 'gq', 'g/', ']]', '[[', '.',
+                 'gq', 'g/', 'g.', 'g,', 'ge', ']]', '[[', '.',
                  '<F2>', '<F3>', '<F4>', '<F5>', '<F6>', '<F7>', '<F8>'
                 ]
 
@@ -100,6 +100,7 @@ xnoremap <buffer> <F2> <scriptcmd>action.DoAction()<cr>
 nnoremap <buffer> g, <scriptcmd>action.DoSort("size")<cr>
 nnoremap <buffer> g. <scriptcmd>action.DoSort("time")<cr>
 nnoremap <buffer> g/ <scriptcmd>action.DoSort("name")<cr>
+nnoremap <buffer> ge <scriptcmd>action.DoSort("extension")<cr>
 
 nnoremap <buffer> . <scriptcmd>action.DoFilterHidden()<cr>
 

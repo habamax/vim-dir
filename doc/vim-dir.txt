@@ -216,6 +216,9 @@ g.                  Sort current buffer dir by time.
                                                      *vim-dir-g/*
 g/                  Sort current buffer dir by name.
 
+                                                     *vim-dir-ge*
+ge                  Sort current buffer dir by extension.
+
                                                      *vim-dir-.*
 .                   Toggle .hidden files/directories.
 
