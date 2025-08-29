@@ -64,7 +64,7 @@ enddef
 export def ByExtension(dir: list<dict<any>>, desc: bool = false)
     dir->sort((d1, d2) => {
         var ret = 0
-        if !g.IsFile(d2) && !g.IsFile(d1) || g.IsFile(d2) && g.IsFile(d1)
+        if g.IsFile(d2) && g.IsFile(d1)
             const ext1 = d1.name->fnamemodify(':e')
             const ext2 = d2.name->fnamemodify(':e')
             if ext2 > ext1
