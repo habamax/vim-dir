@@ -6,7 +6,7 @@ endif
 
 syn match dirStatus '\%2l^.*$' transparent contains=dirStatusSort,dirStatusHidden,dirStatusFilter,dirStatusSel
 syn match dirStatusSort 'Sort by' skipwhite contained nextgroup=dirStatusSortBy
-syn match dirStatusSortBy '\(name\|size\|time\) [▲▼]' skipwhite contained
+syn match dirStatusSortBy '\(name\|size\|time\|extension\) [▲▼]' skipwhite contained
 syn match dirStatusHidden 'Show \zs\.hidden' skipwhite contained
 syn match dirStatusFilter '\(Hide\|Show\) matched: \zs.\{-}\ze\( | Selected:\|$\)' skipwhite contained
 syn match dirStatusSel 'Selected:' skipwhite contained nextgroup=dirStatusSelNum
