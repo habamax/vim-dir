@@ -118,8 +118,8 @@ nnoremap <buffer> gb <scriptcmd>action.BookmarkJumpMenu()<cr>
 nnoremap <buffer> gh <scriptcmd>action.HistoryJumpMenu()<cr>
 nnoremap <buffer> gj <scriptcmd>action.GotoMenu()<cr>
 
-noremap <buffer> > <scriptcmd>action.WidenView()<cr>
-noremap <buffer> < <scriptcmd>action.ShrinkView()<cr>
+noremap <buffer><nowait> > <scriptcmd>action.WidenView()<cr>
+noremap <buffer><nowait> < <scriptcmd>action.ShrinkView()<cr>
 
 nnoremap <buffer> gq <C-w>c
 
