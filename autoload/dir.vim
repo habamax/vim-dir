@@ -33,7 +33,6 @@ export def UpdateStatusInfo()
         status->add(mark.Info(buf_info.bufnr))
         status->filter((_, v) => !v->empty())
 
-
         setbufline(buf_info.bufnr, 2, join(status, ' | '))
 
         setbufvar(buf_info.bufnr, '&modified', 0)
@@ -158,7 +157,7 @@ def OpenBuffer(name: string): bool
     elseif !isdirectory(bufname())
         enew
     endif
-    exe $"sil! keepalt file {bufname}"
+    exe $"sil! keepalt file {bufname->escape('#%')}"
     set ft=dir
 
     return result
