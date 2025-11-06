@@ -337,7 +337,7 @@ export def DoCreateFile()
     if !isabsolutepath(name)
         name = $"{b:dir_cwd}/{name}"
     endif
-    exe "edit" name
+    exe "edit" name->escape('%#')
 enddef
 
 export def DoCompressGzip(items: list<any>)
