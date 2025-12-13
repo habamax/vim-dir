@@ -102,7 +102,7 @@ enddef
 export def DoFilterHidden()
     g:dir_show_hidden = !get(g:, "dir_show_hidden", "true")
     b:dir_invalidate = true
-    :edit
+    keepj :edit
 
     var msg = g:dir_show_hidden ? "Show" : "Hide"
     g.Echo({t: msg, hl: "WarningMsg"}, " .hidden")
@@ -111,7 +111,7 @@ enddef
 export def DoFilter(bang: string, fltr: string)
     b:dir_filter = fltr
     b:dir_filter_bang = bang
-    :edit
+    keepj :edit
 
     var msg = (empty(bang) ? "Show" : "Hide")
     g.Echo($"{msg} matched ", {t: $"{fltr}", hl: "WarningMsg"})
@@ -120,7 +120,7 @@ enddef
 export def DoFilterClear()
     b:dir_filter = ""
     b:dir_filter_bang = ""
-    :edit
+    keepj :edit
 
     g.Echo("Show all!")
 enddef
@@ -166,7 +166,7 @@ export def DoDelete()
                     echohl None
                 endtry
             endfor
-            :edit
+            keepj :edit
         })
     endif
 enddef
@@ -207,12 +207,12 @@ export def DoRename()
             os.RenameWithPattern($"{b:dir_cwd}/{item.name}", pattern, counter)
             counter += 1
         endfor
-        :edit
+        keepj :edit
         winrestview(view)
     else
         var view = winsaveview()
         os.Rename($"{b:dir_cwd}/{del_list[0].name}")
-        :edit
+        keepj :edit
         winrestview(view)
     endif
 enddef
@@ -247,7 +247,7 @@ export def DoCopy()
             var view = winsaveview()
             os.Duplicate()
             winrestview(view)
-            :edit
+            keepj :edit
         endif
     else
         if cnt == 1
@@ -260,7 +260,7 @@ export def DoCopy()
             var view = winsaveview()
             os.Copy()
             winrestview(view)
-            :edit
+            keepj :edit
         endif
     endif
 enddef
@@ -303,7 +303,7 @@ export def DoMove()
         var view = winsaveview()
         os.Move()
         winrestview(view)
-        :edit
+        keepj :edit
         RefreshOtherDirWindows()
     endif
 enddef
@@ -320,7 +320,7 @@ export def DoCreateDir()
         name = $"{b:dir_cwd}/{name}"
     endif
     if os.CreateDir(name)
-        :edit
+        keepj :edit
         winrestview(view)
         var first_dir = split(name, '[/\\]')[0]
         var idx = b:dir->indexof((_, val) => val.name == first_dir)
@@ -349,7 +349,7 @@ export def DoCompressGzip(items: list<any>)
     var view = winsaveview()
     mark.Clear()
     if os.CompressGzip(arch_name, items)
-        :edit
+        keepj :edit
         winrestview(view)
         var idx = b:dir->indexof((_, val) => val.name == arch_name)
         if idx > -1
@@ -367,7 +367,7 @@ export def DoCompressZip(items: list<any>)
     var view = winsaveview()
     mark.Clear()
     if os.CompressZip(arch_name, items)
-        :edit
+        keepj :edit
         winrestview(view)
         var idx = b:dir->indexof((_, val) => val.name == arch_name)
         if idx > -1
@@ -386,7 +386,7 @@ export def DoExtractArch(items: list<any>)
     var dir_name = input('Extract to: ', fnamemodify(items[0].name, ":t:r:r"))
     mark.Clear()
     if os.ExtractArch($"{b:dir_cwd}/{items[0].name}", $"{b:dir_cwd}/{dir_name}")
-        :edit
+        keepj :edit
         winrestview(view)
     endif
 enddef
