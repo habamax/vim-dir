@@ -64,7 +64,7 @@ xnoremap <buffer><nowait> s <nop>
 nnoremap <buffer><nowait> t <scriptcmd>action.Do("tabe")<cr>
 nnoremap <buffer><nowait> i <scriptcmd>action.DoInfo()<cr>
 nnoremap <buffer><nowait> <F3> <scriptcmd>action.DoInfo()<cr>
-nnoremap <buffer><nowait> <C-r> <scriptcmd>edit<cr>
+nnoremap <buffer><nowait> <C-r> <scriptcmd>keepj edit<cr>
 
 
 noremap  <buffer><nowait> x <scriptcmd>action.DoMarkToggle()<cr>j
