@@ -49,79 +49,79 @@ command! -buffer DirBookmark action.BookmarkSet()
 command! -buffer -nargs=1 -complete=custom,action.BookmarkComplete DirBookmarkJump action.BookmarkJump(<q-args>)
 command! -buffer -nargs=1 -complete=custom,action.HistoryComplete DirHistoryJump action.HistoryJump(<q-args>)
 
-nnoremap <buffer> <bs> <scriptcmd>action.DoUp()<cr>
-nnoremap <buffer> - <scriptcmd>action.DoUp()<cr>
-nnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
-xnoremap <buffer> u <scriptcmd>action.DoUp()<cr>
-nnoremap <buffer> <cr> <scriptcmd>action.Do()<cr>
-nnoremap <buffer> o <scriptcmd>action.Do()<cr>
-nnoremap <buffer> <F4> <scriptcmd>action.Do()<cr>
-nnoremap <buffer> O <scriptcmd>action.DoOS()<cr>
-nnoremap <buffer> S <scriptcmd>action.Do($"{g:dir_invert_split ? '' : 'vert'} split")<cr>
-xnoremap <buffer> S <nop>
-nnoremap <buffer> s <scriptcmd>action.Do($"{g:dir_invert_split ? 'vert' : ''} split")<cr>
-xnoremap <buffer> s <nop>
-nnoremap <buffer> t <scriptcmd>action.Do("tabe")<cr>
-nnoremap <buffer> i <scriptcmd>action.DoInfo()<cr>
-nnoremap <buffer> <F3> <scriptcmd>action.DoInfo()<cr>
-nnoremap <buffer> <C-r> <scriptcmd>edit<cr>
+nnoremap <buffer><nowait> <bs> <scriptcmd>action.DoUp()<cr>
+nnoremap <buffer><nowait> - <scriptcmd>action.DoUp()<cr>
+nnoremap <buffer><nowait> u <scriptcmd>action.DoUp()<cr>
+xnoremap <buffer><nowait> u <scriptcmd>action.DoUp()<cr>
+nnoremap <buffer><nowait> <cr> <scriptcmd>action.Do()<cr>
+nnoremap <buffer><nowait> o <scriptcmd>action.Do()<cr>
+nnoremap <buffer><nowait> <F4> <scriptcmd>action.Do()<cr>
+nnoremap <buffer><nowait> O <scriptcmd>action.DoOS()<cr>
+nnoremap <buffer><nowait> S <scriptcmd>action.Do($"{g:dir_invert_split ? '' : 'vert'} split")<cr>
+xnoremap <buffer><nowait> S <nop>
+nnoremap <buffer><nowait> s <scriptcmd>action.Do($"{g:dir_invert_split ? 'vert' : ''} split")<cr>
+xnoremap <buffer><nowait> s <nop>
+nnoremap <buffer><nowait> t <scriptcmd>action.Do("tabe")<cr>
+nnoremap <buffer><nowait> i <scriptcmd>action.DoInfo()<cr>
+nnoremap <buffer><nowait> <F3> <scriptcmd>action.DoInfo()<cr>
+nnoremap <buffer><nowait> <C-r> <scriptcmd>edit<cr>
 
 
-noremap <buffer> x <scriptcmd>action.DoMarkToggle()<cr>j
-xnoremap <buffer> x <scriptcmd>action.DoMarkToggle()<cr><ESC>j
-noremap <buffer> X <scriptcmd>action.DoMarksAllToggle()<cr>
-xnoremap <buffer> X <scriptcmd>action.DoMarksAllToggle()<cr>
-noremap <buffer> D <scriptcmd>action.DoDelete()<cr>
-xnoremap <buffer> D <scriptcmd>action.DoDelete()<cr>
-noremap <buffer> C <scriptcmd>action.DoCreateDir()<cr>
-noremap <buffer> cc <scriptcmd>action.DoCreateFile()<cr>
-noremap <buffer> <F7> <scriptcmd>action.DoCreateDir()<cr>
-xnoremap <buffer> C <nop>
-noremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
-xnoremap <buffer> dd <scriptcmd>action.DoDelete()<cr>
-noremap <buffer> <F8> <scriptcmd>action.DoDelete()<cr>
-xnoremap <buffer> <F8> <scriptcmd>action.DoDelete()<cr>
-noremap <buffer> p <scriptcmd>action.DoCopy()<cr>
-xnoremap <buffer> p <scriptcmd>action.DoCopy()<cr>
-noremap <buffer> <F5> <scriptcmd>action.DoCopy2Pane()<cr>
-xnoremap <buffer> <F5> <scriptcmd>action.DoCopy2Pane()<cr>
-noremap <buffer> P <scriptcmd>action.DoMove()<cr>
-xnoremap <buffer> P <scriptcmd>action.DoMove()<cr>
-noremap <buffer> <F6> <scriptcmd>action.DoMove2Pane()<cr>
-xnoremap <buffer> <F6> <scriptcmd>action.DoMove2Pane()<cr>
-noremap <buffer> R <scriptcmd>action.DoRename()<cr>
-xnoremap <buffer> R <scriptcmd>action.DoRename()<cr>
-noremap <buffer> rr <scriptcmd>action.DoRename()<cr>
-xnoremap <buffer> rr <scriptcmd>action.DoRename()<cr>
-nnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
-xnoremap <buffer> A <scriptcmd>action.DoAction()<cr>
-nnoremap <buffer> <F2> <scriptcmd>action.DoAction()<cr>
-xnoremap <buffer> <F2> <scriptcmd>action.DoAction()<cr>
-nnoremap <buffer> g, <scriptcmd>action.DoSort("size")<cr>
-nnoremap <buffer> g. <scriptcmd>action.DoSort("time")<cr>
-nnoremap <buffer> g/ <scriptcmd>action.DoSort("name")<cr>
-nnoremap <buffer> ge <scriptcmd>action.DoSort("extension")<cr>
+noremap  <buffer><nowait> x <scriptcmd>action.DoMarkToggle()<cr>j
+xnoremap <buffer><nowait> x <scriptcmd>action.DoMarkToggle()<cr><ESC>j
+noremap  <buffer><nowait> X <scriptcmd>action.DoMarksAllToggle()<cr>
+xnoremap <buffer><nowait> X <scriptcmd>action.DoMarksAllToggle()<cr>
+noremap  <buffer><nowait> D <scriptcmd>action.DoDelete()<cr>
+xnoremap <buffer><nowait> D <scriptcmd>action.DoDelete()<cr>
+noremap  <buffer><nowait> C <scriptcmd>action.DoCreateDir()<cr>
+noremap  <buffer><nowait> cc <scriptcmd>action.DoCreateFile()<cr>
+noremap  <buffer><nowait> <F7> <scriptcmd>action.DoCreateDir()<cr>
+xnoremap <buffer><nowait> C <nop>
+noremap  <buffer><nowait> dd <scriptcmd>action.DoDelete()<cr>
+xnoremap <buffer><nowait> dd <scriptcmd>action.DoDelete()<cr>
+noremap  <buffer><nowait> <F8> <scriptcmd>action.DoDelete()<cr>
+xnoremap <buffer><nowait> <F8> <scriptcmd>action.DoDelete()<cr>
+noremap  <buffer><nowait> p <scriptcmd>action.DoCopy()<cr>
+xnoremap <buffer><nowait> p <scriptcmd>action.DoCopy()<cr>
+noremap  <buffer><nowait> <F5> <scriptcmd>action.DoCopy2Pane()<cr>
+xnoremap <buffer><nowait> <F5> <scriptcmd>action.DoCopy2Pane()<cr>
+noremap  <buffer><nowait> P <scriptcmd>action.DoMove()<cr>
+xnoremap <buffer><nowait> P <scriptcmd>action.DoMove()<cr>
+noremap  <buffer><nowait> <F6> <scriptcmd>action.DoMove2Pane()<cr>
+xnoremap <buffer><nowait> <F6> <scriptcmd>action.DoMove2Pane()<cr>
+noremap  <buffer><nowait> R <scriptcmd>action.DoRename()<cr>
+xnoremap <buffer><nowait> R <scriptcmd>action.DoRename()<cr>
+noremap  <buffer><nowait> rr <scriptcmd>action.DoRename()<cr>
+xnoremap <buffer><nowait> rr <scriptcmd>action.DoRename()<cr>
+nnoremap <buffer><nowait> A <scriptcmd>action.DoAction()<cr>
+xnoremap <buffer><nowait> A <scriptcmd>action.DoAction()<cr>
+nnoremap <buffer><nowait> <F2> <scriptcmd>action.DoAction()<cr>
+xnoremap <buffer><nowait> <F2> <scriptcmd>action.DoAction()<cr>
+nnoremap <buffer><nowait> g, <scriptcmd>action.DoSort("size")<cr>
+nnoremap <buffer><nowait> g. <scriptcmd>action.DoSort("time")<cr>
+nnoremap <buffer><nowait> g/ <scriptcmd>action.DoSort("name")<cr>
+nnoremap <buffer><nowait> ge <scriptcmd>action.DoSort("extension")<cr>
 
-nnoremap <buffer> . <scriptcmd>action.DoFilterHidden()<cr>
+nnoremap <buffer><nowait> . <scriptcmd>action.DoFilterHidden()<cr>
 
-noremap <buffer> ]] <scriptcmd>action.JumpForward()<cr>
-noremap <buffer> [[ <scriptcmd>action.JumpBackward()<cr>
+noremap  <buffer><nowait> ]] <scriptcmd>action.JumpForward()<cr>
+noremap  <buffer><nowait> [[ <scriptcmd>action.JumpBackward()<cr>
 
-nnoremap <buffer> ~ <scriptcmd>Dir ~<cr>
-nnoremap <buffer> g~ <scriptcmd>Dir ~<cr>
+nnoremap <buffer><nowait> ~ <scriptcmd>Dir ~<cr>
+nnoremap <buffer><nowait> g~ <scriptcmd>Dir ~<cr>
 for idx in range(10)
-    exe $'nnoremap <buffer> g{idx} <scriptcmd>action.BookmarkJumpNum({idx})<cr>'
-    exe $'nnoremap <buffer> <C-a>{idx} <scriptcmd>action.BookmarkSetNum({idx})<cr>'
+    exe $'nnoremap <buffer><nowait> g{idx} <scriptcmd>action.BookmarkJumpNum({idx})<cr>'
+    exe $'nnoremap <buffer><nowait> <C-a>{idx} <scriptcmd>action.BookmarkSetNum({idx})<cr>'
 endfor
 
-nnoremap <buffer> gb <scriptcmd>action.BookmarkJumpMenu()<cr>
-nnoremap <buffer> gh <scriptcmd>action.HistoryJumpMenu()<cr>
-nnoremap <buffer> gj <scriptcmd>action.GotoMenu()<cr>
+nnoremap <buffer><nowait> gb <scriptcmd>action.BookmarkJumpMenu()<cr>
+nnoremap <buffer><nowait> gh <scriptcmd>action.HistoryJumpMenu()<cr>
+nnoremap <buffer><nowait> gj <scriptcmd>action.GotoMenu()<cr>
 
-noremap <buffer><nowait> > <scriptcmd>action.WidenView()<cr>
-noremap <buffer><nowait> < <scriptcmd>action.ShrinkView()<cr>
+noremap  <buffer><nowait> > <scriptcmd>action.WidenView()<cr>
+noremap  <buffer><nowait> < <scriptcmd>action.ShrinkView()<cr>
 
-nnoremap <buffer> gq <C-w>c
+nnoremap <buffer><nowait> gq <C-w>c
 
 # remove buffer editing mappings
 for key in nop_maps
