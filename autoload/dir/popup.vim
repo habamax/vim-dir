@@ -1,14 +1,15 @@
 vim9script
 
-var popup_borderchars     = get(g:, "popup_borderchars", ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
-var popup_borderchars_t   = get(g:, "popup_borderchars_t", ['─', '│', '─', '│', '├', '┤', '┘', '└'])
-var popup_borderhighlight = get(g:, "popup_borderhighlight", ['Normal'])
-var popup_highlight       = get(g:, "popup_highlight", 'Normal')
-var popup_match_highlight = get(g:, "popup_match_highlight", "Constant")
-var popup_key_highlight   = get(g:, "popup_key_highlight", "Constant")
-var popup_cursor          = get(g:, "popup_cursor", '▏')
-var popup_prompt          = get(g:, "popup_prompt", '> ')
-var popup_number          = get(g:, "popup_number", false)
+var popup_borderchars = get(g:, "popup_borderchars", ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
+var popup_borderchars_t = get(g:, "popup_borderchars_t", ['─', '│', '─', '│', '├', '┤', '┘', '└'])
+var popup_borderhighlight = get(g:, "popup_borderhighlight", ['PmenuBorder'])
+var popup_highlight = get(g:, "popup_highlight", 'Pmenu')
+var popup_match_highlight = get(g:, "popup_match_highlight", "PmenuMatch")
+var popup_key_highlight = get(g:, "popup_key_highlight", "Constant")
+var popup_key_sep_highlight = get(g:, "popup_key_sep_highlight", "Comment")
+var popup_cursor = get(g:, "popup_cursor", '▏')
+var popup_prompt = get(g:, "popup_prompt", '> ')
+var popup_number = get(g:, "popup_number", false)
 
 export def YesNo(text: any, DialogCallback: func)
     var msg = []
@@ -204,7 +205,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
         var max_visible_posttext_len = 0
         var max_visible_text_len = 0
         var i = 0
-        while i < maxheight && i < itemsAny[0]->len()
+        while i < maxheight * 3 && i < itemsAny[0]->len()
             if max_visible_text_len < len(itemsAny[0][i].text)
                 max_visible_text_len = len(itemsAny[0][i].text)
             endif
@@ -218,6 +219,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
             endif
             i += 1
         endwhile
+
         if max_visible_text_len + max_visible_pretext_len + max_visible_posttext_len >= maxwidth
             max_visible_text_len = maxwidth - max_visible_pretext_len - max_visible_posttext_len
         endif
@@ -265,8 +267,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
     def AlignPopups(pwinid: number, winid: number)
         var width = popup_getpos(winid).core_width + (scrollbar_before_update - popup_getpos(winid).scrollbar)
         popup_move(winid, {
-            minwidth: width,
-            maxwidth: width
+            minwidth: width
         })
 
         width = popup_getpos(winid).core_width + popup_getpos(winid).scrollbar
@@ -275,8 +276,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
             minwidth: width + padding,
             maxwidth: width + padding
         })
-
-        maxwidth = width - padding
+        scrollbar_before_update = popup_getpos(winid).scrollbar
     enddef
 
     def UpdatePopups(pwinid: number, winid: number)
@@ -314,7 +314,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
           \ "\<MiddleMouse>", "\<MiddleRelease>", "\<MiddleDrag>", "\<2-MiddleMouse>",
           \ "\<MiddleMouse>", "\<MiddleRelease>", "\<MiddleDrag>", "\<2-MiddleMouse>",
           \ "\<X1Mouse>", "\<X1Release>", "\<X1Drag>", "\<X2Mouse>", "\<X2Release>", "\<X2Drag>",
-          \ "\<ScrollWheelLeft", "\<ScrollWheelRight>"
+          \ "\<ScrollWheelLeft>", "\<ScrollWheelRight>"
     ]
     # this sequence of bytes are generated when left/right mouse is pressed and
     # mouse wheel is rolled
@@ -325,6 +325,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
         maxwidth: maxwidth,
         borderhighlight: popup_borderhighlight,
         highlight: popup_highlight,
+        highlights: "CursorLine:PmenuSel",
         drag: 0,
         wrap: 1,
         scrollbar: true,
@@ -353,37 +354,37 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                 popup_close(id, -1)
                 popup_close(pwinid)
                 RestoreCursor()
-                if &shell == 'pwsh'
-                    redraw!
-                endif
             elseif ["\<cr>", "\<C-j>", "\<C-v>", "\<C-t>", "\<C-o>"]->index(key) > -1
                     && !filtered_items[0]->empty() && items_count > 0
                 popup_close(id, {idx: getcurpos(id)[1], key: key})
                 popup_close(pwinid)
                 RestoreCursor()
-                if &shell == 'pwsh'
-                    redraw!
-                endif
             elseif ["\<Right>", "\<PageDown>"]->index(key) > -1
                 win_execute(id, 'normal! ' .. maxheight .. "\<C-d>")
+                AlignPopups(pwinid, id)
             elseif ["\<Left>", "\<PageUp>"]->index(key) > -1
                 win_execute(id, 'normal! ' .. maxheight .. "\<C-u>")
+                AlignPopups(pwinid, id)
             elseif key == "\<Home>"
                 win_execute(id, "normal! gg")
+                AlignPopups(pwinid, id)
             elseif key == "\<End>"
                 win_execute(id, "normal! G")
+                AlignPopups(pwinid, id)
             elseif ["\<tab>", "\<C-n>", "\<Down>", "\<ScrollWheelDown>"]->index(key) > -1
                 var ln = getcurpos(id)[1]
                 win_execute(id, "normal! j")
                 if ln == getcurpos(id)[1]
                     win_execute(id, "normal! gg")
                 endif
+                AlignPopups(pwinid, id)
             elseif ["\<S-Tab>", "\<C-p>", "\<Up>", "\<ScrollWheelUp>"]->index(key) > -1
                 var ln = getcurpos(id)[1]
                 win_execute(id, "normal! k")
                 if ln == getcurpos(id)[1]
                     win_execute(id, "normal! G")
                 endif
+                AlignPopups(pwinid, id)
             # Ignoring fancy events and double clicks, which are 6 char long: `<80><fc> <80><fd>.`
             elseif ignore_input->index(key) == -1 && strcharlen(key) != 6 && str2list(key) != ignore_input_wtf
                 if key == "\<C-u>"
@@ -394,27 +395,24 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                     if empty(prompt_text)
                         filtered_items = [items_dict]
                     else
-                        filtered_items = items_dict->matchfuzzypos(prompt_text, {key: "text", camelcase: false})
+                        filtered_items = items_dict->matchfuzzypos(prompt_text, {key: "text"})
                     endif
                 elseif (key == "\<C-h>" || key == "\<BS>")
                     if empty(prompt_text) && close_on_bs
                         popup_close(id, {idx: getcurpos(id)[1], key: key})
                         popup_close(pwinid)
                         RestoreCursor()
-                        if &shell == 'pwsh'
-                            redraw!
-                        endif
                         return true
                     endif
                     prompt_text = prompt_text->strcharpart(0, prompt_text->strchars() - 1)
                     if empty(prompt_text)
                         filtered_items = [items_dict]
                     else
-                        filtered_items = items_dict->matchfuzzypos(prompt_text, {key: "text", camelcase: false})
+                        filtered_items = items_dict->matchfuzzypos(prompt_text, {key: "text"})
                     endif
                 elseif key =~ '\p'
                     prompt_text ..= key
-                    filtered_items = items_dict->matchfuzzypos(prompt_text, {key: "text", camelcase: false})
+                    filtered_items = items_dict->matchfuzzypos(prompt_text, {key: "text"})
                 endif
                 UpdatePopups(pwinid, id)
                 AlignPopups(pwinid, id)
@@ -424,9 +422,6 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
         callback: (id, result) => {
             popup_close(pwinid)
             RestoreCursor()
-            if &shell == 'pwsh'
-                redraw!
-            endif
             if result->type() == v:t_number
                 if result > 0
                     Callback(filtered_items[0][result - 1], "")
@@ -444,4 +439,74 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
     if Setup != null_function
         Setup(winid)
     endif
+enddef
+
+# Shell command output in a popup window.
+export def Sh(command: string, Finish_cb: func() = null_function): tuple<number, job>
+    var job_command: any = [&shell, &shellcmdflag, escape(command, '\')]
+
+    var grab_bufnr = 0
+
+    var winid = popup_create("Running ...", {
+        title: $" {command} ",
+        pos: 'botright',
+        col: &columns,
+        line: &lines,
+        padding: [0, 1, 0, 1],
+        border: [1, 1, 1, 1],
+        mapping: 1,
+        tabpage: -1,
+        borderchars: popup_borderchars,
+        borderhighlight: popup_borderhighlight,
+        highlight: popup_highlight,
+        filter: (winid, key) => {
+            if key == "\<C-g>"
+                var lines = getbufline(getwininfo(winid)[0].bufnr, 1, '$')
+                if grab_bufnr == 0
+                    grab_bufnr = bufadd("")
+                    exe $"sbuffer {grab_bufnr}"
+                    setl nobuflisted noswapfile buftype=nofile
+                elseif bufwinnr(grab_bufnr) == -1
+                    exe $"sbuffer {grab_bufnr}"
+                endif
+                setbufline(grab_bufnr, 1, lines)
+                return true
+            endif
+            return false
+        },
+    })
+
+    var bufnr = getwininfo(winid)[0].bufnr
+    var clean_buf = true
+
+    var jobid = job_start(job_command, {
+        out_msg: 0,
+        out_io: 'buffer',
+        out_cb: (ch, msg) => {
+            if clean_buf
+                silent deletebufline(bufnr, 1)
+                clean_buf = false
+            endif
+        },
+        out_buf: bufnr,
+        err_msg: 0,
+        err_io: 'buffer',
+        err_buf: bufnr,
+        err_cb: (ch, msg) => {
+            if clean_buf
+                silent deletebufline(bufnr, 1)
+                clean_buf = false
+            endif
+        },
+        close_cb: (ch) => {
+            timer_start(3000, (_) => {
+                popup_close(winid)
+            })
+            if Finish_cb != null_function
+                Finish_cb()
+            endif
+        },
+    })
+
+    return (winid, jobid)
 enddef
