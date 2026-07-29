@@ -60,7 +60,7 @@ export def DoInfo()
             popup_create('', {
                 image: { data: img_info.data, width: img_info.width, height: img_info.height },
                 highlight: 'Normal',
-                # border: [0, 0, 0, 0], padding: [0, 0, 0, 0],
+                mapping: 0,
                 filter: (winid: number, key: string) => {
                     if key == "\<ESC>" || key == "q" || key == "i"
                         popup_close(winid)
