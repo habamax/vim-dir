@@ -1,5 +1,7 @@
 vim9script
 
+const img_ext = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'webp']
+
 var img_exe: string
 if executable('magick')
     img_exe = 'magick'
@@ -12,6 +14,11 @@ const MAX_HEIGHT = 1080
 
 export def Info(path: string): dict<any>
     if empty(img_exe)
+        return {}
+    endif
+
+    var ext = path->fnamemodify(':e')->tolower()
+    if img_ext->index(ext) == -1
         return {}
     endif
 
