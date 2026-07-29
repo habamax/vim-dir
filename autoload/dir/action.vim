@@ -8,6 +8,7 @@ import autoload 'dir/mark.vim'
 import autoload 'dir/bookmark.vim'
 import autoload 'dir/history.vim'
 import autoload 'dir/fmt.vim'
+import autoload 'dir/img.vim'
 
 export def VisualItemsInList(line1: number, line2: number): list<dict<any>>
     var l1 = (line1 > line2 ? line2 : line1) - g.DIRLIST_SHIFT
@@ -53,16 +54,33 @@ export def DoInfo()
     if empty(item) | return | endif
     var path = $"{b:dir_cwd}{os.Sep()}{item}"
     if filereadable(path)
-        popup.Show(readfile($"{path}", "", g.PREVIEW_LINES), item, (winid) => {
-            var fname = fnamemodify(item, ":t")
-            for [syn, pat] in g.PREVIEW_SYNTAX_MAP
-                if fname =~ pat
-                    win_execute(winid, $"setl syntax={syn}")
-                    return
-                endif
-            endfor
-            win_execute(winid, "filetype detect")
-        })
+        var img_info = img.Info(path)
+        if !empty(img_info)
+            # move to popup.vim
+            popup_create('', {
+                image: { data: img_info.data, width: img_info.width, height: img_info.height },
+                highlight: 'Normal',
+                # border: [0, 0, 0, 0], padding: [0, 0, 0, 0],
+                filter: (winid: number, key: string) => {
+                    if key == "\<ESC>" || key == "q" || key == "i"
+                        popup_close(winid)
+                        return true
+                    endif
+                    return true
+                }
+            })
+        else
+            popup.Show(readfile($"{path}", "", g.PREVIEW_LINES), item, (winid) => {
+                var fname = fnamemodify(item, ":t")
+                for [syn, pat] in g.PREVIEW_SYNTAX_MAP
+                    if fname =~ pat
+                        win_execute(winid, $"setl syntax={syn}")
+                        return
+                    endif
+                endfor
+                win_execute(winid, "filetype detect")
+            })
+        endif
     elseif isdirectory(path)
         var info = os.DirInfo(path)
         if !empty(info)
