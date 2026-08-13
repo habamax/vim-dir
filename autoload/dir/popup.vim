@@ -2,8 +2,6 @@ vim9script
 
 var popup_borderchars = get(g:, "popup_borderchars", ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
 var popup_borderchars_t = get(g:, "popup_borderchars_t", ['─', '│', '─', '│', '├', '┤', '┘', '└'])
-var popup_borderhighlight = get(g:, "popup_borderhighlight", ['PmenuBorder'])
-var popup_highlight = get(g:, "popup_highlight", 'Pmenu')
 var popup_match_highlight = get(g:, "popup_match_highlight", "PmenuMatch")
 var popup_key_highlight = get(g:, "popup_key_highlight", "Constant")
 var popup_key_sep_highlight = get(g:, "popup_key_sep_highlight", "Comment")
@@ -54,8 +52,6 @@ export def Show(text: any, title: string = '', Setup: func(number) = null_functi
         maxheight: height,
         border: [],
         borderchars: popup_borderchars,
-        borderhighlight: popup_borderhighlight,
-        highlight: popup_highlight,
         drag: 0,
         wrap: 1,
         cursorline: false,
@@ -201,67 +197,19 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
     def Format(itemsAny: list<any>, props: list<any>): list<any>
         if itemsAny[0]->len() == 0 | return [] | endif
 
-        var max_visible_pretext_len = 0
-        var max_visible_posttext_len = 0
-        var max_visible_text_len = 0
-        var i = 0
-        while i < maxheight * 3 && i < itemsAny[0]->len()
-            if max_visible_text_len < len(itemsAny[0][i].text)
-                max_visible_text_len = len(itemsAny[0][i].text)
-            endif
-            var pretext = get(itemsAny[0][i], "pretext", "")
-            if max_visible_pretext_len < strwidth(pretext)
-                max_visible_pretext_len = strwidth(pretext)
-            endif
-            var posttext = get(itemsAny[0][i], "posttext", "")
-            if max_visible_posttext_len < strwidth(posttext)
-                max_visible_posttext_len = strwidth(posttext)
-            endif
-            i += 1
-        endwhile
-
-        if max_visible_text_len + max_visible_pretext_len + max_visible_posttext_len >= maxwidth
-            max_visible_text_len = maxwidth - max_visible_pretext_len - max_visible_posttext_len
-        endif
-
-        if itemsAny->len() > 1
-            return itemsAny[0]->mapnew((idx, v) => {
-                var pretext = get(v, "pretext", "")
-                var posttext = get(v, "posttext", "")
-                var text = pretext
-                if strwidth(pretext) < max_visible_pretext_len
-                    text ..= repeat(" ", max_visible_pretext_len - strwidth(pretext))
-                endif
-                text ..= v.text
-                if !empty(posttext)
-                    if strwidth(v.text) < max_visible_text_len
-                        text ..= repeat(" ", max_visible_text_len - strwidth(v.text))
-                    endif
-                    text ..= posttext
-                endif
-                return {text: text, props: itemsAny[1][idx]->mapnew((_, c) => {
+        var filtered = itemsAny->len() > 1
+        return itemsAny[0]->mapnew((idx, v) => {
+            var pretext = get(v, "pretext", "")
+            var posttext = get(v, "posttext", "")
+            var text = get(v, "text", "")
+            if filtered
+                return {text: $'{pretext}{text}{posttext}', props: itemsAny[1][idx]->mapnew((_, c) => {
                     return {col: strlen(pretext) + v.text->byteidx(c) + 1, length: 1, type: 'PopupSelectMatch'}
                 })}
-            })
-        else
-            return itemsAny[0]->mapnew((_, v) => {
-                var pretext = get(v, "pretext", "")
-                var posttext = get(v, "posttext", "")
-                var text = pretext
-                if strwidth(pretext) < max_visible_pretext_len
-                    text ..= repeat(" ", max_visible_pretext_len - strwidth(pretext))
-                endif
-                text ..= v.text
-                if !empty(posttext)
-                    if strwidth(v.text) < max_visible_text_len
-                        text ..= repeat(" ", max_visible_text_len - strwidth(v.text))
-                    endif
-                    text ..= posttext
-                endif
-
-                return {text: text}
-            })
-        endif
+            else
+                return {text: $'{pretext}{text}{posttext}'}
+            endif
+        })
     enddef
 
     def AlignPopups(pwinid: number, winid: number)
@@ -308,23 +256,33 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
         endif
     enddef
 
-    var ignore_input = ["\<cursorhold>", "\<ignore>", "\<Nul>",
-          \ "\<LeftMouse>", "\<LeftRelease>", "\<LeftDrag>", $"\<2-LeftMouse>",
-          \ "\<RightMouse>", "\<RightRelease>", "\<RightDrag>", "\<2-RightMouse>",
-          \ "\<MiddleMouse>", "\<MiddleRelease>", "\<MiddleDrag>", "\<2-MiddleMouse>",
-          \ "\<MiddleMouse>", "\<MiddleRelease>", "\<MiddleDrag>", "\<2-MiddleMouse>",
-          \ "\<X1Mouse>", "\<X1Release>", "\<X1Drag>", "\<X2Mouse>", "\<X2Release>", "\<X2Drag>",
-          \ "\<ScrollWheelLeft>", "\<ScrollWheelRight>"
+    var ignore_input = [
+        "\<CursorHold>", "\<Ignore>", "\<Nul>", "\<Insert>", "\<Delete>",
+        "\<F1>", "\<F2>", "\<F3>", "\<F4>", "\<F5>", "\<F6>",
+        "\<F7>", "\<F8>", "\<F9>", "\<F10>", "\<F11>", "\<F12>",
+        "\<LeftMouse>", "\<LeftRelease>", "\<LeftDrag>",
+        "\<2-LeftMouse>", "\<2-LeftRelease>",
+        "\<3-LeftMouse>", "\<3-LeftRelease>",
+        "\<4-LeftMouse>", "\<4-LeftRelease>",
+        "\<RightMouse>", "\<RightRelease>", "\<RightDrag>",
+        "\<2-RightMouse>", "\<2-RightRelease>",
+        "\<3-RightMouse>", "\<3-RightRelease>",
+        "\<4-RightMouse>", "\<4-RightRelease>",
+        "\<MiddleMouse>", "\<MiddleRelease>", "\<MiddleDrag>",
+        "\<2-MiddleMouse>", "\<2-MiddleRelease>",
+        "\<3-MiddleMouse>", "\<3-MiddleRelease>",
+        "\<4-MiddleMouse>", "\<4-MiddleRelease>",
+        "\<X1Mouse>", "\<X1Release>", "\<X1Drag>",
+        "\<X2Mouse>", "\<X2Release>", "\<X2Drag>",
+        "\<ScrollWheelLeft>", "\<ScrollWheelRight>",
+        "\<2-ScrollWheelUp>", "\<2-ScrollWheelDown>",
+        "\<3-ScrollWheelUp>", "\<3-ScrollWheelDown>",
+        "\<4-ScrollWheelUp>", "\<4-ScrollWheelDown>",
     ]
-    # this sequence of bytes are generated when left/right mouse is pressed and
-    # mouse wheel is rolled
-    var ignore_input_wtf = [128, 253, 100]
 
     var popts = {
         minwidth: minwidth,
         maxwidth: maxwidth,
-        borderhighlight: popup_borderhighlight,
-        highlight: popup_highlight,
         highlights: "CursorLine:PmenuSel",
         drag: 0,
         wrap: 1,
@@ -385,8 +343,7 @@ export def Select(title: string, items: list<any>, Callback: func(any, string), 
                     win_execute(id, "normal! G")
                 endif
                 AlignPopups(pwinid, id)
-            # Ignoring fancy events and double clicks, which are 6 char long: `<80><fc> <80><fd>.`
-            elseif ignore_input->index(key) == -1 && strcharlen(key) != 6 && str2list(key) != ignore_input_wtf
+            elseif ignore_input->index(key) == -1
                 if key == "\<C-u>"
                     prompt_text = ""
                     filtered_items = [items_dict]
@@ -457,8 +414,6 @@ export def Sh(command: string, Finish_cb: func() = null_function): tuple<number,
         mapping: 1,
         tabpage: -1,
         borderchars: popup_borderchars,
-        borderhighlight: popup_borderhighlight,
-        highlight: popup_highlight,
         filter: (winid, key) => {
             if key == "\<C-g>"
                 var lines = getbufline(getwininfo(winid)[0].bufnr, 1, '$')
@@ -481,21 +436,23 @@ export def Sh(command: string, Finish_cb: func() = null_function): tuple<number,
 
     var jobid = job_start(job_command, {
         out_msg: 0,
-        out_io: 'buffer',
         out_cb: (ch, msg) => {
+            var msg_nl = substitute(msg, "\r", "\n", "g")
             if clean_buf
-                silent deletebufline(bufnr, 1)
+                setbufline(bufnr, 1, msg_nl)
                 clean_buf = false
+            else
+                appendbufline(bufnr, "$", msg_nl)
             endif
         },
-        out_buf: bufnr,
         err_msg: 0,
-        err_io: 'buffer',
-        err_buf: bufnr,
         err_cb: (ch, msg) => {
+            var msg_nl = substitute(msg, "\r", "\n", "g")
             if clean_buf
-                silent deletebufline(bufnr, 1)
+                setbufline(bufnr, 1, msg_nl)
                 clean_buf = false
+            else
+                appendbufline(bufnr, "$", msg_nl)
             endif
         },
         close_cb: (ch) => {
