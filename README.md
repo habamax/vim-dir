@@ -160,8 +160,7 @@ Other global mappings might be, for example:
 
 
 
-Non Features
-============
+## Non Features
 
 - ✗ No treeview, no sidepanel.
 
