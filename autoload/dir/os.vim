@@ -6,9 +6,9 @@ import autoload 'dir/g.vim'
 
 export def Sep(escape: bool = false): string
     if escape
-        return has("win32") ? '\\' : '/'
+        return has("win32") && !&shellslash ? '\\' : '/'
     else
-        return has("win32") ? '\' : '/'
+        return has("win32") && !&shellslash  ? '\' : '/'
     endif
 enddef
 
@@ -150,36 +150,52 @@ export def ListDirTree(name: string): list<dict<any>>
     endtry
 enddef
 
+def CopyFile(src: string, dst: string)
+    const content = readfile(resolve(src), "b")
+    writefile(content, dst, "b")
+enddef
+
+def CopyDir(src: string, dst: string)
+    const src_resolved = resolve(src)
+    mkdir(dst, "p")
+    for item in readdirex(src_resolved, '1', {sort: 'none'})
+        const src_path = src_resolved .. Sep() .. item.name
+        const dst_path = dst .. Sep() .. item.name
+
+        if item.type == "dir"
+            CopyDir(src_path, dst_path)
+        else
+            CopyFile(src_path, dst_path)
+        endif
+    endfor
+enddef
+
 # XXX: explore jobs here...
 export def Copy()
     if mark.IsEmpty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
 
-    var copy_cmd = "cp"
-    var dest_dir = $"{b:dir_cwd}"
-
-    if &shell =~ 'pwsh'
-        copy_cmd = "Copy-Item -Force"
-    elseif has("win32")
-        copy_cmd = "copy /Y"
-    endif
+    var dest_dir = b:dir_cwd
 
     var override = false
     # 1 - override all files
     # -1 - do not override anything
     var override_all = 0
 
+    const mark_dir = mark.Dir()
     var file_list = mark.List()->copy()
     var dir_list = mark.List()->copy()->filter((_, v) => v.type =~ 'dir\|linkd\|junction')
     for item in dir_list
-        file_list += ListDirTree($"{mark.Dir()}{Sep()}{item.name}")
+        file_list += ListDirTree($"{mark_dir}{Sep()}{item.name}")
     endfor
     for item in file_list
-        var src = $"{mark.Dir()}{Sep()}{item.name}"
-        var dst = $"{b:dir_cwd}{Sep()}{item.name}"
+        var src = $"{mark_dir}{Sep()}{item.name}"
+        var dst = $"{dest_dir}{Sep()}{item.name}"
         try
-            if item.type =~ 'dir\|linkd\|junction' && !isdirectory(dst)
-                mkdir(dst, "p")
+            if item.type =~ 'dir\|linkd\|junction'
+                if !isdirectory(dst)
+                    mkdir(dst, "p")
+                endif
             else
                 var file_exists = filereadable(dst)
                 if file_exists && override_all == 0
@@ -210,15 +226,11 @@ export def Copy()
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
-                    if &shell =~ 'pwsh'
-                        system($'{copy_cmd} "{resolve(src)}" "{dst}"'->escape('"'))
-                    else
-                        system($'{copy_cmd} "{resolve(src)}" "{dst}"')
-                    endif
+                    CopyFile(src, dst)
                 endif
             endif
         catch
-            echo v:exception
+            echom v:exception
         endtry
     endfor
     mark.Clear()
@@ -228,23 +240,17 @@ export def Duplicate()
     if mark.IsEmpty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
 
-    var copy_cmd = "cp -R"
-    var copy_dir_cmd = "cp -R"
-    var dest_dir = $"{b:dir_cwd}"
-
-    if has("win32")
-        copy_cmd = "copy /Y"
-        copy_dir_cmd = "xcopy /EIH"
-    endif
+    const mark_dir = mark.Dir()
+    var dest_dir = b:dir_cwd
 
     for item in mark.List()
-        var src = $"{mark.Dir()}{Sep()}{item.name}"
-        var dst = $"{b:dir_cwd}{Sep()}{GetDuplicateName(item.name)}"
+        var src = $"{mark_dir}{Sep()}{item.name}"
+        var dst = $"{dest_dir}{Sep()}{GetDuplicateName(item.name)}"
         try
             if item.type == 'dir'
-                system($'{copy_dir_cmd} "{resolve(src)}" "{dst}"')
+                CopyDir(src, dst)
             else
-                system($'{copy_cmd} "{resolve(src)}" "{dst}"')
+                CopyFile(src, dst)
             endif
         catch
             echo v:exception
@@ -258,28 +264,23 @@ export def Move()
     if mark.IsEmpty() | return | endif
     if !isdirectory(get(b:, "dir_cwd", "")) | return | endif
 
-    var move_cmd = "mv"
-    var dest_dir = $"{b:dir_cwd}"
-
-    if &shell =~ 'pwsh'
-        move_cmd = "Move-Item -Force"
-    elseif has("win32")
-        move_cmd = "move /Y"
-    endif
 
     var override = false
     # 1 - override all files
     # -1 - do not override anything
     var override_all = 0
 
+    var dest_dir = b:dir_cwd
+    const mark_dir = mark.Dir()
     var file_list = mark.List()->copy()
     var dir_list = mark.List()->copy()->filter((_, v) => v.type =~ 'dir\|linkd\|junction')
     for item in dir_list
-        file_list += ListDirTree($"{mark.Dir()}{Sep()}{item.name}")
+        file_list += ListDirTree($"{mark_dir}{Sep()}{item.name}")
     endfor
     for item in file_list
-        var src = $"{mark.Dir()}{Sep()}{item.name}"
-        var dst = $"{b:dir_cwd}{Sep()}{item.name}"
+        var src = $"{mark_dir}{Sep()}{item.name}"
+        var dst = $"{dest_dir}{Sep()}{item.name}"
+
         try
             if item.type =~ 'dir\|linkd\|junction' && !isdirectory(dst)
                 mkdir(dst, "p")
@@ -313,11 +314,8 @@ export def Move()
                     if !isdirectory(fnamemodify(dst, ":h"))
                         mkdir(fnamemodify(dst, ":h"), "p")
                     endif
-                    if &shell =~ 'pwsh'
-                        system($'{move_cmd} "{resolve(src)}" "{dst}"'->escape('"'))
-                    else
-                        system($'{move_cmd} "{resolve(src)}" "{dst}"')
-                    endif
+                    CopyFile(src, dst)
+                    delete(src)
                 endif
             endif
         catch
@@ -325,7 +323,7 @@ export def Move()
         endtry
     endfor
     for item_dir in dir_list
-        Delete($"{mark.Dir()}{Sep()}{item_dir.name}")
+        delete($"{mark_dir}{Sep()}{item_dir.name}", 'rf')
     endfor
     for buf_info in g.OtherDirBuffers()
         setbufvar(buf_info.bufnr, "dir_invalidate", true)
