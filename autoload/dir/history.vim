@@ -2,47 +2,9 @@ vim9script
 
 var dir_history: list<any>
 
-import autoload 'dir/g.vim'
-import autoload 'dir/os.vim'
+import autoload 'dir/setting.vim'
 
-
-def SettingFile(): string
-    if has("win32")
-        return $'{expand("$APPDATA")}{os.Sep()}vim-dir{os.Sep()}/history.json'
-    else
-        return $'{expand("~/.config")}{os.Sep()}vim-dir{os.Sep()}/history.json'
-    endif
-enddef
-
-
-export def Load()
-    var sfile = SettingFile()
-    if !filereadable(sfile) | return | endif
-    try
-        dir_history = readfile(sfile)->join()->json_decode()
-    catch
-        echohl Error
-        echomsg v:exception
-        echohl None
-    endtry
-enddef
-
-Load()
-
-
-def Save()
-    var sfile = SettingFile()
-    try
-        if !filereadable(sfile)
-            mkdir(fnamemodify(sfile, ":p:h"), "p")
-        endif
-        [dir_history->json_encode()]->writefile(sfile)
-    catch
-        echohl Error
-        echomsg v:exception
-        echohl None
-    endtry
-enddef
+dir_history = setting.Load("history.json") ?? dir_history
 
 
 export def Add(path: string)
@@ -54,7 +16,7 @@ export def Add(path: string)
     if dir_history->len() > get(g:, "dir_history_size", 100)
         dir_history = dir_history[ : get(g:, "dir_history_size", 30) - 1]
     endif
-    Save()
+    setting.Save("history.json", dir_history)
 enddef
 
 

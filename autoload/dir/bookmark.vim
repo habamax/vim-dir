@@ -8,46 +8,9 @@ var bookmarks: dict<any> = {named: {}, numbered: {}}
 
 import autoload 'dir.vim'
 import autoload 'dir/g.vim'
-import autoload 'dir/os.vim'
+import autoload 'dir/setting.vim'
 
-
-def SettingFile(): string
-    if has("win32")
-        return $'{expand("$APPDATA")}{os.Sep()}vim-dir{os.Sep()}/bookmarks.json'
-    else
-        return $'{expand("~/.config")}{os.Sep()}vim-dir{os.Sep()}/bookmarks.json'
-    endif
-enddef
-
-
-export def Load()
-    var sfile = SettingFile()
-    if !filereadable(sfile) | return | endif
-    try
-        bookmarks = readfile(sfile)->join()->json_decode()
-    catch
-        echohl Error
-        echomsg v:exception
-        echohl None
-    endtry
-enddef
-
-Load()
-
-
-def Save()
-    var sfile = SettingFile()
-    try
-        if !filereadable(sfile)
-            mkdir(fnamemodify(sfile, ":p:h"), "p")
-        endif
-        [bookmarks->json_encode()]->writefile(sfile)
-    catch
-        echohl Error
-        echomsg v:exception
-        echohl None
-    endtry
-enddef
+bookmarks = setting.Load("bookmarks.json") ?? bookmarks
 
 
 export def JumpNum(n: number)
@@ -72,7 +35,7 @@ export def SetNum(n: number)
     if n < 0 || n > 9 | return | endif
     if !exists("b:dir_cwd") | return | endif
     bookmarks['numbered'][n] = b:dir_cwd
-    Save()
+    setting.Save("bookmarks.json", bookmarks)
     g.Echo({t: $'Saving bookmark {n}:', hl: 'WarningMsg'}, ' "', {t: b:dir_cwd, hl: 'Directory'}, '"')
 enddef
 
@@ -85,7 +48,7 @@ export def Set(name: string, path: string)
 
     bookmarks.named[name] = path
     g.Echo({t: $'Saving bookmark "{name}":', hl: 'WarningMsg'}, ' "', {t: b:dir_cwd, hl: 'Directory'}, '"')
-    Save()
+    setting.Save("bookmarks.json", bookmarks)
 enddef
 
 
@@ -112,7 +75,6 @@ enddef
 export def NamesAndPaths(): list<list<any>>
     return bookmarks.named->items()
 enddef
-
 
 
 export def Exists(name: string): bool
