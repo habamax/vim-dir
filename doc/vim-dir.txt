@@ -269,6 +269,21 @@ g:dir_sort_desc     If true, sort `desc`, otherwise `asc`.
 g:dir_show_hidden   Show/hide `.hidden` files/directories.
                     Default is `true`.
 
+                                                     *g:dir_settings_dir*
+g:dir_settings_dir  Directory to use for storing bookmarks and history.
+                    Default is
+
+                    Windows: `$APPDATA/vim-dir`
+                    Other:   `$XDG_DATA_HOME/vim-dir`   (environment variable)
+                             `~/.local/share/vim-dir`   (default value)
+                             `$XDG_CONFIG_HOME/vim-dir` (deprecated)
+                             `~/.config/vim-dir`        (deprecated)
+
+                    Any bookmarks or history files in the now-deprecated
+                    `$XDG_CONFIG_HOME/vim-dir` or `~/.config/vim-dir` will be
+                    automatically migrated to the new default location when
+                    updated. The original directory will not be deleted.
+
                                                      *g:dir_history_size*
 g:dir_history_size  Maximum number of directories to be saved in history.
                     Default is `100`.
