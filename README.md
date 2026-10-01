@@ -139,6 +139,12 @@ Other global mappings might be, for example:
   `false`.
 - `g:dir_show_hidden` — show/hide `.hidden` files/directories. Default is
   `true`.
+- `g:dir_settings_dir` - directory to use for storing bookmarks and history.
+  Default is
+
+  - Windows: `$APPDATA/vim-dir`
+  - Linux/Other: `$XDG_DATA_HOME/vim-dir` or `~/.local/share/vim-dir`
+
 - `g:dir_history_size` — maximum numbers of directories in history. Default is
   `100`.
 - `g:dir_columns` — columns for the dir view. Default is
