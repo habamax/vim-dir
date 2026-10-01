@@ -4,12 +4,14 @@ import autoload 'dir/os.vim'
 
 
 export def Load(file: string): any
-    const sfile = SettingFile(file)
-    if !filereadable(sfile)
+    const sfiles = SettingFile(file)
+        ->tuple2list()
+        ->filter((_, n) => filereadable(n))
+    if empty(sfiles)
         return v:none
     endif
     try
-        return readfile(sfile)->join()->json_decode()
+        return readfile(sfiles[0])->join()->json_decode()
     catch
         echohl Error
         echomsg v:exception
@@ -19,7 +21,7 @@ export def Load(file: string): any
 enddef
 
 export def Save(file: string, data: any)
-    const sfile = SettingFile(file)
+    const [sfile; _] = SettingFile(file)
     try
         if !filereadable(sfile)
             fnamemodify(sfile, ':p:h')->mkdir('p')
@@ -32,21 +34,23 @@ export def Save(file: string, data: any)
     endtry
 enddef
 
-def SettingFile(file: string): string
-    return $'{SettingDir()}{os.Sep()}{file}'
+def SettingFile(file: string): tuple<string, ...list<string>>
+    return SettingDir()
+        ->map((_, n) => $'{n}{os.Sep()}{file}')
+        ->list2tuple()
 enddef
 
-def SettingDir(): string
+def SettingDir(): list<string>
     if exists('g:dir_settings_dir')
-        return g:dir_settings_dir
+        return [g:dir_settings_dir]
     endif
 
-    var dir: string
+    var dirs: list<string>
     if has('win32')
-        dir = expand('$APPDATA')
+        dirs = ['$APPDATA']
     else
-        dir = expand(getenv('XDG_CONFIG_HOME') ?? '~/.config')
+        dirs = [getenv('XDG_DATA_HOME') ?? '~/.local/share', getenv('XDG_CONFIG_HOME') ?? '~/.config']
     endif
 
-    return $'{dir}{os.Sep()}vim-dir'
+    return dirs->map((_, n) => $'{expand(n)}{os.Sep()}vim-dir')
 enddef
